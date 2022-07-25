@@ -16,6 +16,7 @@ const Signup = () => {
               <h1>Sign Up</h1>
             </Form.Text>
           </Form.Group>
+
           {/* email input */}
           <Form.Group className="mb-3" controlId="formEmail">
             <Form.Label>Email address</Form.Label>
