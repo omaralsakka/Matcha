@@ -23,10 +23,13 @@ const Login = () => {
           <Form.Control {...password} />
         </Form.Group>
 
-        <Button className="form-button" variant="primary" type="submit">
+        <Button className="form-button mb-3" variant="primary" type="submit">
           Submit
         </Button>
       </Form>
+      <div className="forgot-password text-center">
+        <Link to="/forgot-password">Forgot password?</Link>
+      </div>
       <hr />
       <p>
         Don't have an account? <Link to="/signup">Sign Up</Link>

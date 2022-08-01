@@ -2,6 +2,8 @@ import { Form, Button, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import UseField from "./UseField";
 import logo from "../media/logo-black.png";
+import { useState } from "react";
+import FormCheck from "../utils/FormCheck";
 
 const Signup = () => {
   const email = UseField("email");
@@ -9,6 +11,7 @@ const Signup = () => {
   const firstname = UseField("text");
   const lastname = UseField("text");
   const password = UseField("password");
+  const [consent, setConsent] = useState(true);
 
   return (
     <Container className="signup-container">
@@ -47,7 +50,24 @@ const Signup = () => {
             number and 1 special character
           </Form.Text>
         </Form.Group>
-        <Button className="form-button" variant="primary" type="submit">
+
+        <Form.Group className="mb-3">
+          <div className="mb-1">
+            <Form.Text className="text-muted">
+              By signing up, you agree to our Terms . Learn how we collect, use
+              and share your data in our Privacy Policy and how we use cookies
+              and similar technology in our Cookies Policy .
+            </Form.Text>
+          </div>
+          <FormCheck consent={consent} setConsent={setConsent} />
+        </Form.Group>
+
+        <Button
+          disabled={consent}
+          className="form-button"
+          variant="primary"
+          type="submit"
+        >
           Submit
         </Button>
       </Form>
