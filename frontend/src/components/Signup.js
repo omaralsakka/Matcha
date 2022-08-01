@@ -12,6 +12,7 @@ const Signup = () => {
   const fullname = UseField("text");
   const password = UseField("password");
   const [consent, setConsent] = useState(false);
+
   return (
     <Container className="signup-container">
       <Form>

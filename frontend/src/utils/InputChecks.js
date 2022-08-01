@@ -21,8 +21,8 @@ const checkInputs = (username, password, fullname) => {
   return checkFullName(fullname) &&
     checkPassword(password) &&
     checkUserName(username)
-    ? false
-    : true;
+    ? true
+    : false;
 };
 
 export default checkInputs;
