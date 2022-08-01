@@ -2,6 +2,7 @@ import UseField from "./UseField";
 import { Form, Container, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import logo from "../media/logo-black.png";
+import { checkUserName, checkPassword } from "../utils/InputChecks";
 
 const Login = () => {
   const username = UseField("text");
@@ -23,8 +24,17 @@ const Login = () => {
           <Form.Control {...password} />
         </Form.Group>
 
-        <Button className="form-button mb-3" variant="primary" type="submit">
-          Submit
+        <Button
+          disabled={
+            checkUserName(username.value) && checkPassword(password.value)
+              ? false
+              : true
+          }
+          className="form-button mb-3"
+          variant="primary"
+          type="submit"
+        >
+          Log In
         </Button>
       </Form>
       <div className="forgot-password text-center">

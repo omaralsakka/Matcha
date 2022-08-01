@@ -72,7 +72,7 @@ const Signup = () => {
           variant="primary"
           type="submit"
         >
-          Submit
+          Sign Up
         </Button>
       </Form>
       <hr />
