@@ -17,10 +17,17 @@ export const checkFullName = (fullname) => {
   return false;
 };
 
-const checkInputs = (username, password, fullname) => {
+export const checkEmail = (email) => {
+  const valid =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return valid.test(email);
+};
+
+const checkInputs = (username, password, fullname, email) => {
   return checkFullName(fullname) &&
     checkPassword(password) &&
-    checkUserName(username)
+    checkUserName(username) &&
+    checkEmail(email)
     ? true
     : false;
 };

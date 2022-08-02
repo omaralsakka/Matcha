@@ -63,8 +63,12 @@ const Signup = () => {
 
         <Button
           disabled={
-            checkInputs(username.value, password.value, fullname.value) &&
-            consent
+            checkInputs(
+              username.value,
+              password.value,
+              fullname.value,
+              email.value
+            ) && consent
               ? false
               : true
           }

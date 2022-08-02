@@ -2,7 +2,7 @@ import UseField from "./UseField";
 import { Form, Button, Container } from "react-bootstrap";
 import logo from "../media/logo-black.png";
 import { Link } from "react-router-dom";
-
+import { checkEmail } from "../utils/InputChecks";
 const ForgotPassword = () => {
   const email = UseField("email");
   return (
@@ -21,7 +21,7 @@ const ForgotPassword = () => {
           <Form.Control {...email} placeholder="Enter email" />
         </Form.Group>
         <Button
-          disabled={email.value ? false : true}
+          disabled={checkEmail(email.value) ? false : true}
           className="form-button"
           variant="primary"
           type="submit"
