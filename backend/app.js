@@ -2,14 +2,15 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const config = require("./utils/config");
-app.use(express.json());
 
-app.get("/", async (req, res) => {
+app.get("/db", async (req, res) => {
   try {
-    const dbCreated = await config.pool.query("SELECT * FROM matcha");
-    console.log(res.json);
+    const db = await config.pool.query("SELECT * FROM users");
+    res.json(db);
   } catch (err) {
-    const createDb = await config.pool.query("CREATE DATABASE matcha");
+    console.error(err);
   }
 });
+app.use(express.json());
+
 module.exports = app;
