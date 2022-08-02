@@ -1,0 +1,1 @@
+SELECT 'CREATE DATABASE matcha'WHERE NOT EXISTS (SELECT FROM Databases WHERE datname = 'matcha')\gexec
