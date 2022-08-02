@@ -1,17 +1,16 @@
-const config = require("../utils/config");
+const pool = require("../utils/db");
 
-const userQuery = async (user) => {
+const insertUser = async (body) => {
   try {
-    const userResponse = await config.pool.query(
-      "INSERT INTO users(username, email, fullname, password) VALUES(1$, 2$, 3$, 4$) RETURNING *",
-      [user.username, user.email, user.fullname, user.password]
+    const queryResponse = await pool.query(
+      "INSERT INTO users(username, email, fullname, password) VALUES($1, $2, $3, $4) RETURNING *",
+      [body.username, body.email, body.fullname, body.password]
     );
-    console.log("this is userResponse in query:", userResponse);
-  } catch (err) {
-    console.error(err.message);
+    return queryResponse;
+  } catch (error) {
+    console.error(error.message);
+    return error.message;
   }
 };
 
-module.exports = {
-  userQuery,
-};
+module.exports = insertUser;

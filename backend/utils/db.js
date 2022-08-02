@@ -1,0 +1,11 @@
+const POOL = require("pg").Pool;
+
+const pool = new POOL({
+  user: "postgres",
+  password: "123456",
+  host: "localhost",
+  port: 5432,
+  database: "matcha",
+});
+
+module.exports = pool;
