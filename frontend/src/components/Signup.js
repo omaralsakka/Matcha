@@ -5,6 +5,7 @@ import logo from "../media/logo-black.png";
 import { useState } from "react";
 import FormCheck from "../utils/FormCheck";
 import checkInputs from "../utils/InputChecks";
+import { signupService } from "../services/Services";
 
 const Signup = () => {
   const email = UseField("email");
@@ -13,9 +14,20 @@ const Signup = () => {
   const password = UseField("password");
   const [consent, setConsent] = useState(false);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const user = {
+      username: username.value,
+      email: email.value,
+      fullname: fullname.value,
+      password: password.value,
+    };
+    signupService(user);
+  };
+
   return (
     <Container className="signup-container">
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3 form-logo">
           <img className="form-logo-img" alt="" src={logo} />
         </Form.Group>
