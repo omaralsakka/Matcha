@@ -17,13 +17,14 @@ const insertUser = async (body) => {
 
 const insertUserVerify = async (body) => {
   try {
-    const verifyCode = generateRandom(50);
+    const verificationCode = generateRandom(50);
     const cryptedPass = await cryptPassword(body.password);
+
     const queryResponse = await pool.query(
       "INSERT INTO user_verify(username, email, fullname, password, verify_code) VALUES($1, $2, $3, $4, $5) RETURNING *",
-      [body.username, body.email, body.fullname, cryptedPass, verifyCode]
+      [body.username, body.email, body.fullname, cryptedPass, verificationCode]
     );
-    return queryResponse.rows[0];
+    return verificationCode;
   } catch (error) {
     console.error(error.message);
     return error.message;
