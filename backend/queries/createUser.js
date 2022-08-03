@@ -31,4 +31,27 @@ const insertUserVerify = async (body) => {
   }
 };
 
-module.exports = { insertUser, insertUserVerify };
+// function that will take the verified user info and move it to users table.
+const verifyUser = async (verificationCode) => {
+  try {
+    const queryResponse = await pool.query(
+      "SELECT * FROM user_verify WHERE verify_code = $1",
+      [verificationCode]
+    );
+    const info = queryResponse.rows[0];
+    if (info) {
+      const insertResponse = await insertUser(info);
+      const deleteFromVerify = await pool.query(
+        "DELETE FROM user_verify WHERE verify_code = $1",
+        [verificationCode]
+      );
+      return insertResponse.rows;
+    } else {
+      return "Error: verification code already deleted";
+    }
+  } catch (error) {
+    console.error(error.message);
+  }
+};
+
+module.exports = { insertUser, insertUserVerify, verifyUser };

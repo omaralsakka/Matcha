@@ -9,7 +9,6 @@ import { signupService } from "../services/Services";
 
 const CheckEmail = ({ setFormSubmit }) => {
   const navigate = useNavigate();
-
   setTimeout(() => {
     setFormSubmit(false);
     navigate("/login");

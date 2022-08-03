@@ -12,7 +12,7 @@ CREATE TABLE users(
     gender VARCHAR (150),
     sexuality VARCHAR (150),
     bio VARCHAR (300),
-    tags VARCHAR (150),
+    tags VARCHAR [],
     fame_rating INT DEFAULT 0,
     blocked INT [],
     blocked_by INT [],

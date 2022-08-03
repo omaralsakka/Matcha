@@ -6,3 +6,9 @@ export const signupService = async (userInfo) => {
   const response = await axios.post(userUrl, userInfo);
   return response.data;
 };
+
+export const verifyService = async (verificationCode) => {
+  const response = await axios.post(`${userUrl}/verify`, verificationCode);
+  // console.log("this is res.data in verifyService", response.data);
+  return response.data;
+};
