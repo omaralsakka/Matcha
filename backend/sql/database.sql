@@ -19,8 +19,7 @@ CREATE TABLE users(
     liked INT [],
     liked_by INT [],
     views INT [],
-    token VARCHAR (150),
-    verified INT DEFAULT 0
+    token VARCHAR (150)
 );
 
 CREATE TABLE user_verify(

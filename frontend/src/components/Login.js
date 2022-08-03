@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 import logo from "../media/logo-black.png";
 import { checkUserName, checkPassword } from "../utils/InputChecks";
 import { loginService } from "../services/Services";
+import { useState } from "react";
 
 const Login = () => {
   const username = UseField("text");
   const password = UseField("password");
+  const [loggedUser, setLoggedUser] = useState("");
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -15,7 +17,11 @@ const Login = () => {
       username: username.value,
       password: password.value,
     };
-    loginService(user);
+
+    loginService(user).then((resp) => {
+      setLoggedUser(resp);
+    });
+
     e.target.value = "";
     username.onChange(e);
     password.onChange(e);

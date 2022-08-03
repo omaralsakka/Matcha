@@ -2,11 +2,11 @@ const pool = require("../utils/db");
 const generateRandom = require("../utils/generateRandom");
 const { cryptPassword, checkPassword } = require("../utils/cryptPassword");
 
-const insertUser = async (body) => {
+const insertUser = async ({ username, email, fullname, password }) => {
   try {
     const queryResponse = await pool.query(
       "INSERT INTO users(username, email, fullname, password) VALUES($1, $2, $3, $4) RETURNING *",
-      [body.username, body.email, body.fullname, body.password]
+      [username, email, fullname, password]
     );
     return queryResponse;
   } catch (error) {
@@ -54,6 +54,7 @@ const verifyUser = async (verificationCode) => {
   }
 };
 
+// function that logges in the user if all given info are correct
 const loginUser = async ({ username, password }) => {
   try {
     const queryResponse = await pool.query(
@@ -70,6 +71,8 @@ const loginUser = async ({ username, password }) => {
       } else {
         return false;
       }
+    } else {
+      return false;
     }
   } catch (error) {
     console.error(error.message);

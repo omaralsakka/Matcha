@@ -23,7 +23,14 @@ usersRouter.post("/verify/", async (request, response) => {
 
 usersRouter.post("/login", async (request, response) => {
   const body = request.body;
-  const loginUser = await queries.loginUser(body);
+  const logedUser = await queries.loginUser(body);
+  if (logedUser) {
+    return response.status(200).send(logedUser);
+  } else {
+    return response.status(401).json({
+      error: "invalid username or password",
+    });
+  }
 });
 
 module.exports = usersRouter;
