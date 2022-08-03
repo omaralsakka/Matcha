@@ -1,10 +1,10 @@
-/* const bcrypt = require("bcrypt"); */
+const bcrypt = require("bcrypt");
 const usersRouter = require("express").Router();
-const insertUser = require("../queries/createUser");
+const queries = require("../queries/createUser");
 
 usersRouter.post("/", async (request, response) => {
   const body = request.body;
-  const query = await insertUser(body);
+  const query = await queries.insertUserVerify(body);
   console.log(query);
 });
 

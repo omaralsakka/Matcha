@@ -19,8 +19,22 @@ CREATE TABLE users(
     liked INT [],
     liked_by INT [],
     views INT [],
+<<<<<<< HEAD
 	token VARCHAR (150),
 	verified INT default 0
+=======
+    token VARCHAR (150),
+    verified INT DEFAULT 0
+);
+
+CREATE TABLE user_verify(
+    id SERIAL PRIMARY KEY,
+    username VARCHAR (150) NOT NULL,
+    email VARCHAR (150) NOT NULL,
+    fullname VARCHAR (150) NOT NULL,
+    password VARCHAR (150) NOT NULL,
+    verify_code VARCHAR (150) NOT NULL
+>>>>>>> 431ffa3f8f0d6481e7b6f5e01ff411a480df1caa
 );
 
 ##
