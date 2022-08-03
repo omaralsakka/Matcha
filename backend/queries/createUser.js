@@ -1,6 +1,6 @@
 const pool = require("../utils/db");
 const generateRandom = require("../utils/generateRandom");
-const cryptPassword = require("../utils/cryptPassword");
+const { cryptPassword, checkPassword } = require("../utils/cryptPassword");
 
 const insertUser = async (body) => {
   try {
@@ -15,14 +15,14 @@ const insertUser = async (body) => {
   }
 };
 
-const insertUserVerify = async (body) => {
+const insertUserVerify = async ({ username, email, fullname, password }) => {
   try {
     const verificationCode = generateRandom(50);
-    const cryptedPass = await cryptPassword(body.password);
+    const cryptedPass = await cryptPassword(password);
 
     const queryResponse = await pool.query(
       "INSERT INTO user_verify(username, email, fullname, password, verify_code) VALUES($1, $2, $3, $4, $5) RETURNING *",
-      [body.username, body.email, body.fullname, cryptedPass, verificationCode]
+      [username, email, fullname, cryptedPass, verificationCode]
     );
     return verificationCode;
   } catch (error) {
@@ -54,4 +54,26 @@ const verifyUser = async (verificationCode) => {
   }
 };
 
-module.exports = { insertUser, insertUserVerify, verifyUser };
+const loginUser = async ({ username, password }) => {
+  try {
+    const queryResponse = await pool.query(
+      "SELECT * FROM users WHERE username = $1",
+      [username]
+    );
+    if (queryResponse.rows[0]) {
+      const checkPass = await checkPassword(
+        password,
+        queryResponse.rows[0].password
+      );
+      if (checkPass) {
+        return queryResponse.rows[0];
+      } else {
+        return false;
+      }
+    }
+  } catch (error) {
+    console.error(error.message);
+  }
+};
+
+module.exports = { insertUser, insertUserVerify, verifyUser, loginUser };

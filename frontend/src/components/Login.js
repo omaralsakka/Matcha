@@ -3,14 +3,26 @@ import { Form, Container, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import logo from "../media/logo-black.png";
 import { checkUserName, checkPassword } from "../utils/InputChecks";
+import { loginService } from "../services/Services";
 
 const Login = () => {
   const username = UseField("text");
   const password = UseField("password");
 
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const user = {
+      username: username.value,
+      password: password.value,
+    };
+    loginService(user);
+    e.target.value = "";
+    username.onChange(e);
+    password.onChange(e);
+  };
   return (
     <Container className="signup-container">
-      <Form>
+      <Form onSubmit={handleLogin}>
         <Form.Group className="mb-3 form-logo">
           <img className="form-logo-img" alt="" src={logo} />
         </Form.Group>

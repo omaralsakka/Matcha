@@ -19,7 +19,11 @@ usersRouter.post("/", async (request, response) => {
 usersRouter.post("/verify/", async (request, response) => {
   const body = request.body;
   const verifyUser = await queries.verifyUser(body.code);
-  console.log("this is verifyUser response: ", verifyUser);
+});
+
+usersRouter.post("/login", async (request, response) => {
+  const body = request.body;
+  const loginUser = await queries.loginUser(body);
 });
 
 module.exports = usersRouter;
