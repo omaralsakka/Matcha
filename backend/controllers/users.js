@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+/* const bcrypt = require("bcrypt"); */
 const usersRouter = require("express").Router();
 const insertUser = require("../queries/createUser");
 

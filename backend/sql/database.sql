@@ -18,7 +18,9 @@ CREATE TABLE users(
     blocked_by INT [],
     liked INT [],
     liked_by INT [],
-    views INT []
+    views INT [],
+	token VARCHAR (150),
+	verified INT default 0
 );
 
 ##
