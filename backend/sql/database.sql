@@ -14,6 +14,7 @@ CREATE TABLE userss(
     bio VARCHAR (300),
     tags VARCHAR [],
     fame_rating INT DEFAULT 0,
+    location VARCHAR (150),
     blocked INT [],
     blocked_by INT [],
     liked INT [],

@@ -47,7 +47,7 @@ const verifyUser = async (verificationCode) => {
       );
       return insertResponse.rows;
     } else {
-      return "Error: verification code already deleted";
+      return false;
     }
   } catch (error) {
     console.error(error.message);
