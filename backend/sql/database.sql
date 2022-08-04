@@ -2,7 +2,7 @@ SELECT 'CREATE DATABASE matcha'WHERE NOT EXISTS (SELECT FROM Databases WHERE dat
 
 ##
 
-CREATE TABLE users(
+CREATE TABLE userss(
     user_id SERIAL PRIMARY KEY,
     username VARCHAR (150) NOT NULL,
     email VARCHAR (150) NOT NULL,
@@ -12,17 +12,13 @@ CREATE TABLE users(
     gender VARCHAR (150),
     sexuality VARCHAR (150),
     bio VARCHAR (300),
-    tags VARCHAR (150),
+    tags VARCHAR [] (500),
     fame_rating INT DEFAULT 0,
     blocked INT [],
     blocked_by INT [],
     liked INT [],
     liked_by INT [],
     views INT [],
-<<<<<<< HEAD
-	token VARCHAR (150),
-	verified INT default 0
-=======
     token VARCHAR (150),
     verified INT DEFAULT 0
 );
@@ -34,7 +30,6 @@ CREATE TABLE user_verify(
     fullname VARCHAR (150) NOT NULL,
     password VARCHAR (150) NOT NULL,
     verify_code VARCHAR (150) NOT NULL
->>>>>>> 431ffa3f8f0d6481e7b6f5e01ff411a480df1caa
 );
 
 ##

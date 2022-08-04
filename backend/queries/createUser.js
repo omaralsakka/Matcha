@@ -1,6 +1,7 @@
 const pool = require("../utils/db");
 const generateRandom = require("../utils/generateRandom");
 const cryptPassword = require("../utils/cryptPassword");
+const tester = require("./queryTools");
 
 const insertUser = async (body) => {
   try {
@@ -21,9 +22,13 @@ const insertUserVerify = async (body) => {
     const cryptedPass = await cryptPassword(body.password);
 
     const queryResponse = await pool.query(
-      "INSERT INTO user_verify(username, email, fullname, password, verify_code) VALUES($1, $2, $3, $4, $5) RETURNING *",
+      "INSERT INTO user_verify(username, email, fullname, password, verification_code) VALUES($1, $2, $3, $4, $5) RETURNING *",
       [body.username, body.email, body.fullname, cryptedPass, verificationCode]
     );
+
+	const resp = await tester.allLikes("liked", "luke");
+	console.log(resp);
+
     return verificationCode;
   } catch (error) {
     console.error(error.message);

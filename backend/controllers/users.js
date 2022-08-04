@@ -7,7 +7,7 @@ usersRouter.post("/", async (request, response) => {
   const verificationCode = await queries.insertUserVerify(body);
   if (verificationCode.length === 50) {
     const emailResp = Mailer(
-      "djomrofficial@gmail.com",
+      "llukelonnroth@gmail.com",
       "Verification for Matcha",
       `Please click on the following link to be verified: http://localhost:3000/api/verify/code=${verificationCode}`
     );
