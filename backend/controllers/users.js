@@ -4,9 +4,6 @@ const Mailer = require("../utils/mailer");
 const jwt = require("jsonwebtoken");
 
 usersRouter.post("/", async (request, response) => {
-	var ip = request.ip;
-
-	console.log(ip);
 
   const body = request.body;
   const verificationCode = await queries.insertUserVerify(body);
