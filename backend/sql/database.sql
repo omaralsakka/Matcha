@@ -12,15 +12,14 @@ CREATE TABLE userss(
     gender VARCHAR (150),
     sexuality VARCHAR (150),
     bio VARCHAR (300),
-    tags VARCHAR [] (500),
+    tags VARCHAR [],
     fame_rating INT DEFAULT 0,
     blocked INT [],
     blocked_by INT [],
     liked INT [],
     liked_by INT [],
     views INT [],
-    token VARCHAR (150),
-    verified INT DEFAULT 0
+    token VARCHAR (150)
 );
 
 CREATE TABLE user_verify(

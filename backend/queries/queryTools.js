@@ -52,16 +52,42 @@ const allLikes = async (like, name) => {
 	}
 };
 
-const allTag = async (type) => {
+const fameRating = async (name) => {
 	try {
 		const queryResponse = await pool.query(
-			"SELECT username FROM users WHERE tags = $1",
+			"SELECT fame_rating FROM users WHERE username = $1",
+			[name]
+		);
+		return queryResponse;
+	} catch (error) {
+		console.error(error.message);
+		return error.message;
+	}
+};
+
+const allViews = async (name) => {
+	try {
+		const queryResponse = await pool.query(
+			"SELECT views FROM users WHERE username = $1",
+			[name]
+		);
+		return queryResponse;
+	} catch (error) {
+		console.error(error.message);
+		return error.message;
+	}
+};
+
+/* const allTag = async (type) => {
+	try {
+		const queryResponse = await pool.query(
+			"SELECT username FROM users WHERE $1 = any(tags)",
 			[type]
 		);
 	} catch (error) {
 		console.error(error.message);
 		return error.message;
 	}
-}
+} */
 
-module.exports = {allGender, allSexPref, allBlocked, allLikes, allTag};
+module.exports = {allGender, allSexPref, allBlocked, allLikes, fameRating, allViews, /* allTag */};
