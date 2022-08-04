@@ -2,11 +2,11 @@ const pool = require("../utils/db");
 const generateRandom = require("../utils/generateRandom");
 const { cryptPassword, checkPassword } = require("../utils/cryptPassword");
 
-const insertUser = async ({ username, email, fullname, password }) => {
+const insertUser = async ({ username, email, fullname, password, age }) => {
   try {
     const queryResponse = await pool.query(
-      "INSERT INTO users(username, email, fullname, password) VALUES($1, $2, $3, $4) RETURNING *",
-      [username, email, fullname, password]
+      "INSERT INTO users(username, email, fullname, password, age) VALUES($1, $2, $3, $4, $5) RETURNING *",
+      [username, email, fullname, password, age]
     );
     return queryResponse;
   } catch (error) {
@@ -15,14 +15,20 @@ const insertUser = async ({ username, email, fullname, password }) => {
   }
 };
 
-const insertUserVerify = async ({ username, email, fullname, password }) => {
+const insertUserVerify = async ({
+  username,
+  email,
+  fullname,
+  password,
+  age,
+}) => {
   try {
     const verificationCode = generateRandom(50);
     const cryptedPass = await cryptPassword(password);
 
     const queryResponse = await pool.query(
-      "INSERT INTO user_verify(username, email, fullname, password, verify_code) VALUES($1, $2, $3, $4, $5) RETURNING *",
-      [username, email, fullname, cryptedPass, verificationCode]
+      "INSERT INTO user_verify(username, email, fullname, password, age, verify_code) VALUES($1, $2, $3, $4, $5, $6) RETURNING *",
+      [username, email, fullname, cryptedPass, age, verificationCode]
     );
     return verificationCode;
   } catch (error) {
@@ -39,6 +45,7 @@ const verifyUser = async (verificationCode) => {
       [verificationCode]
     );
     const info = queryResponse.rows[0];
+    console.log("this is user info:", info);
     if (info) {
       const insertResponse = await insertUser(info);
       const deleteFromVerify = await pool.query(

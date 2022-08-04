@@ -6,6 +6,7 @@ import { useState } from "react";
 import FormCheck from "../utils/FormCheck";
 import checkInputs from "../utils/InputChecks";
 import { signupService } from "../services/Services";
+import ageConvertion from "../utils/ageConvertion";
 
 const CheckEmail = ({ setFormSubmit }) => {
   const navigate = useNavigate();
@@ -30,16 +31,19 @@ const Signup = () => {
   const username = UseField("text");
   const fullname = UseField("text");
   const password = UseField("password");
+  const age = UseField("date");
   const [consent, setConsent] = useState(false);
   const [formSubmit, setFormSubmit] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const user = {
       username: username.value,
       email: email.value,
       fullname: fullname.value,
       password: password.value,
+      age: ageConvertion(age.value),
     };
 
     signupService(user);
@@ -49,7 +53,9 @@ const Signup = () => {
     username.onChange(e);
     fullname.onChange(e);
     password.onChange(e);
+    age.onChange(e);
   };
+  console.log("this is age: ", age.value);
 
   return (
     <Container className="signup-container">
@@ -84,6 +90,14 @@ const Signup = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
+              <Form.Label>Date of birth</Form.Label>
+              <Form.Control {...age} />
+              <Form.Text className="text-muted">
+                Age limit is 18 years old.
+              </Form.Text>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
               <Form.Label>Password</Form.Label>
               <Form.Control {...password} />
               <Form.Text className="text-muted">
@@ -109,7 +123,8 @@ const Signup = () => {
                   username.value,
                   password.value,
                   fullname.value,
-                  email.value
+                  email.value,
+                  age.value
                 ) && consent
                   ? false
                   : true

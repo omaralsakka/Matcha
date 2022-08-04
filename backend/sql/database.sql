@@ -19,8 +19,7 @@ CREATE TABLE users(
     blocked_by INT [],
     liked INT [],
     liked_by INT [],
-    views INT [],
-    token VARCHAR (150)
+    views INT []
 );
 
 CREATE TABLE user_verify(
@@ -29,6 +28,7 @@ CREATE TABLE user_verify(
     email VARCHAR (150) NOT NULL,
     fullname VARCHAR (150) NOT NULL,
     password VARCHAR (150) NOT NULL,
+    age INT,
     verify_code VARCHAR (150) NOT NULL
 );
 
