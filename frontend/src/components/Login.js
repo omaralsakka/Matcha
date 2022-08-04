@@ -5,20 +5,22 @@ import logo from "../media/logo-black.png";
 import { checkUserName, checkPassword } from "../utils/InputChecks";
 import { loginService } from "../services/Services";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { logUser } from "../reducers/loginReducer";
 
 const Login = () => {
   const username = UseField("text");
   const password = UseField("password");
   const [loggedUser, setLoggedUser] = useState("");
+  const dispatch = useDispatch();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const user = {
+    const userInfo = {
       username: username.value,
       password: password.value,
     };
-
-    loginService(user).then((resp) => {
+    dispatch(logUser(userInfo)).then((resp) => {
       setLoggedUser(resp);
     });
 
