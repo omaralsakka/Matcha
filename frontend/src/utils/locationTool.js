@@ -9,13 +9,13 @@ const reverseGeocoder = async (setResults) => {
 		let long = position.coords.longitude;
 		Geocode.setApiKey("AIzaSyB_TnuRBpNYHV-t01uetyK-VvkK572uHL4");
 		Geocode.fromLatLng(lat, long).then(response => {
-			setResults(response.results[0].formatted_address);
+			console.log(response.results[0].formatted_address);
 		})
-	});
+	}); // this function will log the location, still have to think about how to return the value if needed
 
 }
 
-const Location = () => {
+/* const Location = () => {
 	const [results, setResults] = useState("");
 
 	useEffect(() => {
@@ -26,6 +26,6 @@ const Location = () => {
 	return (
 		<div><p>{$results}</p></div>
 	);
-}
+} */
 
-export default Location;
+export default reverseGeocoder;
