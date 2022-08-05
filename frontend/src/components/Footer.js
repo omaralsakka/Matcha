@@ -1,18 +1,9 @@
-import { Container, Row } from "react-bootstrap";
-
-const Footer = () => {
+const AppFooter = () => {
   return (
-    <>
-      <div className="main-footer">
-        <Container></Container>
-        <div className="footer-bottom mt-3">
-          <p className="text-xs">
-            &copy;{new Date().getFullYear} Matcha App - All Rights Reserved
-          </p>
-        </div>
-      </div>
-    </>
+    <div className="main-footer">
+      <p className="text-xs">&copy; 2022 Matcha App - All Rights Reserved</p>
+    </div>
   );
 };
 
-export default Footer;
+export default AppFooter;

@@ -57,7 +57,7 @@ const Signup = () => {
   };
 
   return (
-    <Container className="signup-container">
+    <Container className="signup-container mb-3">
       {formSubmit ? (
         <CheckEmail setFormSubmit={setFormSubmit} />
       ) : (

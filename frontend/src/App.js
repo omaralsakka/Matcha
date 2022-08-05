@@ -9,8 +9,9 @@ import ForgotPassword from "./components/ForgotPassword";
 import Verified from "./components/Verified";
 import { useDispatch } from "react-redux";
 import { tokenLoginCall } from "./reducers/loginReducer";
-import Index from "./components/Index";
-import Footer from "./components/Footer";
+import LandingPage from "./components/LandingPage";
+import AppFooter from "./components/Footer";
+
 const App = () => {
   const dispatch = useDispatch();
 
@@ -27,8 +28,7 @@ const App = () => {
       <div className="container">
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
-            {/* <Route path="/" element={<Credentials />} /> */}
+            <Route path="/" element={<LandingPage />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/api/verify/:code" element={<Verified />} />
@@ -36,7 +36,7 @@ const App = () => {
           </Routes>
         </BrowserRouter>
       </div>
-      <Footer />
+      <AppFooter />
     </div>
   );
 };
