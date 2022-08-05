@@ -7,7 +7,7 @@ const reverseGeocoder = () => {
 	navigator.geolocation.getCurrentPosition((position) => {
 		let lat = position.coords.latitude;
 		let long = position.coords.longitude;
-		/* Geocode.setApiKey("AIzaSyB_TnuRBpNYHV-t01uetyK-VvkK572uHL4");
+		/* Geocode.setApiKey(process.env.GEOAPI);
 		const resp = Geocode.fromLatLng(lat, long);
 		console.log(resp); */
 	});
