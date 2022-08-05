@@ -1,34 +1,51 @@
 import "./App.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { tokenLoginCall } from "./reducers/loginReducer";
 import LandingPage from "./components/LandingPage";
 import AppFooter from "./components/Footer";
 import Credentials from "./components/Credentials";
-import useStoreUser from "./utils/getStoreUser";
+import Home from "./components/Home";
+import Navigation from "./components/Navigation";
 
 const App = () => {
   const dispatch = useDispatch();
-  const userInStore = useStoreUser();
-  console.log(userInStore);
+  const [loggedUser, setLoggedUser] = useState("");
   useEffect(() => {
     const loggedUserJson = window.localStorage.getItem("LoggedMatchaUser");
     if (loggedUserJson) {
       const userInfo = JSON.parse(loggedUserJson);
       dispatch(tokenLoginCall(userInfo));
+      setLoggedUser(userInfo);
     }
   }, [dispatch]);
+  console.log(loggedUser);
   return (
     <div className="App">
-      <div className="container">
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/*" element={<Credentials />} />
-          </Routes>
-        </BrowserRouter>
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={loggedUser ? <Navigate to="/home" /> : <LandingPage />}
+          />
+          <Route
+            path="/*"
+            element={loggedUser ? <Navigate to="/home" /> : <Credentials />}
+          />
+          <Route
+            path="/home"
+            element={
+              <Navigation
+                loggedUser={loggedUser}
+                setLoggedUser={setLoggedUser}
+              />
+            }
+          >
+            <Route path="/home" element={<Home />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
       <AppFooter />
     </div>
   );

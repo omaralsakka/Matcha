@@ -2,6 +2,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_ERROR,
   LOGOUT_SUCCESS,
+  LOGOUT_ERROR,
   TOKEN_LOGIN_ERROR,
 } from "../actions/types";
 import {
@@ -37,6 +38,12 @@ const loginReducer = (state = initialState, action) => {
         user: null,
         error: "",
       };
+    case LOGOUT_ERROR:
+      return {
+        ...state,
+        user: null,
+        error: payload,
+      };
     case TOKEN_LOGIN_ERROR:
       return {
         ...state,
@@ -69,6 +76,13 @@ export const logoutSuccess = () => {
   };
 };
 
+export const logoutError = (error) => {
+  return {
+    type: LOGOUT_ERROR,
+    payload: error,
+  };
+};
+
 const tokenLoginError = (error) => {
   return {
     type: TOKEN_LOGIN_ERROR,
@@ -86,6 +100,21 @@ export const logUser = (userInfo) => {
       return response;
     } catch (error) {
       dispatch(loginFailed(error.message));
+      return false;
+    }
+  };
+};
+
+export const logoutUser = () => {
+  return async (dispatch) => {
+    try {
+      setToken(null);
+      dispatch(logoutSuccess);
+      window.localStorage.removeItem("LoggedMatchaUser");
+      return true;
+    } catch (error) {
+      dispatch(logoutError(error.message));
+      return false;
     }
   };
 };
