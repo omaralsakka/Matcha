@@ -8,6 +8,7 @@ import AppFooter from "./components/Footer";
 import Credentials from "./components/Credentials";
 import Home from "./components/Home";
 import Navigation from "./components/Navigation";
+import InfoForm from "./components/InfoForm";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -48,7 +49,10 @@ const App = () => {
               />
             }
           >
-            <Route path="/home" element={<Home />} />
+            <Route
+              path="/home"
+              element={loggedUser.infoFilled ? <Home /> : <InfoForm />}
+            />
           </Route>
         </Routes>
       </BrowserRouter>
