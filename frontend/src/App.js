@@ -1,38 +1,31 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useEffect } from "react";
-
 import "./App.css";
-import Credentials from "./components/Credentials";
-import Signup from "./components/Signup";
-import Login from "./components/Login";
-import ForgotPassword from "./components/ForgotPassword";
-import Verified from "./components/Verified";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { tokenLoginCall } from "./reducers/loginReducer";
 import LandingPage from "./components/LandingPage";
 import AppFooter from "./components/Footer";
+import Credentials from "./components/Credentials";
+import useStoreUser from "./utils/getStoreUser";
 
 const App = () => {
   const dispatch = useDispatch();
-
+  const userInStore = useStoreUser();
+  console.log(userInStore);
   useEffect(() => {
     const loggedUserJson = window.localStorage.getItem("LoggedMatchaUser");
     if (loggedUserJson) {
       const userInfo = JSON.parse(loggedUserJson);
       dispatch(tokenLoginCall(userInfo));
     }
-  }, []);
-
+  }, [dispatch]);
   return (
     <div className="App">
       <div className="container">
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/api/verify/:code" element={<Verified />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/*" element={<Credentials />} />
           </Routes>
         </BrowserRouter>
       </div>

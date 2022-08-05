@@ -95,7 +95,7 @@ export const tokenLoginCall = (userInfo) => {
     try {
       const response = await tokenLoginService(userInfo);
       if (response) {
-        console.log(response);
+        dispatch(loginSuccess(response));
       }
     } catch (error) {
       dispatch(tokenLoginError(error.message));
