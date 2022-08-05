@@ -1,5 +1,6 @@
 require("dotenv").config();
 import Geocode from "react-geocode";
+// npm i react-geocode
 
 const reverseGeocoder = () => {
 
