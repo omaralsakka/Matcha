@@ -1,5 +1,14 @@
-import { LOGIN_SUCCESS, LOGIN_ERROR, LOGOUT_SUCCESS } from "../actions/types";
-import { setToken, loginService } from "../services/Services";
+import {
+  LOGIN_SUCCESS,
+  LOGIN_ERROR,
+  LOGOUT_SUCCESS,
+  TOKEN_LOGIN_ERROR,
+} from "../actions/types";
+import {
+  setToken,
+  loginService,
+  tokenLoginService,
+} from "../services/Services";
 
 const initialState = {
   user: null,
@@ -28,6 +37,12 @@ const loginReducer = (state = initialState, action) => {
         user: null,
         error: "",
       };
+    case TOKEN_LOGIN_ERROR:
+      return {
+        ...state,
+        user: null,
+        error: payload,
+      };
     default:
       return state;
   }
@@ -54,6 +69,13 @@ export const logoutSuccess = () => {
   };
 };
 
+const tokenLoginError = (error) => {
+  return {
+    type: TOKEN_LOGIN_ERROR,
+    payload: error,
+  };
+};
+
 export const logUser = (userInfo) => {
   return async (dispatch) => {
     try {
@@ -64,6 +86,19 @@ export const logUser = (userInfo) => {
       return response;
     } catch (error) {
       dispatch(loginFailed(error.message));
+    }
+  };
+};
+
+export const tokenLoginCall = (userInfo) => {
+  return async (dispatch) => {
+    try {
+      const response = await tokenLoginService(userInfo);
+      if (response) {
+        console.log(response);
+      }
+    } catch (error) {
+      dispatch(tokenLoginError(error.message));
     }
   };
 };

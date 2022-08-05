@@ -55,7 +55,6 @@ const Signup = () => {
     password.onChange(e);
     age.onChange(e);
   };
-  console.log("this is age: ", age.value);
 
   return (
     <Container className="signup-container">

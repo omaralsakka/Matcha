@@ -29,3 +29,11 @@
     width: 100%;
   }
 }
+
+.main-footer {
+  background-color: #1b1c1e;
+  color: white;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+}

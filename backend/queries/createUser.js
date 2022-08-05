@@ -86,4 +86,26 @@ const loginUser = async ({ username, password }) => {
   }
 };
 
-module.exports = { insertUser, insertUserVerify, verifyUser, loginUser };
+const tokenLogin = async (userInfo) => {
+  try {
+    const queryResponse = await pool.query(
+      "SELECT * FROM users WHERE username = $1",
+      [userInfo.username]
+    );
+    if (queryResponse.rows[0]) {
+      return queryResponse.rows[0];
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error(error.message);
+  }
+};
+
+module.exports = {
+  insertUser,
+  insertUserVerify,
+  verifyUser,
+  loginUser,
+  tokenLogin,
+};

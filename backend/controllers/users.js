@@ -53,4 +53,18 @@ usersRouter.post("/login", async (request, response) => {
   }
 });
 
+usersRouter.post("/login/tk", async (request, response) => {
+  const body = request.body;
+  const loggedUser = await queries.tokenLogin(body);
+  if (loggedUser) {
+    return response.status(200).send({
+      loggedUser,
+    });
+  } else {
+    return response.status(401).json({
+      error: "invalid token login",
+    });
+  }
+});
+
 module.exports = usersRouter;
