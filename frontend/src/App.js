@@ -31,7 +31,13 @@ const App = () => {
           />
           <Route
             path="/*"
-            element={loggedUser ? <Navigate to="/home" /> : <Credentials />}
+            element={
+              loggedUser ? (
+                <Navigate to="/home" />
+              ) : (
+                <Credentials setLoggedUser={setLoggedUser} />
+              )
+            }
           />
           <Route
             path="/home"

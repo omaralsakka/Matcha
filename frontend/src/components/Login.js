@@ -1,18 +1,16 @@
 import UseField from "./UseField";
 import { Form, Container, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../media/logo-black.png";
 import { checkUserName, checkPassword } from "../utils/InputChecks";
-import { loginService } from "../services/Services";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { logUser } from "../reducers/loginReducer";
 
-const Login = () => {
+const Login = ({ setLoggedUser }) => {
   const username = UseField("text");
   const password = UseField("password");
-  const [loggedUser, setLoggedUser] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -22,6 +20,7 @@ const Login = () => {
     };
     dispatch(logUser(userInfo)).then((resp) => {
       setLoggedUser(resp);
+      navigate("/home");
     });
 
     e.target.value = "";
