@@ -10,6 +10,7 @@ import Home from "./components/Home";
 import Navigation from "./components/Navigation";
 import InfoForm from "./components/InfoForm";
 import Terms from "./components/footer/Terms";
+import About from "./components/footer/Aboutus";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -56,6 +57,7 @@ const App = () => {
             />
           </Route>
           <Route path="/terms" element={<Terms />} />
+          <Route path="/about" element={<About />} />
         </Routes>
         <AppFooter />
       </BrowserRouter>

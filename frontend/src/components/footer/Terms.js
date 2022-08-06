@@ -1,8 +1,8 @@
 import logo from "../../media/Matcha-logos_black.png";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 const Terms = () => (
-  <>
+  <div className="mb-5">
     <Container>
       <div className="terms-logo-container">
         <img alt="" src={logo} />
@@ -74,7 +74,7 @@ const Terms = () => (
         </ul>
       </div>
     </Container>
-  </>
+  </div>
 );
 
 export default Terms;

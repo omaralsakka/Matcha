@@ -123,6 +123,7 @@
 
 .terms-logo-container {
   width: 10vw;
+  min-width: 100px;
 }
 
 .terms-logo-container > img {
@@ -141,4 +142,32 @@
 
 .footer-text {
   font-size: calc(5px + 0.6vw);
+}
+
+.team-img-container {
+  width: 15vw;
+  min-width: 120px;
+  max-height: 25vh;
+  border: rgb(165, 165, 253) 1px solid;
+  box-shadow: 50px 30px rgb(165, 165, 253);
+  overflow: hidden;
+}
+
+.team-img-container > img {
+  width: 100%;
+}
+
+.team-row {
+  display: flex;
+  justify-content: center;
+}
+
+.team-col {
+  margin: 0 10vw;
+}
+
+@media only screen and (max-width: 450px) {
+  .team-img-container {
+    box-shadow: 20px 17px rgb(165, 165, 253);
+  }
 }
