@@ -4,11 +4,12 @@ import { useDispatch } from "react-redux";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { tokenLoginCall } from "./reducers/loginReducer";
 import LandingPage from "./components/LandingPage";
-import AppFooter from "./components/Footer";
+import AppFooter from "./components/footer/Footer";
 import Credentials from "./components/Credentials";
 import Home from "./components/Home";
 import Navigation from "./components/Navigation";
 import InfoForm from "./components/InfoForm";
+import Terms from "./components/footer/Terms";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -54,9 +55,10 @@ const App = () => {
               element={loggedUser.infoFilled ? <Home /> : <InfoForm />}
             />
           </Route>
+          <Route path="/terms" element={<Terms />} />
         </Routes>
+        <AppFooter />
       </BrowserRouter>
-      <AppFooter />
     </div>
   );
 };

@@ -28,7 +28,7 @@ const Login = ({ setLoggedUser }) => {
     password.onChange(e);
   };
   return (
-    <Container className="signup-container">
+    <Container className="signup-container mt-5">
       <Form onSubmit={handleLogin}>
         <Form.Group className="mb-3 form-logo">
           <img className="form-logo-img" alt="" src={logo} />
