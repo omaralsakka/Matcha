@@ -2,6 +2,7 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
 import { tokenLoginCall } from "./reducers/loginReducer";
 import LandingPage from "./components/LandingPage";
 import AppFooter from "./components/footer/Footer";
@@ -10,11 +11,12 @@ import Home from "./components/Home";
 import Navigation from "./components/Navigation";
 import InfoForm from "./components/InfoForm";
 import Terms from "./components/footer/Terms";
-import About from "./components/footer/Aboutus";
+import About from "./components/footer/About";
 
 const App = () => {
   const dispatch = useDispatch();
   const [loggedUser, setLoggedUser] = useState("");
+
   useEffect(() => {
     const loggedUserJson = window.localStorage.getItem("LoggedMatchaUser");
     if (loggedUserJson) {
@@ -24,6 +26,7 @@ const App = () => {
     }
   }, [dispatch]);
   console.log(loggedUser);
+
   return (
     <div className="App">
       <BrowserRouter>

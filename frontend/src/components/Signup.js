@@ -32,6 +32,7 @@ const Signup = () => {
   const fullname = UseField("text");
   const password = UseField("password");
   const age = UseField("date");
+  const [passType, setPassType] = useState("password");
   const [consent, setConsent] = useState(false);
   const [formSubmit, setFormSubmit] = useState(false);
 
@@ -98,11 +99,20 @@ const Signup = () => {
 
             <Form.Group className="mb-3">
               <Form.Label>Password</Form.Label>
-              <Form.Control {...password} />
+              <Form.Control {...password} type={passType} />
               <Form.Text className="text-muted">
                 Password should contain at least 1 uppercase, 1 lowercase
                 letter, 1 number and 1 special character. Minimum length 8.
               </Form.Text>
+              <Form.Check
+                type="checkbox"
+                label="show password"
+                onClick={() =>
+                  passType === "password"
+                    ? setPassType("text")
+                    : setPassType("password")
+                }
+              />
             </Form.Group>
 
             <Form.Group className="mb-3">
