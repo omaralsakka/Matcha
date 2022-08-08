@@ -6,6 +6,7 @@ import { useState } from "react";
 import FormCheck from "../utils/FormCheck";
 import checkInputs from "../utils/InputChecks";
 import { signupService } from "../services/Services";
+import useLocation from "../utils/locationTool";
 
 const CheckEmail = ({ setFormSubmit }) => {
   const navigate = useNavigate();
