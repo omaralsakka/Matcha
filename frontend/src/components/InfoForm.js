@@ -18,7 +18,7 @@ const InfoForm = () => {
 			gender: gender.value,
 			sexualPreference: sexualPreference.value,
 			bio: bio.value,
-			tags: tags.value
+			tags: tags.value // this is still missing, shows undefined, but propably cause i am not using the setTags function lol 
 		};
 		infoFormService(userInfo);
 	};
