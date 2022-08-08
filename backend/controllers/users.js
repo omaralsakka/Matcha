@@ -36,20 +36,38 @@ usersRouter.post("/verify/", async (request, response) => {
 usersRouter.post("/login", async (request, response) => {
   const body = request.body;
   const loggedUser = await queries.loginUser(body);
+
   if (loggedUser) {
+    let infoFilled;
+    loggedUser.gender ? (infoFilled = true) : (infoFilled = false);
     const userForToken = {
       username: loggedUser.username,
       id: loggedUser.user_id,
+      infoFilled: infoFilled,
+      name: loggedUser.fullname,
     };
+
     const token = jwt.sign(userForToken, process.env.SECRET);
     return response.status(200).send({
       token,
-      username: loggedUser.username,
-      name: loggedUser.fullname,
     });
   } else {
     return response.status(401).json({
       error: "invalid username or password",
+    });
+  }
+});
+
+usersRouter.post("/login/tk", async (request, response) => {
+  const body = request.body;
+  const loggedUser = await queries.tokenLogin(body);
+  if (loggedUser) {
+    return response.status(200).send({
+      loggedUser,
+    });
+  } else {
+    return response.status(401).json({
+      error: "invalid token login",
     });
   }
 });

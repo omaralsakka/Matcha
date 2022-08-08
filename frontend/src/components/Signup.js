@@ -6,7 +6,7 @@ import { useState } from "react";
 import FormCheck from "../utils/FormCheck";
 import checkInputs from "../utils/InputChecks";
 import { signupService } from "../services/Services";
-import useLocation from "../utils/locationTool";
+import ageConvertion from "../utils/ageConvertion";
 
 const CheckEmail = ({ setFormSubmit }) => {
   const navigate = useNavigate();
@@ -31,16 +31,20 @@ const Signup = () => {
   const username = UseField("text");
   const fullname = UseField("text");
   const password = UseField("password");
+  const age = UseField("date");
+  const [passType, setPassType] = useState("password");
   const [consent, setConsent] = useState(false);
   const [formSubmit, setFormSubmit] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const user = {
       username: username.value,
       email: email.value,
       fullname: fullname.value,
       password: password.value,
+      age: ageConvertion(age.value),
     };
 
     signupService(user);
@@ -50,10 +54,11 @@ const Signup = () => {
     username.onChange(e);
     fullname.onChange(e);
     password.onChange(e);
+    age.onChange(e);
   };
 
   return (
-    <Container className="signup-container">
+    <Container className="signup-container mb-3">
       {formSubmit ? (
         <CheckEmail setFormSubmit={setFormSubmit} />
       ) : (
@@ -85,12 +90,29 @@ const Signup = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
+              <Form.Label>Date of birth</Form.Label>
+              <Form.Control {...age} />
+              <Form.Text className="text-muted">
+                Age limit is 18 years old.
+              </Form.Text>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
               <Form.Label>Password</Form.Label>
-              <Form.Control {...password} />
+              <Form.Control {...password} type={passType} />
               <Form.Text className="text-muted">
                 Password should contain at least 1 uppercase, 1 lowercase
                 letter, 1 number and 1 special character. Minimum length 8.
               </Form.Text>
+              <Form.Check
+                type="checkbox"
+                label="show password"
+                onClick={() =>
+                  passType === "password"
+                    ? setPassType("text")
+                    : setPassType("password")
+                }
+              />
             </Form.Group>
 
             <Form.Group className="mb-3">
@@ -110,7 +132,8 @@ const Signup = () => {
                   username.value,
                   password.value,
                   fullname.value,
-                  email.value
+                  email.value,
+                  age.value
                 ) && consent
                   ? false
                   : true

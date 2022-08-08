@@ -21,3 +21,8 @@ export const loginService = async (userInfo) => {
   const response = await axios.post(`${userUrl}/login`, userInfo);
   return response.data;
 };
+
+export const tokenLoginService = async (userInfo) => {
+  const response = await axios.post(`${userUrl}/login/tk`, userInfo);
+  return response.data;
+};

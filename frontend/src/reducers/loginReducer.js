@@ -1,5 +1,15 @@
-import { LOGIN_SUCCESS, LOGIN_ERROR, LOGOUT_SUCCESS } from "../actions/types";
-import { setToken, loginService } from "../services/Services";
+import {
+  LOGIN_SUCCESS,
+  LOGIN_ERROR,
+  LOGOUT_SUCCESS,
+  LOGOUT_ERROR,
+  TOKEN_LOGIN_ERROR,
+} from "../actions/types";
+import {
+  setToken,
+  loginService,
+  tokenLoginService,
+} from "../services/Services";
 
 const initialState = {
   user: null,
@@ -28,6 +38,18 @@ const loginReducer = (state = initialState, action) => {
         user: null,
         error: "",
       };
+    case LOGOUT_ERROR:
+      return {
+        ...state,
+        user: null,
+        error: payload,
+      };
+    case TOKEN_LOGIN_ERROR:
+      return {
+        ...state,
+        user: null,
+        error: payload,
+      };
     default:
       return state;
   }
@@ -54,6 +76,20 @@ export const logoutSuccess = () => {
   };
 };
 
+export const logoutError = (error) => {
+  return {
+    type: LOGOUT_ERROR,
+    payload: error,
+  };
+};
+
+const tokenLoginError = (error) => {
+  return {
+    type: TOKEN_LOGIN_ERROR,
+    payload: error,
+  };
+};
+
 export const logUser = (userInfo) => {
   return async (dispatch) => {
     try {
@@ -64,6 +100,34 @@ export const logUser = (userInfo) => {
       return response;
     } catch (error) {
       dispatch(loginFailed(error.message));
+      return false;
+    }
+  };
+};
+
+export const logoutUser = () => {
+  return async (dispatch) => {
+    try {
+      setToken(null);
+      dispatch(logoutSuccess);
+      window.localStorage.removeItem("LoggedMatchaUser");
+      return true;
+    } catch (error) {
+      dispatch(logoutError(error.message));
+      return false;
+    }
+  };
+};
+
+export const tokenLoginCall = (userInfo) => {
+  return async (dispatch) => {
+    try {
+      const response = await tokenLoginService(userInfo);
+      if (response) {
+        dispatch(loginSuccess(response));
+      }
+    } catch (error) {
+      dispatch(tokenLoginError(error.message));
     }
   };
 };

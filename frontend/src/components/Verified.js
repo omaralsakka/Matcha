@@ -7,7 +7,6 @@ const Verified = () => {
   const param = useParams().code;
   const code = { code: param.substring(param.indexOf("=") + 1, param.length) };
   verifyService(code);
-  console.log(code);
   return (
     <Container className="mb-3">
       <div className="mb-3 form-logo">

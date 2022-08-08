@@ -1,3 +1,5 @@
+import ageConvertion from "./ageConvertion";
+
 export const checkUserName = (username) => {
   const valid = /^[0-9a-zA-Z]{3,}$/;
   return valid.test(username);
@@ -23,11 +25,20 @@ export const checkEmail = (email) => {
   return valid.test(email);
 };
 
-const checkInputs = (username, password, fullname, email) => {
+export const checkAge = (age) => {
+  const result = ageConvertion(age);
+  if (result > 18) {
+    return true;
+  }
+  return false;
+};
+
+const checkInputs = (username, password, fullname, email, age) => {
   return checkFullName(fullname) &&
     checkPassword(password) &&
     checkUserName(username) &&
-    checkEmail(email)
+    checkEmail(email) &&
+    checkAge(age)
     ? true
     : false;
 };
