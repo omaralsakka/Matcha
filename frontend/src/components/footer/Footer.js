@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-
 const AppFooter = () => {
   return (
     <div className="main-footer">

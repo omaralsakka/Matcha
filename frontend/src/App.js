@@ -1,7 +1,7 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import { tokenLoginCall } from "./reducers/loginReducer";
 import LandingPage from "./components/LandingPage";
@@ -40,58 +40,58 @@ const App = () => {
       }
     }
   }, [loggedUser, dispatch]);
-
+  console.log(decodedToken);
   if (!loggedUser) {
     return (
       <div className="App">
-        <BrowserRouter>
-          <Routes>
-            <Route
-              path="/*"
-              element={<Credentials setLoggedUser={setLoggedUser} />}
-            />
-          </Routes>
-        </BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route
+            path="/*"
+            element={<Credentials setLoggedUser={setLoggedUser} />}
+          />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+        <AppFooter />
       </div>
     );
   } else {
     return (
       <div className="App">
-        <BrowserRouter>
-          <Routes>
-            <Route
-              path="/"
-              element={loggedUser ? <Navigate to="/home" /> : <LandingPage />}
-            />
-            <Route
-              path="/*"
-              element={
-                loggedUser ? (
-                  <Navigate to="/home" />
-                ) : (
-                  <Credentials setLoggedUser={setLoggedUser} />
-                )
-              }
-            />
+        <Routes>
+          <Route
+            path="/"
+            element={loggedUser ? <Navigate to="/home" /> : <LandingPage />}
+          />
+          <Route
+            path="/*"
+            element={
+              loggedUser ? (
+                <Navigate to="/home" />
+              ) : (
+                <Credentials setLoggedUser={setLoggedUser} />
+              )
+            }
+          />
+          <Route
+            path="/home"
+            element={
+              <Navigation
+                loggedUser={loggedUser}
+                setLoggedUser={setLoggedUser}
+              />
+            }
+          >
             <Route
               path="/home"
-              element={
-                <Navigation
-                  loggedUser={loggedUser}
-                  setLoggedUser={setLoggedUser}
-                />
-              }
-            >
-              <Route
-                path="/home"
-                element={loggedUser.infoFilled ? <Home /> : <InfoForm />}
-              />
-            </Route>
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/about" element={<About />} />
-          </Routes>
-          <AppFooter />
-        </BrowserRouter>
+              element={loggedUser.infoFilled ? <Home /> : <InfoForm />}
+            />
+          </Route>
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+        <AppFooter />
       </div>
     );
   }
