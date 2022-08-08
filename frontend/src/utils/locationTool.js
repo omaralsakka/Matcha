@@ -1,4 +1,3 @@
-require("dotenv").config();
 import Geocode from "react-geocode";
 import { useState, useEffect } from "react";
 
@@ -9,23 +8,19 @@ const reverseGeocoder = async (setResults) => {
 		let long = position.coords.longitude;
 		Geocode.setApiKey(process.env.GEOAPI);
 		Geocode.fromLatLng(lat, long).then(response => {
-			console.log(response.results[0].formatted_address);
+			setResults(response.results[0].formatted_address);
 		})
-	}); // this function will log the location, still have to think about how to return the value if needed
-
+	}); 
 }
 
-/* const Location = () => {
+const useLocation = () => {
 	const [results, setResults] = useState("");
 
 	useEffect(() => {
 		reverseGeocoder(setResults);
 	}, []);
-	console.log(results);
 
-	return (
-		<div><p>{$results}</p></div>
-	);
-} */
+	return (results);
+}
 
-export default reverseGeocoder;
+export default useLocation;
