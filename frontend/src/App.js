@@ -9,7 +9,7 @@ import AppFooter from "./components/footer/Footer";
 import Credentials from "./components/Credentials";
 import Home from "./components/Home";
 import Navigation from "./components/Navigation";
-import InfoForm from "./components/InfoForm";
+import UserInfoForms from "./components/userInfoForms/UserInfoForms";
 import Terms from "./components/footer/Terms";
 import About from "./components/footer/About";
 import useJWT from "./utils/decryptToken";
@@ -85,7 +85,7 @@ const App = () => {
           >
             <Route
               path="/home"
-              element={loggedUser.infoFilled ? <Home /> : <InfoForm />}
+              element={loggedUser.infoFilled ? <Home /> : <UserInfoForms />}
             />
           </Route>
           <Route path="/terms" element={<Terms />} />
