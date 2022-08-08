@@ -1,5 +1,6 @@
 const usersRouter = require("express").Router();
 const queries = require("../queries/createUser");
+const infoQueries = require("../queries/userInfo");
 const Mailer = require("../utils/mailer");
 const jwt = require("jsonwebtoken");
 
@@ -70,6 +71,38 @@ usersRouter.post("/login/tk", async (request, response) => {
       error: "invalid token login",
     });
   }
+});
+
+const getToken = (request) => {
+	const auth = request.get("authorization");
+	if (auth && auth.toLowerCase().startsWith("bearer")) {
+		return auth.substring(7);
+	}
+	return null;
+};
+
+usersRouter.post("/info", async (request, response) => {
+	//console.log("this is request : ", request);
+	const body = request.body;
+	//console.log("this is body :", body);
+
+
+	const token = getToken(request);
+	//console.log("this is token : ", token);
+
+	const decodedToken = jwt.verify(token, process.env.SECRET);
+	if (!decodedToken.id) {
+		return response.status(401).json({ error: "token missing or expired" });
+	};
+
+	const userInfo = await infoQueries.insertUserInfo(body, decodedToken.id);
+	if (userInfo) {
+	  return response.status(200).send(userInfo);
+	} else {
+	  return response.status(401).json({
+		error: "some kind of issue, lets get back to this",
+	});
+	}
 });
 
 module.exports = usersRouter;

@@ -1,4 +1,4 @@
-import { Form, Button, Container } from "react-bootstrap";
+/* import { Form, Button, Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import UseField from "./UseField";
 import logo from "../media/logo-black.png";
@@ -7,9 +7,19 @@ import FormCheck from "../utils/FormCheck";
 import checkInputs from "../utils/InputChecks";
 import { signupService } from "../services/Services";
 import useLocation from "../utils/locationTool";
+import { InputTags } from "react-bootstrap-tagsinput";
 
 
 const UserSettings = () => {
+	const email = UseField("email");
+	const username = UseField("text");
+	const fullname = UseField("text");
+	const password = UseField("password");
+	const gender = UseField("text");
+	const sexualPreference = UseField("text");
+	const bio = UseField("text");
+	const [tags, setTags] = useState([]);
+  
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -21,7 +31,6 @@ const UserSettings = () => {
 		  gender: gender,
 		  sexualPrefrence: sexualPreference,
 		  bio: bio
-		  // a lot more key:values coming
 		};
 	};
 
@@ -109,3 +118,4 @@ const UserSettings = () => {
 };
 
 export default UserSettings;
+ */

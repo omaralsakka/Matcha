@@ -3,15 +3,32 @@ import UseField from "./UseField";
 import { InputTags } from "react-bootstrap-tagsinput";
 import "react-bootstrap-tagsinput/dist/index.css";
 import { useState } from "react";
+import { infoFormService } from "../services/Services";
 
 const InfoForm = () => {
-  const gender = UseField("text");
-  const sexualPreference = UseField("text");
-  const bio = UseField("text");
-  const [tags, setTags] = useState([]);
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
+	const gender = UseField("text");
+	const sexualPreference = UseField("text");
+	const bio = UseField("text");
+	const [tags, setTags] = useState([]);
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+
+		const userInfo = {
+			gender: gender.value,
+			sexualPreference: sexualPreference.value,
+			bio: bio.value,
+			tags: tags.value
+		};
+		infoFormService(userInfo);
+	};
+
+	const checkInfoInputs = (gender, sexPref, bio) => { // for now i have left out the checking of tags
+		if(gender && sexPref && bio)
+			return (true);
+		return (false);
+	};
+	
   return (
     <>
       <Container className="signup-container mb-3 mt-5">
@@ -23,9 +40,9 @@ const InfoForm = () => {
             <Form.Label>Gender</Form.Label>
             <Form.Select {...gender}>
               <option value="">...</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Transgender">Transgender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="transgender">Transgender</option>
             </Form.Select>
           </Form.Group>
 
@@ -33,9 +50,9 @@ const InfoForm = () => {
             <Form.Label>Sexual preference</Form.Label>
             <Form.Select {...sexualPreference}>
               <option value="">...</option>
-              <option value="1">straight</option>
-              <option value="2">gay</option>
-              <option value="3">bi</option>
+              <option value="straight">straight</option>
+              <option value="gay">gay</option>
+              <option value="bi">bi</option>
             </Form.Select>
           </Form.Group>
 
@@ -54,7 +71,17 @@ const InfoForm = () => {
             />
             <Form.Text muted>max length 50 characters</Form.Text>
           </Form.Group>
-          <Button variant="dark" className="landing-signup-Button">
+          <Button variant="dark" className="landing-signup-Button" disabled={
+			  checkInfoInputs(
+				gender.value,
+				sexualPreference.value,
+				bio.value,
+				tags.value,
+ 			)
+				? false
+				: true}
+				type="submit"
+			>
             Save
           </Button>
         </Form>

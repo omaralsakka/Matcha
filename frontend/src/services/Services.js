@@ -4,12 +4,22 @@ const userUrl = "http://localhost:5000/api/users";
 let token;
 
 export const setToken = (userToken) => {
-  token = userToken;
+  token = `bearer ${userToken}`;
+	console.log("this is token : ", token);
 };
 
 export const signupService = async (userInfo) => {
   const response = await axios.post(userUrl, userInfo);
   return response.data;
+};
+
+export const infoFormService = async (userInfo) => {
+
+	const config = {
+		headers : {Authorization: token},
+	}
+	const response = await axios.post(`${userUrl}/info`, userInfo, config);
+	return response.data;
 };
 
 export const verifyService = async (verificationCode) => {
