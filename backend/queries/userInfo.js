@@ -13,7 +13,6 @@ const insertUserInfo = async (body, token) => {
 		);
 		return queryResponse;
 
-		return ("this is a test");
 	} catch (error) {
 		console.error(error.message);
 		return error.message;
