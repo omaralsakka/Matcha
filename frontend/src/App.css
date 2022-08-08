@@ -166,8 +166,38 @@
   margin: 0 10vw;
 }
 
+.loading-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center-loading-logo {
+  width: 20vw;
+  min-width: 300px;
+  animation: loadingAnim 2s ease 0s infinite normal forwards;
+}
+
+.center-loading-logo > img {
+  width: 100%;
+}
+
 @media only screen and (max-width: 450px) {
   .team-img-container {
     box-shadow: 20px 17px rgb(165, 165, 253);
+  }
+}
+
+@keyframes loadingAnim {
+  0%,
+  50%,
+  100% {
+    opacity: 1;
+  }
+
+  25%,
+  75% {
+    opacity: 0;
   }
 }

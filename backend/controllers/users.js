@@ -37,19 +37,18 @@ usersRouter.post("/login", async (request, response) => {
   const loggedUser = await queries.loginUser(body);
 
   if (loggedUser) {
+    let infoFilled;
+    loggedUser.gender ? (infoFilled = true) : (infoFilled = false);
     const userForToken = {
       username: loggedUser.username,
       id: loggedUser.user_id,
+      infoFilled: infoFilled,
+      name: loggedUser.fullname,
     };
-    let infoFilled;
 
-    loggedUser.gender ? (infoFilled = true) : (infoFilled = false);
     const token = jwt.sign(userForToken, process.env.SECRET);
     return response.status(200).send({
       token,
-      username: loggedUser.username,
-      name: loggedUser.fullname,
-      infoFilled: infoFilled,
     });
   } else {
     return response.status(401).json({
