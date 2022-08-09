@@ -5,7 +5,6 @@ let token;
 
 export const setToken = (userToken) => {
   token = `bearer ${userToken}`;
-	console.log("this is token : ", token);
 };
 
 export const signupService = async (userInfo) => {

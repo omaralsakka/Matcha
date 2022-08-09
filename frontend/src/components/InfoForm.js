@@ -18,13 +18,13 @@ const InfoForm = () => {
 			gender: gender.value,
 			sexualPreference: sexualPreference.value,
 			bio: bio.value,
-			tags: tags.value // this is still missing, shows undefined, but propably cause i am not using the setTags function lol 
+			tags: tags
 		};
 		infoFormService(userInfo);
 	};
 
-	const checkInfoInputs = (gender, sexPref, bio) => { // for now i have left out the checking of tags
-		if(gender && sexPref && bio)
+	const checkInfoInputs = (gender, sexPref, bio, tags) => {
+		if(gender && sexPref && bio && tags.length)
 			return (true);
 		return (false);
 	};
@@ -76,7 +76,7 @@ const InfoForm = () => {
 				gender.value,
 				sexualPreference.value,
 				bio.value,
-				tags.value,
+				tags,
  			)
 				? false
 				: true}
