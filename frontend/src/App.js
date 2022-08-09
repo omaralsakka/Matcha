@@ -27,7 +27,7 @@ const App = () => {
 
       setToken(userToken.token);
     }
-  }, []);
+  }, [loggedUser]);
 
   useEffect(() => {
     setLoggedUser(decodedToken);

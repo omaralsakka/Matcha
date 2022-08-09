@@ -1,11 +1,11 @@
 const usersRouter = require("express").Router();
 const queries = require("../queries/createUser");
+const queryTools = require("../queries/queryTools");
 const infoQueries = require("../queries/userInfo");
 const Mailer = require("../utils/mailer");
 const jwt = require("jsonwebtoken");
 
 usersRouter.post("/", async (request, response) => {
-
   const body = request.body;
   const verificationCode = await queries.insertUserVerify(body);
   if (verificationCode.length === 50) {
@@ -40,7 +40,9 @@ usersRouter.post("/login", async (request, response) => {
 
   if (loggedUser) {
     let infoFilled;
-    loggedUser.gender ? (infoFilled = true) : (infoFilled = false);
+    const userLocation = await queryTools.getUserLocation(loggedUser.user_id);
+    userLocation.length ? (infoFilled = true) : (infoFilled = false);
+
     const userForToken = {
       username: loggedUser.username,
       id: loggedUser.user_id,
@@ -74,30 +76,30 @@ usersRouter.post("/login/tk", async (request, response) => {
 });
 
 const getToken = (request) => {
-	const auth = request.get("authorization");
-	if (auth && auth.toLowerCase().startsWith("bearer")) {
-		return auth.substring(7);
-	}
-	return null;
+  const auth = request.get("authorization");
+  if (auth && auth.toLowerCase().startsWith("bearer")) {
+    return auth.substring(7);
+  }
+  return null;
 };
 
 usersRouter.post("/info", async (request, response) => {
-	const body = request.body;
-	const token = getToken(request);
+  const body = request.body;
+  const token = getToken(request);
 
-	const decodedToken = jwt.verify(token, process.env.SECRET);
-	if (!decodedToken.id) {
-		return response.status(401).json({ error: "token missing or expired" });
-	};
+  const decodedToken = jwt.verify(token, process.env.SECRET);
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: "token missing or expired" });
+  }
 
-	const userInfo = await infoQueries.insertUserInfo(body, decodedToken.id);
-	if (userInfo) {
-	  return response.status(200).send(userInfo);
-	} else {
-	  return response.status(401).json({
-		error: "some kind of issue, lets get back to this",
-	});
-	}
+  const userInfo = await infoQueries.insertUserInfo(body, decodedToken.id);
+  if (userInfo) {
+    return response.status(200).send(userInfo);
+  } else {
+    return response.status(401).json({
+      error: "some kind of issue, lets get back to this",
+    });
+  }
 });
 
 module.exports = usersRouter;
