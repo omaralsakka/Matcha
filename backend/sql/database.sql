@@ -19,7 +19,8 @@ CREATE TABLE users(
     blocked_by INT [],
     liked INT [],
     liked_by INT [],
-    views INT []
+    views INT [],
+    pictures INT DEFAULT 0
 );
 
 CREATE TABLE user_verify(
@@ -50,6 +51,13 @@ CREATE TABLE location (
 ##
 CREATE TABLE connected (
     id SERIAL PRIMARY KEY,
-    users_id varchar NOT NULL,
+    users_id INT NOT NULL,
     chat_jsonb NOT NULL
+);
+
+##
+CREATE TABLE pictures (
+    id SERIAL PRIMARY KEY,
+    picture VARCHAR,
+    user_id INT NOT NULL
 );

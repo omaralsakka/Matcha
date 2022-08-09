@@ -8,12 +8,14 @@ const useImage = () => {
   };
   const dataURLKey = "data_url";
   const acceptType = ["jpg", "png"];
+  const maxFileSize = 5242880;
   return {
     value,
     maxNumber,
     onChange,
     dataURLKey,
     acceptType,
+    maxFileSize,
   };
 };
 

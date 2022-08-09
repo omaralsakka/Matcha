@@ -6,7 +6,7 @@ import {
   TOKEN_LOGIN_ERROR,
 } from "../actions/types";
 import {
-  setToken,
+  setServiceToken,
   loginService,
   tokenLoginService,
 } from "../services/Services";
@@ -94,7 +94,7 @@ export const logUser = (userInfo) => {
   return async (dispatch) => {
     try {
       const response = await loginService(userInfo);
-      setToken(response.token);
+      setServiceToken(response.token);
       dispatch(loginSuccess(response));
       window.localStorage.setItem("LoggedMatchaUser", JSON.stringify(response));
       return response;
@@ -108,7 +108,7 @@ export const logUser = (userInfo) => {
 export const logoutUser = () => {
   return async (dispatch) => {
     try {
-      setToken(null);
+      setServiceToken(null);
       dispatch(logoutSuccess);
       window.localStorage.removeItem("LoggedMatchaUser");
       return true;
@@ -119,10 +119,11 @@ export const logoutUser = () => {
   };
 };
 
-export const tokenLoginCall = (userInfo) => {
+export const tokenLoginCall = (userInfo, token) => {
   return async (dispatch) => {
     try {
       const response = await tokenLoginService(userInfo);
+      setServiceToken(token);
       if (response) {
         dispatch(loginSuccess(response));
       }

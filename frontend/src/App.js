@@ -13,7 +13,7 @@ import UserInfoForms from "./components/userInfoForms/UserInfoForms";
 import Terms from "./components/footer/Terms";
 import About from "./components/footer/About";
 import useJWT from "./utils/decryptToken";
-
+import { serviceSetToken } from "./services/Services";
 const App = () => {
   const dispatch = useDispatch();
   const [loggedUser, setLoggedUser] = useState("");
@@ -24,7 +24,6 @@ const App = () => {
     const loggedUserJson = window.localStorage.getItem("LoggedMatchaUser");
     if (loggedUserJson) {
       const userToken = JSON.parse(loggedUserJson);
-
       setToken(userToken.token);
     }
   }, [loggedUser]);
@@ -36,7 +35,7 @@ const App = () => {
   useEffect(() => {
     if (loggedUser) {
       if (loggedUser.username) {
-        dispatch(tokenLoginCall(decodedToken));
+        dispatch(tokenLoginCall(decodedToken, token));
       }
     }
   }, [loggedUser, dispatch]);

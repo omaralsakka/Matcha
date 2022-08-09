@@ -2,6 +2,7 @@ import ImageUploading from "react-images-uploading";
 import { Button, Card } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import useImage from "../../utils/useImage";
+import { pictureFormService } from "../../services/Services";
 
 const UserImageCard = ({ index, src, onImageUpdate, onImageRemove }) => {
   return (
@@ -29,9 +30,12 @@ const UserImageCard = ({ index, src, onImageUpdate, onImageRemove }) => {
   );
 };
 
-const PicturesForm = () => {
+const PicturesForm = ({ setVisibleForm }) => {
   const images = useImage();
-  console.log("this is images: ", images);
+
+  const saveImages = () => {
+    pictureFormService(images.value).then(() => setVisibleForm(3));
+  };
   return (
     <>
       <Container className="signup-container mb-3 mt-3 w-75 mb-5">
@@ -74,6 +78,14 @@ const PicturesForm = () => {
             </div>
           )}
         </ImageUploading>
+        <Button
+          disabled={images.value.length ? false : true}
+          onClick={saveImages}
+          className="landing-signup-Button"
+          variant="dark"
+        >
+          Save
+        </Button>
       </Container>
     </>
   );
