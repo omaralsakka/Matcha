@@ -12,11 +12,11 @@ const getUserLocation = async (userId) => {
   }
 };
 
-const allGender = async (type) => {
+const allGender = async (gender) => {
   try {
     const queryResponse = await pool.query(
       "SELECT username FROM users WHERE gender = $1",
-      [type]
+      [gender]
     );
     return queryResponse;
   } catch (error) {
@@ -25,11 +25,11 @@ const allGender = async (type) => {
   }
 };
 
-const allSexPref = async (type) => {
+const allSexPref = async (sexPref) => {
   try {
     const queryResponse = await pool.query(
       "SELECT username FROM users WHERE sexuality = $1",
-      [type]
+      [sexPref]
     );
     return queryResponse;
   } catch (error) {
@@ -90,6 +90,30 @@ const allViews = async (name) => {
   }
 };
 
+const allUserNames = async () => {
+	try {
+		const queryResponse = await pool.query(
+			"SELECT users.username FROM users UNION ALL SELECT user_verify.username FROM user_verify"
+		);
+		return queryResponse.rows;
+	} catch (error) {
+		console.error(error.message)
+		return error.message
+	}
+}
+
+const allEmails = async () => {
+	try {
+		const queryResponse = await pool.query(
+			"SELECT users.email FROM users UNION ALL SELECT user_verify.email FROM user_verify"
+		);
+		return queryResponse.rows;
+	} catch (error) {
+		console.error(error.message)
+		return error.message
+	}
+}
+
 /* const allTag = async (type) => {
 	try {
 		const queryResponse = await pool.query(
@@ -108,6 +132,8 @@ module.exports = {
   allBlocked,
   allLikes,
   fameRating,
-  allViews /* allTag */,
+  allViews,
   getUserLocation,
+  allUserNames,
+  allEmails,
 };

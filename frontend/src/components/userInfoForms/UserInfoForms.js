@@ -7,7 +7,6 @@ import PicturesForm from "./PicturesForm";
 const UserInfoForms = () => {
   const userStore = useStoreUser();
   const [loading, setLoading] = useState(true);
-  //   console.log("this is userStore: ", userStore);
 
   useEffect(() => {
     if (userStore.user) {

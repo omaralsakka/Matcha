@@ -35,3 +35,8 @@ export const tokenLoginService = async (userInfo) => {
   const response = await axios.post(`${userUrl}/login/tk`, userInfo);
   return response.data;
 };
+
+export const getUsernames = async (type) => {
+	const response = await axios.post(`${userUrl}/getinfo`, type);
+	return response.data;
+}

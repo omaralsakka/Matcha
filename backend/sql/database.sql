@@ -34,22 +34,22 @@ CREATE TABLE user_verify(
 
 ##
 CREATE TABLE tags (
-    id SERIAL PRIMARY KEY,
-    description VARCHAR (150) NOT NULL,
-    user_id INT NOT NULL
+	id SERIAL PRIMARY KEY,
+	description VARCHAR (150) NOT NULL,
+	user_id INT NOT NULL
 );
 
 ##
 CREATE TABLE location (
-    id SERIAL PRIMARY KEY,
-    city VARCHAR (150) NOT NULL,
+	id SERIAL PRIMARY KEY,
+	city VARCHAR (150) NOT NULL,
 	country VARCHAR (150) NOT NULL,
-    user_id INT NOT NULL
+	user_id INT NOT NULL
 );
 
 ##
 CREATE TABLE connected (
-    id SERIAL PRIMARY KEY,
-    users_id varchar NOT NULL,
-    chat jsonb NOT NULL
+	id SERIAL PRIMARY KEY,
+	users_id varchar NOT NULL,
+	chat_jsonb NOT NULL
 );

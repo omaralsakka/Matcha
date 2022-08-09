@@ -21,6 +21,11 @@ const InfoForm = () => {
 			tags: tags
 		};
 		infoFormService(userInfo);
+		e.target.value = "";
+		gender.onChange(e);
+		sexualPreference.onChange(e);
+		bio.onChange(e);
+		setTags([]);
 	};
 
 	const checkInfoInputs = (gender, sexPref, bio, tags) => {

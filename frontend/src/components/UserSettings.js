@@ -28,9 +28,10 @@ const UserSettings = () => {
 		  email: email.value,
 		  fullname: fullname.value,
 		  password: password.value,
-		  gender: gender,
-		  sexualPrefrence: sexualPreference,
-		  bio: bio
+		  gender: gender.value,
+		  sexualPrefrence: sexualPreference.value,
+		  bio: bio.value,
+		  tags : tags
 		};
 	};
 
