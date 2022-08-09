@@ -43,6 +43,7 @@ CREATE TABLE tags (
 CREATE TABLE location (
     id SERIAL PRIMARY KEY,
     city VARCHAR (150) NOT NULL,
+	country VARCHAR (150) NOT NULL,
     user_id INT NOT NULL
 );
 

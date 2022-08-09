@@ -1,15 +1,10 @@
 const pool = require("../utils/db");
 
-const insertUserInfo = async (body, token) => {
+const insertUserInfo = async (body, user_id) => {
 	try {
-		console.log("this is body in query :", body);
-		console.log("this is token in query : ", token);
-
-		// REMEMBER TO ADD THE TAGS FOR THE QUERY AND IN OTHER PLACES;
-
 		const queryResponse = await pool.query(
-			"UPDATE users SET gender = $1, sexuality = $2, bio = $3 WHERE user_id = $4",
-			[body.gender, body.sexualPreference, body.bio, token]
+			"UPDATE users SET gender = $1, sexuality = $2, bio = $3, tags = $4 WHERE user_id = $5",
+			[body.gender, body.sexualPreference, body.bio, body.tags, user_id]
 		);
 		return queryResponse;
 

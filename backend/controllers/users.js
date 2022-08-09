@@ -82,13 +82,8 @@ const getToken = (request) => {
 };
 
 usersRouter.post("/info", async (request, response) => {
-	//console.log("this is request : ", request);
 	const body = request.body;
-	//console.log("this is body :", body);
-
-
 	const token = getToken(request);
-	//console.log("this is token : ", token);
 
 	const decodedToken = jwt.verify(token, process.env.SECRET);
 	if (!decodedToken.id) {

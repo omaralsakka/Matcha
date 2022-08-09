@@ -3,7 +3,7 @@ import UseField from "../UseField";
 import { InputTags } from "react-bootstrap-tagsinput";
 import "react-bootstrap-tagsinput/dist/index.css";
 import { useState } from "react";
-import { infoFormService } from "../services/Services";
+import { infoFormService } from "../../services/Services";
 
 const InfoForm = () => {
 	const gender = UseField("text");
