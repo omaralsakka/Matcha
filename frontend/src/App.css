@@ -183,6 +183,54 @@
   width: 100%;
 }
 
+.uploading-container {
+  background-color: yellow;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 80vh;
+}
+
+.images-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pictures-form-btn {
+  margin-top: auto;
+}
+
+.uploaded-imgs-container {
+  display: flex;
+  align-items: center;
+}
+
+.image-item {
+  display: flex;
+  border: 1px solid black;
+  background-color: red;
+  align-items: center;
+  width: 20vw;
+  overflow: hidden;
+  flex-direction: column;
+}
+
+.image-cnt {
+  width: 18vw;
+  height: 40vh;
+}
+
+.image-cnt > img {
+  width: 100%;
+  height: 100%;
+}
+
+.image-item-btn-wrapper {
+  display: flex;
+  margin-left: 10px;
+}
+
 @media only screen and (max-width: 450px) {
   .team-img-container {
     box-shadow: 20px 17px rgb(165, 165, 253);

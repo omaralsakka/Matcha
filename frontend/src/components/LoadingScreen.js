@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap";
-import logo from "./media/Matcha-logos_black.png";
+import logo from "../media/Matcha-logos_black.png";
 
 const LoadingScreen = () => (
   <Container className="loading-container">

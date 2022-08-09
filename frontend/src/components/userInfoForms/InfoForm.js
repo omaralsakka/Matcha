@@ -1,5 +1,5 @@
 import { Form, Button, Container } from "react-bootstrap";
-import UseField from "./UseField";
+import UseField from "../UseField";
 import { InputTags } from "react-bootstrap-tagsinput";
 import "react-bootstrap-tagsinput/dist/index.css";
 import { useState } from "react";
