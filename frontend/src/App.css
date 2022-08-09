@@ -184,11 +184,10 @@
 }
 
 .uploading-container {
-  background-color: yellow;
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 80vh;
+  min-height: 80vh;
 }
 
 .images-wrapper {
@@ -201,34 +200,10 @@
   margin-top: auto;
 }
 
-.uploaded-imgs-container {
-  display: flex;
-  align-items: center;
-}
-
-.image-item {
-  display: flex;
-  border: 1px solid black;
-  background-color: red;
-  align-items: center;
-  width: 20vw;
-  overflow: hidden;
-  flex-direction: column;
-}
-
-.image-cnt {
-  width: 18vw;
-  height: 40vh;
-}
-
-.image-cnt > img {
+.card-img-top {
   width: 100%;
-  height: 100%;
-}
-
-.image-item-btn-wrapper {
-  display: flex;
-  margin-left: 10px;
+  height: 28vh;
+  object-fit: cover;
 }
 
 @media only screen and (max-width: 450px) {

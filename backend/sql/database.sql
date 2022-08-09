@@ -51,5 +51,5 @@ CREATE TABLE location (
 CREATE TABLE connected (
     id SERIAL PRIMARY KEY,
     users_id varchar NOT NULL,
-    chat jsonb NOT NULL
+    chat_jsonb NOT NULL
 );
