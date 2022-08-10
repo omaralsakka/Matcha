@@ -6,7 +6,7 @@ const reverseGeocoder = async (setResults) => {
 	navigator.geolocation.getCurrentPosition(async (position) => {
 		let lat = position.coords.latitude;
 		let long = position.coords.longitude;
-		Geocode.setApiKey(/* google api key, ask from luke */);
+		Geocode.setApiKey(/* google api KeyboardEvent, ask from luke */);
 		Geocode.fromLatLng(lat, long).then(response => {
 			console.log(response.results);
 			setResults(response.results[0].formatted_address);
