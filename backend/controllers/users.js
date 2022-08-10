@@ -88,6 +88,8 @@ const getToken = (request) => {
 };
 
 usersRouter.post("/info", async (request, response) => {
+  const ip = request.ip;
+
   const body = request.body;
   const token = getToken(request);
 
@@ -96,7 +98,7 @@ usersRouter.post("/info", async (request, response) => {
     return response.status(401).json({ error: "token missing or expired" });
   }
 
-  const userInfo = await infoQueries.insertUserInfo(body, decodedToken.id);
+  const userInfo = await infoQueries.insertUserInfo(body, decodedToken.id, ip);
   if (userInfo) {
     return response.status(200).send(userInfo);
   } else {

@@ -220,6 +220,17 @@
 	font-size: 1.5vw;
 }
 
+.userNameAlert {
+	font-size: 1.5vw;
+	height: 6vh;
+}
+
+.locationSuccess {
+	visibility: hidden;
+  	opacity: 0;
+  	transition: visibility 0s 4s, opacity 4s linear;
+}
+
 @media only screen and (max-width: 450px) {
   .team-img-container {
     box-shadow: 20px 17px rgb(165, 165, 253);

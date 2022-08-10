@@ -11,8 +11,7 @@ const InfoForm = ({ setVisibleForm }) => {
   const sexualPreference = UseField("text");
   const bio = UseField("text");
   const [tags, setTags] = useState([]);
-
-  // const location = useLocation(); // dont use this unless forced and make sure there is no infinite render
+  const location = useLocation(); // dont use this unless forced and make sure there is no infinite render
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,7 +21,7 @@ const InfoForm = ({ setVisibleForm }) => {
       sexualPreference: sexualPreference.value,
       bio: bio.value,
       tags: tags,
-      /* location: location, */
+	  location: location,
     };
     infoFormService(userInfo).then(() => setVisibleForm(2));
   };
@@ -35,10 +34,15 @@ const InfoForm = ({ setVisibleForm }) => {
   return (
     <>
       <Container className="signup-container mb-3 mt-5">
-        <Alert variant="warning" className="locationAlert">
-          Please accept the use of <strong>location services</strong> for
-          optimal experience!
-        </Alert>
+		{location.length === 0 ? (
+			<Alert variant="warning" className="locationAlert">
+				Please accept the use of <strong>location services</strong> for optimal experience! Other users will be recomended based on your location.
+			</ Alert>
+		) : 
+			<Alert variant="success" className="locationAlert locationSuccess">
+				Thank you for sharing your location! 
+			</ Alert>
+		}
         <Form onSubmit={handleSubmit}>
           <Form.Group className="text-center mb-3">
             <Form.Label className="fs-3">Tell us more about you</Form.Label>
