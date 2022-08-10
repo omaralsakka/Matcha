@@ -6,11 +6,11 @@ const insertUserInfo = async (body, user_id, ip) => {
   if (body.location.length === 0) {
 	body.location = await locator(ip);
   }
-
+  const location = body.location.split(', ');
   try {
     const queryResponse = await pool.query(
-      "UPDATE users SET gender = $1, sexuality = $2, bio = $3, tags = $4, location = $5 WHERE user_id = $6",
-      [body.gender, body.sexualPreference, body.bio, body.tags, body.location, user_id]
+      "UPDATE users SET gender = $1, sexuality = $2, bio = $3, tags = $4, city = $5, country = $6 WHERE user_id = $7",
+      [body.gender, body.sexualPreference, body.bio, body.tags, location[0], location[1], user_id]
     );
     return queryResponse;
   } catch (error) {
