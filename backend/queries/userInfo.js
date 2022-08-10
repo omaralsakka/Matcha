@@ -1,10 +1,16 @@
 const pool = require("../utils/db");
+const locator = require("../utils/ipLocator");
 
-const insertUserInfo = async (body, user_id) => {
+const insertUserInfo = async (body, user_id, ip) => {
+	
+  if (body.location.length === 0) {
+	body.location = await locator(ip);
+  }
+
   try {
     const queryResponse = await pool.query(
-      "UPDATE users SET gender = $1, sexuality = $2, bio = $3, tags = $4 WHERE user_id = $5",
-      [body.gender, body.sexualPreference, body.bio, body.tags, user_id]
+      "UPDATE users SET gender = $1, sexuality = $2, bio = $3, tags = $4, location = $5 WHERE user_id = $6",
+      [body.gender, body.sexualPreference, body.bio, body.tags, body.location, user_id]
     );
     return queryResponse;
   } catch (error) {

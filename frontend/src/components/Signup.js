@@ -26,6 +26,23 @@ const CheckEmail = ({ setFormSubmit }) => {
   );
 };
 
+const checkLocalUserName = (username) => {
+	const valid = /^[0-9a-zA-Z]{3,}$/;
+	return valid.test(username);
+}
+
+const checkLocalEmail = (email) => {
+	const valid =
+	  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	return valid.test(email);
+};
+
+const checkLocalPassword = (password) => {
+	const valid =
+	  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+	return valid.test(password);
+};
+
 const Signup = () => {
   const email = UseField("email");
   const username = UseField("text");
@@ -98,6 +115,12 @@ const Signup = () => {
             <Form.Group className="mb-3">
               <Form.Label>Email</Form.Label>
               <Form.Control {...email} />
+			{checkLocalEmail(email.value) || email.value.length === 0 ? (
+					<></>
+			  ) : <Alert variant="danger" className="userNameAlert mt-4">
+			  		<strong>Email</strong> invalid!
+				  </Alert>
+			}
               <Form.Text className="text-muted">
                 We'll never share your email with anyone else.
               </Form.Text>
@@ -110,17 +133,22 @@ const Signup = () => {
             <Form.Group className="mb-3">
               <Form.Label>Username</Form.Label>
               <Form.Control {...username} />
-              <Form.Text className="text-muted">
-                Username should contain letters and numbers only with minimum
-                length of 3
-              </Form.Text>
+			  {checkLocalUserName(username.value) || username.value.length === 0 ? (
+					<></>
+			  ) : <Alert variant="danger" className="userNameAlert mt-4">
+			  		<strong>Username</strong> invalid!
+				  </Alert>
+			  }
+				<Form.Text className="text-muted">
+					Username should contain letters and numbers only with minimum
+					length of 3
+				</Form.Text>
 			  {userVerify === 0 ? (
 			  	<Alert variant="danger">
 					This <strong>username</strong> is already in use! Please choose an other one.
 				</Alert>) : <></>
 				}
             </Form.Group>
-
             <Form.Group className="mb-3">
               <Form.Label>Full Name</Form.Label>
               <Form.Control {...fullname} />
@@ -137,6 +165,12 @@ const Signup = () => {
             <Form.Group className="mb-3">
               <Form.Label>Password</Form.Label>
               <Form.Control {...password} type={passType} />
+			  {checkLocalPassword(password.value) || password.value.length === 0 ? (
+					<></>
+			  ) : <Alert variant="danger" className="userNameAlert mt-4">
+			  		<strong>Password</strong> invalid!
+				  </Alert>
+			  }
               <Form.Text className="text-muted">
                 Password should contain at least 1 uppercase, 1 lowercase
                 letter, 1 number and 1 special character. Minimum length 8.
