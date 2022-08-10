@@ -122,6 +122,6 @@ module.exports = {
   fameRating,
   allViews,
   getUserLocation,
-  allUserNames,
   allEmails,
+  allUserNames,
 };

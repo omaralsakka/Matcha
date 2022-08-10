@@ -22,7 +22,7 @@ usersRouter.post("/", async (request, response) => {
   }
 });
 
-usersRouter.post("/verify/", async (request, response) => {
+usersRouter.post("/verify", async (request, response) => {
   const body = request.body;
   const verifyUser = await queries.verifyUser(body.code);
   if (verifyUser) {
@@ -97,7 +97,43 @@ usersRouter.post("/info", async (request, response) => {
     return response.status(200).send(userInfo);
   } else {
     return response.status(401).json({
-      error: "some kind of issue, lets get back to this",
+      error: "inserting user info in database",
+    });
+  }
+});
+
+usersRouter.post("/pictures", async (request, response) => {
+  const body = request.body;
+  const token = getToken(request);
+  const decodedToken = jwt.verify(token, process.env.SECRET);
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: "token missing or expired" });
+  }
+  if (body.length) {
+    for (let index = 0; index < body.length; index++) {
+      const queryResponse = await infoQueries.insertUserPictures(
+        body[index].data_url,
+        decodedToken.id
+      );
+    }
+    return response.status(200);
+  } else {
+    return response.status(401).json({
+      error: "saving images error",
+    });
+  }
+});
+
+usersRouter.get("/pictures/:id", async (request, response) => {
+  const id = request.params.id;
+
+  const queryResponse = await infoQueries.getUserPictures(1);
+  if (queryResponse.rows.length) {
+    const pictures = queryResponse.rows.map((row) => row.picture);
+    return response.status(200).send(pictures);
+  } else {
+    return response.status(401).json({
+      error: "image does not exist",
     });
   }
 });

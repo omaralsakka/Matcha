@@ -1,42 +1,45 @@
-import { Form, Button, Container } from "react-bootstrap";
+import { Form, Button, Container, Alert } from "react-bootstrap";
 import UseField from "../UseField";
 import { InputTags } from "react-bootstrap-tagsinput";
 import "react-bootstrap-tagsinput/dist/index.css";
 import { useState } from "react";
 import { infoFormService } from "../../services/Services";
+import useLocation from "../../utils/locationTool";
 
-const InfoForm = () => {
-	const gender = UseField("text");
-	const sexualPreference = UseField("text");
-	const bio = UseField("text");
-	const [tags, setTags] = useState([]);
+const InfoForm = ({ setVisibleForm }) => {
+  const gender = UseField("text");
+  const sexualPreference = UseField("text");
+  const bio = UseField("text");
+  const [tags, setTags] = useState([]);
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
+ /*  const location = useLocation(); // dont use this unless forced and make sure there is no infinite render
+  console.log(location); */
 
-		const userInfo = {
-			gender: gender.value,
-			sexualPreference: sexualPreference.value,
-			bio: bio.value,
-			tags: tags
-		};
-		infoFormService(userInfo);
-		e.target.value = "";
-		gender.onChange(e);
-		sexualPreference.onChange(e);
-		bio.onChange(e);
-		setTags([]);
-	};
 
-	const checkInfoInputs = (gender, sexPref, bio, tags) => {
-		if(gender && sexPref && bio && tags.length)
-			return (true);
-		return (false);
-	};
-	
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const userInfo = {
+      gender: gender.value,
+      sexualPreference: sexualPreference.value,
+      bio: bio.value,
+      tags: tags,
+	  /* location: location, */
+    };
+    infoFormService(userInfo).then(() => setVisibleForm(2));
+  };
+
+  const checkInfoInputs = (gender, sexPref, bio, tags) => {
+    if (gender && sexPref && bio && tags.length) return true;
+    return false;
+  };
+
   return (
     <>
       <Container className="signup-container mb-3 mt-5">
+		<Alert variant="warning" className="locationAlert">
+			Please accept the use of <strong>location services</strong> for optimal experience!
+		</ Alert>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="text-center mb-3">
             <Form.Label className="fs-3">Tell us more about you</Form.Label>
@@ -76,17 +79,21 @@ const InfoForm = () => {
             />
             <Form.Text muted>max length 50 characters</Form.Text>
           </Form.Group>
-          <Button variant="dark" className="landing-signup-Button" disabled={
-			  checkInfoInputs(
-				gender.value,
-				sexualPreference.value,
-				bio.value,
-				tags,
- 			)
-				? false
-				: true}
-				type="submit"
-			>
+          <Button
+            variant="dark"
+            className="landing-signup-Button"
+            disabled={
+              checkInfoInputs(
+                gender.value,
+                sexualPreference.value,
+                bio.value,
+                tags
+              )
+                ? false
+                : true
+            }
+            type="submit"
+          >
             Save
           </Button>
         </Form>

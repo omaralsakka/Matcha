@@ -1,22 +1,45 @@
 import ImageUploading from "react-images-uploading";
-import { useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import useImage from "../../utils/useImage";
+import { pictureFormService } from "../../services/Services";
 
-const PicturesForm = () => {
+const UserImageCard = ({ index, src, onImageUpdate, onImageRemove }) => {
+  return (
+    <Card style={{ width: "18rem" }} className="m-3">
+      <Card.Img className="card-img-top" variant="top" src={src} />
+      <Card.Body>
+        <div className="d-flex justify-content-between">
+          <Button
+            onClick={() => onImageUpdate(index)}
+            className="landing-signup-Button"
+            variant="dark"
+          >
+            Change
+          </Button>
+          <Button
+            onClick={() => onImageRemove(index)}
+            className="landing-signup-Button"
+            variant="dark"
+          >
+            Delete
+          </Button>
+        </div>
+      </Card.Body>
+    </Card>
+  );
+};
+
+const PicturesForm = ({ setVisibleForm }) => {
   const images = useImage();
-  // const [images, setImages] = useState([]);
-  // const maxNumber = 5;
-  // const onChange = (imageList, addUpdatedIndex) => {
-  //   console.log(imageList, addUpdatedIndex);
-  //   setImages(imageList);
-  // };
-  console.log("this is images: ", images);
+
+  const saveImages = () => {
+    pictureFormService(images.value).then(() => setVisibleForm(3));
+  };
   return (
     <>
-      <Container className="signup-container mb-3 mt-5 w-75">
-        {/* <div className="uploading-wrapper w-75 h-75"> */}
+      <Container className="signup-container mb-3 mt-3 w-75 mb-5">
+        <h1 className="fs-3 text-center mb-3">Upload your favorite pictures</h1>
         <ImageUploading multiple {...images}>
           {({
             imageList,
@@ -27,27 +50,22 @@ const PicturesForm = () => {
             isDragging,
             dragProps,
           }) => (
-            // write your building UI
             <div className="uploading-container">
               <div className="images-wrapper">
                 {imageList.map((image, index) => (
-                  <div key={index} className="image-item">
-                    <div className="image-cnt mb-3">
-                      <img src={image.data_url} alt="" width="100" />
-                    </div>
-                    <div className="image-item-btn-wrapper mb-3">
-                      <button onClick={() => onImageUpdate(index)}>
-                        Change image
-                      </button>
-                      <button onClick={() => onImageRemove(index)}>
-                        Remove image
-                      </button>
-                    </div>
-                  </div>
+                  <UserImageCard
+                    key={index}
+                    index={index}
+                    src={image.data_url}
+                    onImageUpdate={onImageUpdate}
+                    onImageRemove={onImageRemove}
+                  />
                 ))}
               </div>
               <div className="pictures-form-btn">
                 <Button
+                  className="landing-signup-Button"
+                  variant="dark"
                   size="lg"
                   style={isDragging ? { color: "red" } : null}
                   onClick={onImageUpload}
@@ -55,11 +73,19 @@ const PicturesForm = () => {
                 >
                   Click or Drop here
                 </Button>
+                <p className="text-muted mt-2">maximum five pictures</p>
               </div>
             </div>
           )}
         </ImageUploading>
-        {/* </div> */}
+        <Button
+          disabled={images.value.length ? false : true}
+          onClick={saveImages}
+          className="landing-signup-Button"
+          variant="dark"
+        >
+          Save
+        </Button>
       </Container>
     </>
   );

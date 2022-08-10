@@ -171,7 +171,7 @@ const Signup = () => {
                   fullname.value,
                   email.value,
                   age.value
-                ) && consent
+                ) && consent && userVerify && emailVerify
                   ? false
                   : true
               }
