@@ -39,7 +39,7 @@ const App = () => {
       }
     }
   }, [loggedUser, dispatch]);
-  console.log(decodedToken);
+
   if (!loggedUser) {
     return (
       <div className="App">

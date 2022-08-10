@@ -39,7 +39,6 @@ export const pictureFormService = async (userPictures) => {
   const config = {
     headers: { Authorization: token },
   };
-  console.log("this is config: ", config);
   const response = await axios.post(
     `${userUrl}/pictures`,
     userPictures,

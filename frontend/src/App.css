@@ -206,6 +206,10 @@
   object-fit: cover;
 }
 
+.locationAlert {
+	font-size: 1.5vw;
+}
+
 @media only screen and (max-width: 450px) {
   .team-img-container {
     box-shadow: 20px 17px rgb(165, 165, 253);

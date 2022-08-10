@@ -13,6 +13,7 @@
     "react-bootstrap": "^2.4.0",
     "react-bootstrap-tagsinput": "^0.7.5",
     "react-dom": "^18.2.0",
+    "react-geocode": "^0.2.3",
     "react-images-uploading": "^3.1.7",
     "react-jwt": "^1.1.6",
     "react-redux": "^8.0.2",
