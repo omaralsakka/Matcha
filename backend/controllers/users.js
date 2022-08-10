@@ -102,7 +102,7 @@ usersRouter.post("/info", async (request, response) => {
   }
 });
 
-usersRouter.post("/getinfo", async (request, response) => {
+usersRouter.post("/logins", async (request, response) => {
 	const body = request.body;
 	let info;
 	if (body.type === "username") {

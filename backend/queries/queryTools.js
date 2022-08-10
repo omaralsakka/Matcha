@@ -114,18 +114,6 @@ const allEmails = async () => {
 	}
 }
 
-/* const allTag = async (type) => {
-	try {
-		const queryResponse = await pool.query(
-			"SELECT username FROM users WHERE $1 = any(tags)",
-			[type]
-		);
-	} catch (error) {
-		console.error(error.message);
-		return error.message;
-	}
-} */
-
 module.exports = {
   allGender,
   allSexPref,
