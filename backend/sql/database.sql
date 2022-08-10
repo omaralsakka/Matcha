@@ -57,7 +57,7 @@ CREATE TABLE connected (
 
 ##
 CREATE TABLE pictures (
-    id SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY UNIQUE,
     picture VARCHAR,
     user_id INT NOT NULL
 );

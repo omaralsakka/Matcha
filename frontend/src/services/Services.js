@@ -47,7 +47,16 @@ export const pictureFormService = async (userPictures) => {
   return response.data;
 };
 
+export const InfoFilledTokenService = async () => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await axios.post(`${userUrl}/infoFilledToken`, {}, config);
+  console.log("this is infofilled service", response.data);
+  return response.data;
+};
+
 export const getUsernames = async (type) => {
-	const response = await axios.post(`${userUrl}/logins`, type);
-	return response.data;
-}
+  const response = await axios.post(`${userUrl}/logins`, type);
+  return response.data;
+};

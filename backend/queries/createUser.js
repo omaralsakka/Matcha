@@ -45,7 +45,6 @@ const verifyUser = async (verificationCode) => {
       [verificationCode]
     );
     const info = queryResponse.rows[0];
-    console.log("this is user info:", info);
     if (info) {
       const insertResponse = await insertUser(info);
       const deleteFromVerify = await pool.query(

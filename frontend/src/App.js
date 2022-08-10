@@ -13,7 +13,7 @@ import UserInfoForms from "./components/userInfoForms/UserInfoForms";
 import Terms from "./components/footer/Terms";
 import About from "./components/footer/About";
 import useJWT from "./utils/decryptToken";
-import { serviceSetToken } from "./services/Services";
+
 const App = () => {
   const dispatch = useDispatch();
   const [loggedUser, setLoggedUser] = useState("");

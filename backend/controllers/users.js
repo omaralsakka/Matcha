@@ -40,8 +40,12 @@ usersRouter.post("/login", async (request, response) => {
 
   if (loggedUser) {
     let infoFilled;
-    const userLocation = await queryTools.getUserLocation(loggedUser.user_id);
-    userLocation.length ? (infoFilled = true) : (infoFilled = false);
+    const userPictures = await queryTools.selectOneQualifier(
+      "pictures",
+      "user_id",
+      loggedUser.user_id
+    );
+    userPictures.rows.length ? (infoFilled = true) : (infoFilled = false);
 
     const userForToken = {
       username: loggedUser.username,
@@ -110,18 +114,37 @@ usersRouter.post("/pictures", async (request, response) => {
     return response.status(401).json({ error: "token missing or expired" });
   }
   if (body.length) {
+    let queryResponse;
     for (let index = 0; index < body.length; index++) {
-      const queryResponse = await infoQueries.insertUserPictures(
+      queryResponse = await infoQueries.insertUserPictures(
         body[index].data_url,
         decodedToken.id
       );
     }
-    return response.status(200);
+    return response.status(200).send(queryResponse);
   } else {
     return response.status(401).json({
       error: "saving images error",
     });
   }
+});
+
+usersRouter.post("/infoFilledToken", async (request, response) => {
+  const oldToken = getToken(request);
+  const decodedToken = jwt.verify(oldToken, process.env.SECRET);
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: "new token generating error" });
+  }
+  const userForToken = {
+    username: decodedToken.username,
+    id: decodedToken.user_id,
+    infoFilled: true,
+    name: decodedToken.fullname,
+  };
+  const token = jwt.sign(userForToken, process.env.SECRET);
+  return response.status(200).send({
+    token,
+  });
 });
 
 usersRouter.get("/pictures/:id", async (request, response) => {
@@ -139,23 +162,20 @@ usersRouter.get("/pictures/:id", async (request, response) => {
 });
 
 usersRouter.post("/logins", async (request, response) => {
-	const body = request.body;
-	let info;
-	if (body.type === "username") {
-		info = await queryTools.allUserNames(body.type);
-	}
-	else if (body.type === "email") {
-		info = await queryTools.allEmails(body.type);
-	}
-	if (info) {
-		return response.status(200).send(info);
-	}
-	else {
-		return response.status(404).json({
-			error: "no users in database or bad request",
-		});
-	}
+  const body = request.body;
+  let info;
+  if (body.type === "username") {
+    info = await queryTools.allUserNames(body.type);
+  } else if (body.type === "email") {
+    info = await queryTools.allEmails(body.type);
+  }
+  if (info) {
+    return response.status(200).send(info);
+  } else {
+    return response.status(404).json({
+      error: "no users in database or bad request",
+    });
+  }
 });
-
 
 module.exports = usersRouter;

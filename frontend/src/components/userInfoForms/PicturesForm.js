@@ -2,7 +2,10 @@ import ImageUploading from "react-images-uploading";
 import { Button, Card } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import useImage from "../../utils/useImage";
-import { pictureFormService } from "../../services/Services";
+import {
+  pictureFormService,
+  InfoFilledTokenService,
+} from "../../services/Services";
 
 const UserImageCard = ({ index, src, onImageUpdate, onImageRemove }) => {
   return (
@@ -33,8 +36,18 @@ const UserImageCard = ({ index, src, onImageUpdate, onImageRemove }) => {
 const PicturesForm = ({ setVisibleForm }) => {
   const images = useImage();
 
-  const saveImages = () => {
-    pictureFormService(images.value).then(() => setVisibleForm(3));
+  const saveImages = async () => {
+    const picFormResponse = await pictureFormService(images.value);
+    const infoFilledResponse = await InfoFilledTokenService();
+    if (infoFilledResponse) {
+      window.localStorage.removeItem("LoggedMatchaUser");
+      window.localStorage.setItem(
+        "LoggedMatchaUser",
+        JSON.stringify(infoFilledResponse)
+      );
+      window.location.reload();
+      setVisibleForm(3);
+    }
   };
   return (
     <>

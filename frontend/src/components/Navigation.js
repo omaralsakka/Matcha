@@ -13,7 +13,7 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
       setLoggedUser(false);
       navigate("/login");
     } catch (error) {
-      console.log("logout error: ", error.message);
+      console.error("logout error: ", error.message);
     }
   };
   return (

@@ -1,5 +1,18 @@
 const pool = require("../utils/db");
 
+const selectOneQualifier = async (table, column, qualifier) => {
+  try {
+    const queryResponse = await pool.query(
+      `SELECT * FROM ${table} WHERE ${column} = $1`,
+      [qualifier]
+    );
+    return queryResponse;
+  } catch (error) {
+    console.error(error.message);
+    return false;
+  }
+};
+
 const getUserLocation = async (userId) => {
   try {
     const queryResponse = await pool.query(
@@ -91,28 +104,28 @@ const allViews = async (name) => {
 };
 
 const allUserNames = async () => {
-	try {
-		const queryResponse = await pool.query(
-			"SELECT users.username FROM users UNION ALL SELECT user_verify.username FROM user_verify"
-		);
-		return queryResponse.rows;
-	} catch (error) {
-		console.error(error.message)
-		return error.message
-	}
-}
+  try {
+    const queryResponse = await pool.query(
+      "SELECT users.username FROM users UNION ALL SELECT user_verify.username FROM user_verify"
+    );
+    return queryResponse.rows;
+  } catch (error) {
+    console.error(error.message);
+    return error.message;
+  }
+};
 
 const allEmails = async () => {
-	try {
-		const queryResponse = await pool.query(
-			"SELECT users.email FROM users UNION ALL SELECT user_verify.email FROM user_verify"
-		);
-		return queryResponse.rows;
-	} catch (error) {
-		console.error(error.message)
-		return error.message
-	}
-}
+  try {
+    const queryResponse = await pool.query(
+      "SELECT users.email FROM users UNION ALL SELECT user_verify.email FROM user_verify"
+    );
+    return queryResponse.rows;
+  } catch (error) {
+    console.error(error.message);
+    return error.message;
+  }
+};
 
 module.exports = {
   allGender,
@@ -124,4 +137,5 @@ module.exports = {
   getUserLocation,
   allEmails,
   allUserNames,
+  selectOneQualifier,
 };

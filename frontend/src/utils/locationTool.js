@@ -8,7 +8,6 @@ const reverseGeocoder = async (setResults) => {
 		let long = position.coords.longitude;
 		Geocode.setApiKey(/* google api KeyboardEvent, ask from luke */);
 		Geocode.fromLatLng(lat, long).then(response => {
-			console.log(response.results);
 			setResults(response.results[0].formatted_address);
 		})
 	}); 
