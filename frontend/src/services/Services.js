@@ -47,3 +47,8 @@ export const pictureFormService = async (userPictures) => {
   );
   return response.data;
 };
+
+export const getUsernames = async (type) => {
+	const response = await axios.post(`${userUrl}/logins`, type);
+	return response.data;
+}

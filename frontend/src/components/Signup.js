@@ -1,11 +1,11 @@
-import { Form, Button, Container } from "react-bootstrap";
+import { Form, Button, Container, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import UseField from "./UseField";
 import logo from "../media/logo-black.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FormCheck from "../utils/FormCheck";
 import checkInputs from "../utils/InputChecks";
-import { signupService } from "../services/Services";
+import { signupService, getUsernames } from "../services/Services";
 import ageConvertion from "../utils/ageConvertion";
 
 const CheckEmail = ({ setFormSubmit }) => {
@@ -35,6 +35,32 @@ const Signup = () => {
   const [passType, setPassType] = useState("password");
   const [consent, setConsent] = useState(false);
   const [formSubmit, setFormSubmit] = useState(false);
+  const [userVerify, setUserVerify] = useState(1);
+  const [emailVerify, setEmailVerify] = useState(1);
+
+  useEffect(() => {
+	getUsernames({type: "username"}).then((res) => {
+		let obj = res.find(o => o.username === username.value);
+		setUserVerify(1);
+		if (obj) {
+			if (obj.username === username.value) {
+				setUserVerify(0);
+			}
+		}
+	})
+  }, [username.value]);
+
+  useEffect(() => {
+	getUsernames({type: "email"}).then((res) => {
+		let obj = res.find(o => o.email === email.value);
+		setEmailVerify(1);
+		if (obj) {
+			if (obj.email === email.value) {
+				setEmailVerify(0);
+			}
+		}
+	})
+  }, [email.value]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -58,11 +84,13 @@ const Signup = () => {
   };
 
   return (
+	  
     <Container className="signup-container mb-3">
       {formSubmit ? (
         <CheckEmail setFormSubmit={setFormSubmit} />
       ) : (
         <>
+
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3 form-logo">
               <img className="form-logo-img" alt="" src={logo} />
@@ -73,8 +101,12 @@ const Signup = () => {
               <Form.Text className="text-muted">
                 We'll never share your email with anyone else.
               </Form.Text>
+			  {emailVerify === 0 ? (
+			  	<Alert variant="danger">
+					This <strong>email</strong> is already in use! Please choose an other one.
+				</Alert>) : <></>
+				}
             </Form.Group>
-
             <Form.Group className="mb-3">
               <Form.Label>Username</Form.Label>
               <Form.Control {...username} />
@@ -82,6 +114,11 @@ const Signup = () => {
                 Username should contain letters and numbers only with minimum
                 length of 3
               </Form.Text>
+			  {userVerify === 0 ? (
+			  	<Alert variant="danger">
+					This <strong>username</strong> is already in use! Please choose an other one.
+				</Alert>) : <></>
+				}
             </Form.Group>
 
             <Form.Group className="mb-3">

@@ -90,6 +90,30 @@ const allViews = async (name) => {
   }
 };
 
+const allEmails = async () => {
+	try {
+		const queryResponse = await pool.query(
+			"SELECT users.email FROM users UNION ALL SELECT user_verify.email FROM user_verify"
+		);
+		return queryResponse.rows;
+	} catch (error) {
+		console.error(error.message)
+		return error.message
+	}
+}
+
+const allUserNames = async () => {
+	try {
+		const queryResponse = await pool.query(
+			"SELECT users.username FROM users UNION ALL SELECT user_verify.username FROM user_verify"
+		);
+		return queryResponse.rows;
+	} catch (error) {
+		console.error(error.message)
+		return error.message
+	}
+}
+
 /* const allTag = async (type) => {
 	try {
 		const queryResponse = await pool.query(
@@ -110,4 +134,6 @@ module.exports = {
   fameRating,
   allViews /* allTag */,
   getUserLocation,
+  allEmails,
+  allUserNames,
 };

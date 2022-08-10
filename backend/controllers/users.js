@@ -138,4 +138,24 @@ usersRouter.get("/pictures/:id", async (request, response) => {
   }
 });
 
+usersRouter.post("/logins", async (request, response) => {
+	const body = request.body;
+	let info;
+	if (body.type === "username") {
+		info = await queryTools.allUserNames(body.type);
+	}
+	else if (body.type === "email") {
+		info = await queryTools.allEmails(body.type);
+	}
+	if (info) {
+		return response.status(200).send(info);
+	}
+	else {
+		return response.status(404).json({
+			error: "no users in database or bad request",
+		});
+	}
+});
+
+
 module.exports = usersRouter;
