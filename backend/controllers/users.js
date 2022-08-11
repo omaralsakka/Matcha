@@ -167,9 +167,9 @@ usersRouter.post("/logins", async (request, response) => {
   const body = request.body;
   let info;
   if (body.type === "username") {
-    info = await queryTools.allUserNames(body.type);
+    info = await queryTools.unionOneQualifier(body.type, "user_verify");
   } else if (body.type === "email") {
-    info = await queryTools.allEmails(body.type);
+    info = await queryTools.unionOneQualifier(body.type, "user_verify");
   }
   if (info) {
     return response.status(200).send(info);
