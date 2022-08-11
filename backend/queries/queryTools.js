@@ -1,5 +1,15 @@
 const pool = require("../utils/db");
 
+const selectAllTable = async (table) => {
+  try {
+    const queryResponse = await pool.query(`SELECT * FROM ${table}`);
+    return queryResponse;
+  } catch (error) {
+    console.error(error.message);
+    return false;
+  }
+};
+
 const selectOneQualifier = async (table, column, qualifier) => {
   try {
     const queryResponse = await pool.query(
@@ -16,7 +26,7 @@ const selectOneQualifier = async (table, column, qualifier) => {
 const unionOneQualifier = async (column, tableTwo) => {
   try {
     const queryResponse = await pool.query(
-		`SELECT users.${column} FROM users UNION ALL SELECT ${tableTwo}.${column} FROM ${tableTwo}`
+      `SELECT users.${column} FROM users UNION ALL SELECT ${tableTwo}.${column} FROM ${tableTwo}`
     );
     return queryResponse.rows;
   } catch (error) {
@@ -26,6 +36,7 @@ const unionOneQualifier = async (column, tableTwo) => {
 };
 
 module.exports = {
+  selectAllTable,
   selectOneQualifier,
   unionOneQualifier,
 };

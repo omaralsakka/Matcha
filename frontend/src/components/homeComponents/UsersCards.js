@@ -1,22 +1,29 @@
-import { Card } from "react-bootstrap";
+import { Card, Col } from "react-bootstrap";
 
-const UsersCards = () => {
+const UsersCards = ({ user }) => {
   return (
-    <Card style={{ width: "18rem" }} className="mx-1">
-      <Card.Img variant="top" data-src="holder.js/100px160" />
-      <Card.Body>
-        <Card.Title>Name</Card.Title>
-        <Card.Text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-        </Card.Text>
-      </Card.Body>
-      <Card.Footer>
-        <small className="text-muted">tags comes here</small>
-      </Card.Footer>
-    </Card>
+    <Col>
+      <Card style={{ width: "23rem" }}>
+        <Card.Img variant="top" data-src="holder.js/100px160" />
+        <Card.Body>
+          <Card.Title>{user.fullname}</Card.Title>
+          <Card.Text>
+            Age: {user.age}
+            <br /> City: {user.city}
+          </Card.Text>
+          <Card.Text>
+            <strong>About me: </strong>
+            <br />
+            {user.bio}
+          </Card.Text>
+        </Card.Body>
+        <Card.Footer>
+          <small className="text-muted">
+            {user.tags.map((tag) => `#${tag} `)}
+          </small>
+        </Card.Footer>
+      </Card>
+    </Col>
   );
 };
 

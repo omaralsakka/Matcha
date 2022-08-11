@@ -1,6 +1,7 @@
 import { Container, Nav, Navbar, NavDropdown, Form } from "react-bootstrap";
 
 const HomeNavBar = () => {
+
   return (
     <Navbar bg="light" expand="lg" className="mt-3">
       <Container>
