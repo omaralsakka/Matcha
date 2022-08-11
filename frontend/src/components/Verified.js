@@ -1,7 +1,7 @@
 import { Container } from "react-bootstrap";
 import logo from "../media/logo-black.png";
 import { useParams } from "react-router-dom";
-import { verifyService } from "../services/Services";
+import { verifyService } from "../services/userServices";
 
 const Verified = () => {
   const param = useParams().code;

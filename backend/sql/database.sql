@@ -4,8 +4,8 @@ SELECT 'CREATE DATABASE matcha'WHERE NOT EXISTS (SELECT FROM Databases WHERE dat
 
 CREATE TABLE users(
     user_id SERIAL PRIMARY KEY,
-    username VARCHAR (150) NOT NULL,
-    email VARCHAR (150) NOT NULL,
+    username VARCHAR (150) NOT NULL UNIQUE,
+    email VARCHAR (150) NOT NULL UNIQUE,
     fullname VARCHAR (150) NOT NULL,
     password VARCHAR (150) NOT NULL,
     age INT,
@@ -14,7 +14,8 @@ CREATE TABLE users(
     bio VARCHAR (300),
     tags VARCHAR [],
     fame_rating INT DEFAULT 0,
-    location VARCHAR (150),
+    city VARCHAR(150),
+    country VARCHAR(150),
     blocked INT [],
     blocked_by INT [],
     liked INT [],
@@ -25,8 +26,8 @@ CREATE TABLE users(
 
 CREATE TABLE user_verify(
     id SERIAL PRIMARY KEY,
-    username VARCHAR (150) NOT NULL,
-    email VARCHAR (150) NOT NULL,
+    username VARCHAR (150) NOT NULL UNIQUE,
+    email VARCHAR (150) NOT NULL UNIQUE,
     fullname VARCHAR (150) NOT NULL,
     password VARCHAR (150) NOT NULL,
     age INT,

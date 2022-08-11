@@ -5,8 +5,8 @@ import logo from "../media/logo-black.png";
 import { useState, useEffect } from "react";
 import FormCheck from "../utils/FormCheck";
 import checkInputs from "../utils/InputChecks";
-import {checkUserName, checkEmail, checkPassword} from "../utils/InputChecks";
-import { signupService, getCredentials } from "../services/Services";
+import { checkUserName, checkEmail, checkPassword } from "../utils/InputChecks";
+import { signupService, getCredentials } from "../services/userServices";
 import ageConvertion from "../utils/ageConvertion";
 
 const CheckEmail = ({ setFormSubmit }) => {
@@ -40,27 +40,27 @@ const Signup = () => {
   const [emailVerify, setEmailVerify] = useState(1);
 
   useEffect(() => {
-	getCredentials({type: "username"}).then((res) => {
-		let obj = res.find(o => o.username === username.value);
-		setUserVerify(1);
-		if (obj) {
-			if (obj.username === username.value) {
-				setUserVerify(0);
-			}
-		}
-	})
+    getCredentials({ type: "username" }).then((res) => {
+      let obj = res.find((o) => o.username === username.value);
+      setUserVerify(1);
+      if (obj) {
+        if (obj.username === username.value) {
+          setUserVerify(0);
+        }
+      }
+    });
   }, [username.value]);
 
   useEffect(() => {
-	getCredentials({type: "email"}).then((res) => {
-		let obj = res.find(o => o.email === email.value);
-		setEmailVerify(1);
-		if (obj) {
-			if (obj.email === email.value) {
-				setEmailVerify(0);
-			}
-		}
-	})
+    getCredentials({ type: "email" }).then((res) => {
+      let obj = res.find((o) => o.email === email.value);
+      setEmailVerify(1);
+      if (obj) {
+        if (obj.email === email.value) {
+          setEmailVerify(0);
+        }
+      }
+    });
   }, [email.value]);
 
   const handleSubmit = (e) => {
@@ -85,13 +85,11 @@ const Signup = () => {
   };
 
   return (
-	  
     <Container className="signup-container mb-3">
       {formSubmit ? (
         <CheckEmail setFormSubmit={setFormSubmit} />
       ) : (
         <>
-
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3 form-logo">
               <img className="form-logo-img" alt="" src={logo} />
@@ -99,39 +97,47 @@ const Signup = () => {
             <Form.Group className="mb-3">
               <Form.Label>Email</Form.Label>
               <Form.Control {...email} />
-			{checkEmail(email.value) || email.value.length === 0 ? (
-					<></>
-			  ) : <Alert variant="danger" className="username-alert mt-4">
-			  		<strong>Email</strong> invalid!
-				  </Alert>
-			}
+              {checkEmail(email.value) || email.value.length === 0 ? (
+                <></>
+              ) : (
+                <Alert variant="danger" className="username-alert mt-4">
+                  <strong>Email</strong> invalid!
+                </Alert>
+              )}
               <Form.Text className="text-muted">
                 We'll never share your email with anyone else.
               </Form.Text>
-			  {emailVerify === 0 ? (
-			  	<Alert variant="danger">
-					This <strong>email</strong> is already in use! Please choose an other one.
-				</Alert>) : <></>
-				}
+              {emailVerify === 0 ? (
+                <Alert variant="danger">
+                  This <strong>email</strong> is already in use! Please choose
+                  an other one.
+                </Alert>
+              ) : (
+                <></>
+              )}
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Username</Form.Label>
               <Form.Control {...username} />
-			  {checkUserName(username.value) || username.value.length === 0 ? (
-					<></>
-			  ) : <Alert variant="danger" className="username-alert mt-4">
-			  		<strong>Username</strong> invalid!
-				  </Alert>
-			  }
-				<Form.Text className="text-muted">
-					Username should contain letters and numbers only with minimum
-					length of 3
-				</Form.Text>
-			  {userVerify === 0 ? (
-			  	<Alert variant="danger">
-					This <strong>username</strong> is already in use! Please choose an other one.
-				</Alert>) : <></>
-				}
+              {checkUserName(username.value) || username.value.length === 0 ? (
+                <></>
+              ) : (
+                <Alert variant="danger" className="username-alert mt-4">
+                  <strong>Username</strong> invalid!
+                </Alert>
+              )}
+              <Form.Text className="text-muted">
+                Username should contain letters and numbers only with minimum
+                length of 3
+              </Form.Text>
+              {userVerify === 0 ? (
+                <Alert variant="danger">
+                  This <strong>username</strong> is already in use! Please
+                  choose an other one.
+                </Alert>
+              ) : (
+                <></>
+              )}
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Full Name</Form.Label>
@@ -149,12 +155,13 @@ const Signup = () => {
             <Form.Group className="mb-3">
               <Form.Label>Password</Form.Label>
               <Form.Control {...password} type={passType} />
-			  {checkPassword(password.value) || password.value.length === 0 ? (
-					<></>
-			  ) : <Alert variant="danger" className="username-alert mt-4">
-			  		<strong>Password</strong> invalid!
-				  </Alert>
-			  }
+              {checkPassword(password.value) || password.value.length === 0 ? (
+                <></>
+              ) : (
+                <Alert variant="danger" className="username-alert mt-4">
+                  <strong>Password</strong> invalid!
+                </Alert>
+              )}
               <Form.Text className="text-muted">
                 Password should contain at least 1 uppercase, 1 lowercase
                 letter, 1 number and 1 special character. Minimum length 8.
@@ -189,7 +196,10 @@ const Signup = () => {
                   fullname.value,
                   email.value,
                   age.value
-                ) && consent && userVerify && emailVerify
+                ) &&
+                consent &&
+                userVerify &&
+                emailVerify
                   ? false
                   : true
               }
