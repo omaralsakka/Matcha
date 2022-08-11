@@ -1,5 +1,6 @@
 import UseField from "./UseField";
-import { Form, Container, Button } from "react-bootstrap";
+import  { useState } from "react";
+import { Form, Container, Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../media/logo-black.png";
 import { checkUserName, checkPassword } from "../utils/InputChecks";
@@ -11,6 +12,7 @@ const Login = ({ setLoggedUser }) => {
   const password = UseField("password");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loginCheck, setLoginCheck] = useState(true);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -20,7 +22,12 @@ const Login = ({ setLoggedUser }) => {
     };
     dispatch(logUser(userInfo)).then((resp) => {
       setLoggedUser(resp);
-      navigate("/home");
+	  if (resp === false) {
+		setLoginCheck(false);
+	  }
+	  else {
+		  navigate("/home");
+	  }
     });
 
     e.target.value = "";
@@ -42,7 +49,11 @@ const Login = ({ setLoggedUser }) => {
           <Form.Label>Password</Form.Label>
           <Form.Control {...password} />
         </Form.Group>
-
+		{loginCheck
+		? <></>
+		: (
+		<Form.Group className="mb-3">
+		<Alert variant="danger" className="error-alert">Log in credentials incorrect, please try again.</Alert></Form.Group>)}
         <Button
           disabled={
             checkUserName(username.value) && checkPassword(password.value)

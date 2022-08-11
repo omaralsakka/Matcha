@@ -34,6 +34,13 @@ CREATE TABLE user_verify(
 );
 
 ##
+CREATE TABLE forgotten_password(
+	id SERIAL PRIMARY KEY,
+	email VARCHAR (150) NOT NULL,
+	verify_code VARCHAR (150) NOT NULL
+);
+
+##
 CREATE TABLE tags (
 	id SERIAL PRIMARY KEY,
 	description VARCHAR (150) NOT NULL,

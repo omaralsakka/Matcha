@@ -22,6 +22,36 @@ usersRouter.post("/", async (request, response) => {
   }
 });
 
+usersRouter.post("/forgotpassword", async (request, response) => {
+	const body = request.body;
+	const verificationCode = await queryTools.insertForgottenPassword(body.email);
+	if (verificationCode.length === 50) {
+	  const emailResp = Mailer(
+		body.email,
+		"Change forgotten password for Matcha",
+		`Please click on the following link to create a new password: http://localhost:3000/api/forgotpassword/code=${verificationCode}`
+	  );
+	  return response.status(200);
+	} else {
+	  return response.status(401).json({
+		error: "email sending error",
+	  });
+	}
+});
+
+usersRouter.post("/resetpassword", async (request, response) => {
+	const {code, password} = request.body;
+
+	const resetedPassword = await queries.resetUser(code.code, password);
+	if (resetedPassword) {
+	  return response.status(200).send(resetedPassword);
+	} else {
+	  return response.status(401).json({
+		error: "password was reset already",
+	  });
+	}
+});
+
 usersRouter.post("/verify", async (request, response) => {
   const body = request.body;
   const verifyUser = await queries.verifyUser(body.code);

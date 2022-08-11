@@ -26,7 +26,6 @@ const Mailer = (userEmail, emailSubject, emailBody) => {
       console.error("Error: ", err);
       return err;
     } else {
-      console.log("Email sent succesfully to ", userEmail);
       return true;
     }
   });

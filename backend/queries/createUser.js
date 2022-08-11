@@ -1,6 +1,7 @@
 const pool = require("../utils/db");
 const generateRandom = require("../utils/generateRandom");
 const { cryptPassword, checkPassword } = require("../utils/cryptPassword");
+const queryTools = require("./queryTools")
 
 const insertUser = async ({ username, email, fullname, password, age }) => {
   try {
@@ -60,6 +61,31 @@ const verifyUser = async (verificationCode) => {
   }
 };
 
+// function that will remove user from forgotten pass word and change the pass word in the users table.
+const resetUser = async (code, password) => {
+	
+	try {
+	  const queryResponse = await pool.query(
+		"SELECT * FROM forgotten_password WHERE verify_code = $1",
+		[code]
+	  );
+	  const email = queryResponse.rows[0].email;
+
+	  if (email) {
+		const updateResponse = await queryTools.updatePassword(password, email);
+		const deleteFromForgotten = await pool.query(
+		  "DELETE FROM forgotten_password WHERE verify_code = $1 RETURNING *",
+		  [code]
+		);
+		return queryResponse.rows;
+	  } else {
+		return false;
+	  }
+	} catch (error) {
+	  console.error(error.message);
+	}
+};
+
 // function that logges in the user if all given info are correct
 const loginUser = async ({ username, password }) => {
   try {
@@ -107,4 +133,5 @@ module.exports = {
   verifyUser,
   loginUser,
   tokenLogin,
+  resetUser,
 };

@@ -105,6 +105,16 @@
   }
 }
 
+@media only screen and (max-width: 1280px) and (min-width: 451px) {
+	.signup-container {
+	  width: fit-content;
+	  box-shadow: none;
+	}
+	.form-button {
+	  width: 100%;
+	}
+}
+
 .main-footer {
   position: sticky;
   display: flex;
@@ -216,18 +226,32 @@
   object-fit: cover;
 }
 
+@-webkit-keyframes fadeOut {
+	0% {opacity: 1;}
+	100% {opacity: 0;}
+ }
+
+@keyframes fadeOut {
+	0% {opacity: 1;}
+	100% {opacity: 0;} 
+ }
+
 .location-alert {
+	-webkit-animation-fill-mode: both;animation-fill-mode: both;
+	-webkit-animation-duration: 15s;animation-duration: 15s;
+	-webkit-animation-name: fadeOut;
+	animation-name: fadeOut;
 	font-size: calc(5px + 1vw);
 }
 
-.username-alert {
+.error-alert {
 	font-size: calc(5px + 1vw);
 }
 
 .location-alert-success {
 	visibility: hidden;
   	opacity: 0;
-  	transition: visibility 0s 4s, opacity 4s linear;
+  	transition: visibility 0s 3s, opacity 3s linear;
 }
 
 @media only screen and (max-width: 450px) {

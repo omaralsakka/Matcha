@@ -29,7 +29,6 @@ const insertUserPictures = async (body, user_id) => {
       "UPDATE users SET pictures = 1 WHERE user_id = $1",
       [user_id]
     );
-    console.log("inserted pictures succefully");
     return respPicturesTable;
   } catch (error) {
     console.error(error.message);

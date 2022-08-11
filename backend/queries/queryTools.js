@@ -1,4 +1,6 @@
 const pool = require("../utils/db");
+const generateRandom = require("../utils/generateRandom");
+const { cryptPassword } = require("../utils/cryptPassword");
 
 const selectOneQualifier = async (table, column, qualifier) => {
   try {
@@ -25,7 +27,40 @@ const unionOneQualifier = async (column, tableTwo) => {
   }
 };
 
+const insertForgottenPassword = async (email) => {
+	try {
+		const verificationCode = generateRandom(50);
+
+		const queryResponse = await pool.query(
+			"INSERT INTO forgotten_password(email, verify_code) VALUES($1, $2) RETURNING *",
+			[email, verificationCode]
+		);
+		return verificationCode;
+	} catch (error) {
+		console.error(error.message);
+		return error.message;
+	}
+	return
+}
+
+const updatePassword = async (password, email) => {
+
+	try {
+		const cryptedPass = await cryptPassword(password);
+		const queryResponse = await pool.query(
+			"UPDATE users SET password = $1 WHERE email = $2",
+			[cryptedPass, email]
+		)
+		return queryResponse.rows;
+	} catch (error) {
+		console.error(error.message);
+		return error.message;
+	}
+}
+
 module.exports = {
   selectOneQualifier,
   unionOneQualifier,
+  insertForgottenPassword,
+  updatePassword,
 };

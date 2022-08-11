@@ -101,7 +101,7 @@ const Signup = () => {
               <Form.Control {...email} />
 			{checkEmail(email.value) || email.value.length === 0 ? (
 					<></>
-			  ) : <Alert variant="danger" className="username-alert mt-4">
+			  ) : <Alert variant="danger" className="error-alert mt-4">
 			  		<strong>Email</strong> invalid!
 				  </Alert>
 			}
@@ -119,7 +119,7 @@ const Signup = () => {
               <Form.Control {...username} />
 			  {checkUserName(username.value) || username.value.length === 0 ? (
 					<></>
-			  ) : <Alert variant="danger" className="username-alert mt-4">
+			  ) : <Alert variant="danger" className="error-alert mt-4">
 			  		<strong>Username</strong> invalid!
 				  </Alert>
 			  }
@@ -151,7 +151,7 @@ const Signup = () => {
               <Form.Control {...password} type={passType} />
 			  {checkPassword(password.value) || password.value.length === 0 ? (
 					<></>
-			  ) : <Alert variant="danger" className="username-alert mt-4">
+			  ) : <Alert variant="danger" className="error-alert mt-4">
 			  		<strong>Password</strong> invalid!
 				  </Alert>
 			  }

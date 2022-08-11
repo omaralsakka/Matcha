@@ -27,6 +27,16 @@ export const tokenLoginService = async (userInfo) => {
   return response.data;
 };
 
+export const forgotPassWordService = async (userInfo) => {
+  const response = await axios.post(`${userUrl}/forgotpassword`, userInfo);
+  return response.data;
+};
+
+export const resetPassWordService = async (userInfo) => {
+  const response = await axios.post(`${userUrl}/resetpassword`, userInfo);
+  return response.data;
+};
+
 export const infoFormService = async (userInfo) => {
   const config = {
     headers: { Authorization: token },
@@ -52,7 +62,6 @@ export const InfoFilledTokenService = async () => {
     headers: { Authorization: token },
   };
   const response = await axios.post(`${userUrl}/infoFilledToken`, {}, config);
-  console.log("this is infofilled service", response.data);
   return response.data;
 };
 
