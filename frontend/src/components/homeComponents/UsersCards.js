@@ -1,10 +1,11 @@
 import { Card, Col } from "react-bootstrap";
+import pic from "../../media/cp2.jpg";
 
-const UsersCards = ({ user }) => {
+const UsersCards = ({ user, profilePictures }) => {
   return (
     <Col>
       <Card style={{ width: "23rem" }}>
-        <Card.Img variant="top" data-src="holder.js/100px160" />
+        <Card.Img variant="top" src={pic} />
         <Card.Body>
           <Card.Title>{user.fullname}</Card.Title>
           <Card.Text>

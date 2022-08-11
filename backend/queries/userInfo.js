@@ -61,8 +61,21 @@ const getUserPictures = async (user_id) => {
   }
 };
 
+const getProfilePictures = async () => {
+  try {
+    const queryResponse = await pool.query(
+      "SELECT DISTINCT user_id,picture from pictures"
+    );
+    return queryResponse;
+  } catch (error) {
+    console.error(error.message);
+    return false;
+  }
+};
+
 module.exports = {
   insertUserInfo,
   insertUserPictures,
   getUserPictures,
+  getProfilePictures,
 };
