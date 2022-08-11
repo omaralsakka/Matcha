@@ -5,7 +5,8 @@ import logo from "../media/logo-black.png";
 import { useState, useEffect } from "react";
 import FormCheck from "../utils/FormCheck";
 import checkInputs from "../utils/InputChecks";
-import { signupService, getUsernames } from "../services/Services";
+import {checkUserName, checkEmail, checkPassword} from "../utils/InputChecks";
+import { signupService, getCredentials } from "../services/Services";
 import ageConvertion from "../utils/ageConvertion";
 
 const CheckEmail = ({ setFormSubmit }) => {
@@ -26,23 +27,6 @@ const CheckEmail = ({ setFormSubmit }) => {
   );
 };
 
-const checkLocalUserName = (username) => {
-	const valid = /^[0-9a-zA-Z]{3,}$/;
-	return valid.test(username);
-}
-
-const checkLocalEmail = (email) => {
-	const valid =
-	  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	return valid.test(email);
-};
-
-const checkLocalPassword = (password) => {
-	const valid =
-	  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-	return valid.test(password);
-};
-
 const Signup = () => {
   const email = UseField("email");
   const username = UseField("text");
@@ -56,7 +40,7 @@ const Signup = () => {
   const [emailVerify, setEmailVerify] = useState(1);
 
   useEffect(() => {
-	getUsernames({type: "username"}).then((res) => {
+	getCredentials({type: "username"}).then((res) => {
 		let obj = res.find(o => o.username === username.value);
 		setUserVerify(1);
 		if (obj) {
@@ -68,7 +52,7 @@ const Signup = () => {
   }, [username.value]);
 
   useEffect(() => {
-	getUsernames({type: "email"}).then((res) => {
+	getCredentials({type: "email"}).then((res) => {
 		let obj = res.find(o => o.email === email.value);
 		setEmailVerify(1);
 		if (obj) {
@@ -115,9 +99,9 @@ const Signup = () => {
             <Form.Group className="mb-3">
               <Form.Label>Email</Form.Label>
               <Form.Control {...email} />
-			{checkLocalEmail(email.value) || email.value.length === 0 ? (
+			{checkEmail(email.value) || email.value.length === 0 ? (
 					<></>
-			  ) : <Alert variant="danger" className="userNameAlert mt-4">
+			  ) : <Alert variant="danger" className="username-alert mt-4">
 			  		<strong>Email</strong> invalid!
 				  </Alert>
 			}
@@ -133,9 +117,9 @@ const Signup = () => {
             <Form.Group className="mb-3">
               <Form.Label>Username</Form.Label>
               <Form.Control {...username} />
-			  {checkLocalUserName(username.value) || username.value.length === 0 ? (
+			  {checkUserName(username.value) || username.value.length === 0 ? (
 					<></>
-			  ) : <Alert variant="danger" className="userNameAlert mt-4">
+			  ) : <Alert variant="danger" className="username-alert mt-4">
 			  		<strong>Username</strong> invalid!
 				  </Alert>
 			  }
@@ -165,9 +149,9 @@ const Signup = () => {
             <Form.Group className="mb-3">
               <Form.Label>Password</Form.Label>
               <Form.Control {...password} type={passType} />
-			  {checkLocalPassword(password.value) || password.value.length === 0 ? (
+			  {checkPassword(password.value) || password.value.length === 0 ? (
 					<></>
-			  ) : <Alert variant="danger" className="userNameAlert mt-4">
+			  ) : <Alert variant="danger" className="username-alert mt-4">
 			  		<strong>Password</strong> invalid!
 				  </Alert>
 			  }

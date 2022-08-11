@@ -216,16 +216,15 @@
   object-fit: cover;
 }
 
-.locationAlert {
-	font-size: 1.5vw;
+.location-alert {
+	font-size: calc(5px + 1vw);
 }
 
-.userNameAlert {
-	font-size: 1.5vw;
-	height: 6vh;
+.username-alert {
+	font-size: calc(5px + 1vw);
 }
 
-.locationSuccess {
+.location-alert-success {
 	visibility: hidden;
   	opacity: 0;
   	transition: visibility 0s 4s, opacity 4s linear;

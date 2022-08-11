@@ -56,7 +56,7 @@ export const InfoFilledTokenService = async () => {
   return response.data;
 };
 
-export const getUsernames = async (type) => {
+export const getCredentials = async (type) => {
   const response = await axios.post(`${userUrl}/logins`, type);
   return response.data;
 };
