@@ -13,6 +13,8 @@ import UserInfoForms from "./components/userInfoForms/UserInfoForms";
 import Terms from "./components/footer/Terms";
 import About from "./components/footer/About";
 import useJWT from "./utils/decryptToken";
+import Settings from "./components/settings/Settings";
+import Profile from "./components/Profile";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -25,6 +27,17 @@ const App = () => {
     if (loggedUserJson) {
       const userToken = JSON.parse(loggedUserJson);
       setToken(userToken.token);
+    } else {
+      const url = window.location.href.split("/").pop();
+      const paths = [
+        "",
+        "login",
+        "signup",
+        "forgot-password",
+        "terms",
+        "about",
+      ];
+      !paths.includes(url) && window.location.assign("/");
     }
   }, [loggedUser]);
 
@@ -74,7 +87,7 @@ const App = () => {
             }
           />
           <Route
-            path="/home"
+            path="/"
             element={
               <Navigation
                 loggedUser={loggedUser}
@@ -86,6 +99,8 @@ const App = () => {
               path="/home"
               element={loggedUser.infoFilled ? <Home /> : <UserInfoForms />}
             />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/settings" element={<Settings />} />
           </Route>
           <Route path="/terms" element={<Terms />} />
           <Route path="/about" element={<About />} />

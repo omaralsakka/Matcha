@@ -52,7 +52,6 @@ export const InfoFilledTokenService = async () => {
     headers: { Authorization: token },
   };
   const response = await axios.post(`${userUrl}/infoFilledToken`, {}, config);
-  console.log("this is infofilled service", response.data);
   return response.data;
 };
 

@@ -19,8 +19,6 @@ const Home = () => {
       setProfilePictures(resp);
     });
   }, [dispatch]);
-  console.log("this is users: ", users);
-  console.log("this is profilepics: ", profilePictures);
 
   if (!users.length || !profilePictures.length) {
     return <LoadingScreen />;
