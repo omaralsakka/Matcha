@@ -1,6 +1,6 @@
 import UseField from "../UseField";
 import { useState } from "react";
-import { Card, Container, Form, Button } from "react-bootstrap";
+import { Container, Form, Button } from "react-bootstrap";
 import { useStoreUser } from "../../utils/getStoreStates";
 import LoadingScreen from "../LoadingScreen";
 

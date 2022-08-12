@@ -1,6 +1,6 @@
 import Signup from "./Signup";
 import { Routes, Route } from "react-router-dom";
-import Verified from "./Verified";
+import Verified from "../Verified";
 import Login from "./Login";
 import ForgotPassword from "./ForgotPassword";
 const Credentials = ({ setLoggedUser }) => {

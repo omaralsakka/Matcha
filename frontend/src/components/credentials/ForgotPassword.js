@@ -1,8 +1,8 @@
-import UseField from "./UseField";
+import UseField from "../UseField";
 import { Form, Button, Container } from "react-bootstrap";
-import logo from "../media/logo-black.png";
+import logo from "../../media/logo-black.png";
 import { Link } from "react-router-dom";
-import { checkEmail } from "../utils/InputChecks";
+import { checkEmail } from "../../utils/InputChecks";
 
 const ForgotPassword = () => {
   const email = UseField("email");

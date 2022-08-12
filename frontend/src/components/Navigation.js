@@ -1,6 +1,6 @@
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { useNavigate, Outlet, Link, NavLink } from "react-router-dom";
+import { useNavigate, Outlet, Link } from "react-router-dom";
 import { logoutUser } from "../reducers/loginReducer";
 
 const Navigation = ({ loggedUser, setLoggedUser }) => {

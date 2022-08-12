@@ -6,7 +6,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { tokenLoginCall } from "./reducers/loginReducer";
 import LandingPage from "./components/LandingPage";
 import AppFooter from "./components/footer/Footer";
-import Credentials from "./components/Credentials";
+import Credentials from "./components/credentials/Credentials";
 import Home from "./components/Home";
 import Navigation from "./components/Navigation";
 import UserInfoForms from "./components/userInfoForms/UserInfoForms";

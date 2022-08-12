@@ -1,13 +1,17 @@
 import { Form, Button, Container, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import UseField from "./UseField";
-import logo from "../media/logo-black.png";
+import UseField from "../UseField";
+import logo from "../../media/logo-black.png";
 import { useState, useEffect } from "react";
-import FormCheck from "../utils/FormCheck";
-import checkInputs from "../utils/InputChecks";
-import { checkUserName, checkEmail, checkPassword } from "../utils/InputChecks";
-import { signupService, getCredentials } from "../services/userServices";
-import ageConvertion from "../utils/ageConvertion";
+import FormCheck from "../../utils/FormCheck";
+import checkInputs from "../../utils/InputChecks";
+import {
+  checkUserName,
+  checkEmail,
+  checkPassword,
+} from "../../utils/InputChecks";
+import { signupService, getCredentials } from "../../services/userServices";
+import ageConvertion from "../../utils/ageConvertion";
 
 const CheckEmail = ({ setFormSubmit }) => {
   const navigate = useNavigate();
