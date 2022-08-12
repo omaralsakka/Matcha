@@ -13,8 +13,9 @@ import UserInfoForms from "./components/userInfoForms/UserInfoForms";
 import Terms from "./components/footer/Terms";
 import About from "./components/footer/About";
 import useJWT from "./utils/decryptToken";
-import Settings from "./components/settings/Settings";
+// import Settings from "./components/settings/Settings";
 import Profile from "./components/Profile";
+import UserSettings from "./components/UserSettings";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -100,7 +101,7 @@ const App = () => {
               element={loggedUser.infoFilled ? <Home /> : <UserInfoForms />}
             />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/settings" element={<Settings />} />
+            <Route path="/settings" element={<UserSettings />} />
           </Route>
           <Route path="/terms" element={<Terms />} />
           <Route path="/about" element={<About />} />

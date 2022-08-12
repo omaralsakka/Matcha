@@ -235,6 +235,11 @@
   flex-wrap: wrap;
 }
 
+.settings-container {
+  border-radius: 10px;
+  box-shadow: 1.8px 3.5px 3.5px hsl(0deg 0% 0% / 0.45);
+}
+
 @media only screen and (max-width: 450px) {
   .team-img-container {
     box-shadow: 20px 17px rgb(165, 165, 253);
