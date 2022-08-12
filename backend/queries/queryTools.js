@@ -28,7 +28,22 @@ const unionOneQualifier = async (column, tableTwo) => {
 };
 
 const insertForgottenPassword = async (email) => {
+
 	try {
+		const users = await pool.query(
+			"SELECT email FROM forgotten_password WHERE email = $1",
+			[email]
+		);
+		const response = users.rows[0];
+		if(response){
+			if(response.email === email) {
+				const deleteUser = await pool.query(
+					"DELETE FROM forgotten_password WHERE email = $1",
+					[email]
+				);
+			};
+		}
+
 		const verificationCode = generateRandom(50);
 
 		const queryResponse = await pool.query(

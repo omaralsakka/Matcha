@@ -13,7 +13,7 @@ const ForgotPassword = () => {
 	useEffect(() => {
 		getCredentials({type: "email"}).then((res) => {
 			let obj = res.find(o => o.email === email.value);
-			setEmailVerify(1);
+			setEmailVerify(true);
 			if (obj) {
 				if (obj.email === email.value) {
 					setEmailVerify(false);

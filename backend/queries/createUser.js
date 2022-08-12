@@ -62,9 +62,10 @@ const verifyUser = async (verificationCode) => {
 };
 
 // function that will remove user from forgotten pass word and change the pass word in the users table.
-const resetUser = async (code, password) => {
+const resetUserPassword = async (code, password) => {
 	
 	try {
+
 	  const queryResponse = await pool.query(
 		"SELECT * FROM forgotten_password WHERE verify_code = $1",
 		[code]
@@ -133,5 +134,5 @@ module.exports = {
   verifyUser,
   loginUser,
   tokenLogin,
-  resetUser,
+  resetUserPassword,
 };

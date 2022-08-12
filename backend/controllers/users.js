@@ -42,7 +42,7 @@ usersRouter.post("/forgotpassword", async (request, response) => {
 usersRouter.post("/resetpassword", async (request, response) => {
 	const {code, password} = request.body;
 
-	const resetedPassword = await queries.resetUser(code.code, password);
+	const resetedPassword = await queries.resetUserPassword(code.code, password);
 	if (resetedPassword) {
 	  return response.status(200).send(resetedPassword);
 	} else {
