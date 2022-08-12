@@ -15,7 +15,6 @@ import About from "./components/footer/About";
 import useJWT from "./utils/decryptToken";
 import Settings from "./components/settings/Settings";
 import Profile from "./components/Profile";
-// import UserSettings from "./components/UserSettings";
 
 const App = () => {
   const dispatch = useDispatch();
