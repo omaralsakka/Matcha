@@ -24,7 +24,7 @@ const Settings = () => {
       <Container className="mt-5 mb-3 w-50 ">
         <h1>Settings</h1>
         <hr />
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} className="mb-3">
           <Form.Group className="mb-3">
             <Form.Label>Change username</Form.Label>
             <Form.Control {...username} placeholder={user.username} />
@@ -71,18 +71,14 @@ const Settings = () => {
               }
             />
           </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Button variant="danger">Delete Account</Button>
-            <br />
-            <Form.Text className="text-muted">
-              This action is irreversible, all your data will be removed
-            </Form.Text>
-          </Form.Group>
           <Button className="form-button" variant="primary" type="submit">
             Save
           </Button>
         </Form>
+        <Button variant="danger">Delete Account</Button>
+        <p className="text-muted">
+          This action is irreversible, all your data will be removed
+        </p>
       </Container>
     );
   }
