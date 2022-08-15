@@ -19,7 +19,6 @@ const Home = () => {
       setProfilePictures(resp);
     });
   }, [dispatch]);
-
   if (!users.length || !profilePictures.length) {
     return <LoadingScreen />;
   } else {
@@ -28,7 +27,7 @@ const Home = () => {
         <Container>
           <HomeNavBar />
           <Container>
-            <Row xs={1} md={3} className="g-4">
+            <Row md={1}>
               {Array.from(users).map((user) => (
                 <UsersCards
                   key={user.username}
@@ -43,5 +42,17 @@ const Home = () => {
     );
   }
 };
+
+{
+  /* <Row xs={1} md={3} className="g-4">
+{Array.from(users).map((user) => (
+  <UsersCards
+    key={user.username}
+    user={user}
+    profilePictures={profilePictures}
+  />
+))}
+</Row> */
+}
 
 export default Home;

@@ -4,7 +4,6 @@ import LoadingScreen from "./LoadingScreen";
 
 const Profile = () => {
   const { user } = useStoreUser();
-
   if (!user) {
     return <LoadingScreen />;
   } else {

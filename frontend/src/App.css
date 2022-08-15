@@ -106,13 +106,13 @@
 }
 
 @media only screen and (max-width: 1280px) and (min-width: 451px) {
-	.signup-container {
-	  width: fit-content;
-	  box-shadow: none;
-	}
-	.form-button {
-	  width: 100%;
-	}
+  .signup-container {
+    width: fit-content;
+    box-shadow: none;
+  }
+  .form-button {
+    width: 100%;
+  }
 }
 
 .main-footer {
@@ -226,14 +226,22 @@
 }
 
 @-webkit-keyframes fadeOut {
-	0% {opacity: 1;}
-	100% {opacity: 0;}
- }
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 
 @keyframes fadeOut {
-	0% {opacity: 1;}
-	100% {opacity: 0;} 
- }
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 
 .location-alert {
   font-size: calc(5px + 1vw);
@@ -258,6 +266,30 @@
 .settings-container {
   border-radius: 10px;
   box-shadow: 1.8px 3.5px 3.5px hsl(0deg 0% 0% / 0.45);
+}
+
+.cards-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cards-icons {
+  width: 1.3vw;
+}
+
+.cards-tags {
+  border-radius: 20px;
+  padding: 15px;
+  margin-right: 10px;
+  background-color: #f2f4f6;
+}
+
+.cards-buttons {
+  display: flex;
+  width: 40%;
+  justify-content: space-evenly;
 }
 
 @media only screen and (max-width: 450px) {
