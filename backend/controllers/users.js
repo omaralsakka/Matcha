@@ -22,6 +22,7 @@ usersRouter.post("/", async (request, response) => {
   }
 });
 
+// when user submits as request for a password reset, they are added to a "forgotten" table and sent an email
 usersRouter.post("/forgotpassword", async (request, response) => {
 	const body = request.body;
 	const verificationCode = await queryTools.insertForgottenPassword(body.email);
@@ -39,6 +40,7 @@ usersRouter.post("/forgotpassword", async (request, response) => {
 	}
 });
 
+// to insert the new password to the database and remove person from "forgotten" table
 usersRouter.post("/resetpassword", async (request, response) => {
 	const {code, password} = request.body;
 
@@ -193,6 +195,7 @@ usersRouter.get("/pictures/:id", async (request, response) => {
   }
 });
 
+// used to get usernames and email from both tables users and user_verify
 usersRouter.post("/logins", async (request, response) => {
   const body = request.body;
   let info;
@@ -209,5 +212,10 @@ usersRouter.post("/logins", async (request, response) => {
     });
   }
 });
+
+usersRouter.post("/search", async (request, response) => {
+	const body = request.body;
+
+})
 
 module.exports = usersRouter;

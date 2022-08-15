@@ -69,3 +69,8 @@ export const getCredentials = async (type) => {
   const response = await axios.post(`${userUrl}/logins`, type);
   return response.data;
 };
+
+export const searchService = async (criterias) => {
+	const response = await axios.post(`${userUrl}/search`, criterias);
+	return response.data;
+}
