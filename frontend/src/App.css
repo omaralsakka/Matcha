@@ -119,7 +119,6 @@
   position: sticky;
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   justify-content: center;
   width: 100%;
   left: 0;
@@ -237,21 +236,28 @@
  }
 
 .location-alert {
-	-webkit-animation-fill-mode: both;animation-fill-mode: both;
-	-webkit-animation-duration: 15s;animation-duration: 15s;
-	-webkit-animation-name: fadeOut;
-	animation-name: fadeOut;
-	font-size: calc(5px + 1vw);
+  font-size: calc(5px + 1vw);
 }
 
-.error-alert {
-	font-size: calc(5px + 0.8vw);
+.username-alert {
+  font-size: calc(5px + 1vw);
 }
 
 .location-alert-success {
-	visibility: hidden;
-  	opacity: 0;
-  	transition: visibility 0s 3s, opacity 3s linear;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 4s, opacity 4s linear;
+}
+
+.users-cards-wrapper {
+  display: flex;
+  background-color: red;
+  flex-wrap: wrap;
+}
+
+.settings-container {
+  border-radius: 10px;
+  box-shadow: 1.8px 3.5px 3.5px hsl(0deg 0% 0% / 0.45);
 }
 
 @media only screen and (max-width: 450px) {

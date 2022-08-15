@@ -1,5 +1,5 @@
 import InfoForm from "./InfoForm";
-import useStoreUser from "../../utils/getStoreUser";
+import { useStoreUser } from "../../utils/getStoreStates";
 import { useEffect, useState } from "react";
 import LoadingScreen from "../LoadingScreen";
 import PicturesForm from "./PicturesForm";

@@ -7,3 +7,13 @@ export const getUsersImages = async (user_id) => {
   const response = await axios.get(`${userUrl}/pictures/${user_id}`);
   return response.data;
 };
+
+export const getUsersService = async () => {
+  const response = await axios.get(`${userUrl}/all`);
+  return response.data;
+};
+
+export const getUsersProfileImage = async () => {
+  const response = await axios.get(`${userUrl}/profileimage`);
+  return response.data;
+};

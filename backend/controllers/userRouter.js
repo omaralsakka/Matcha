@@ -1,11 +1,11 @@
-const usersRouter = require("express").Router();
+const userRouter = require("express").Router();
 const queries = require("../queries/createUser");
 const queryTools = require("../queries/queryTools");
 const infoQueries = require("../queries/userInfo");
 const Mailer = require("../utils/mailer");
 const jwt = require("jsonwebtoken");
 
-usersRouter.post("/", async (request, response) => {
+userRouter.post("/", async (request, response) => {
   const body = request.body;
   const verificationCode = await queries.insertUserVerify(body);
   if (verificationCode.length === 50) {
@@ -23,7 +23,7 @@ usersRouter.post("/", async (request, response) => {
 });
 
 // when user submits as request for a password reset, they are added to a "forgotten" table and sent an email
-usersRouter.post("/forgotpassword", async (request, response) => {
+userRouter.post("/forgotpassword", async (request, response) => {
 	const body = request.body;
 	const verificationCode = await queryTools.insertForgottenPassword(body.email);
 	if (verificationCode.length === 50) {
@@ -41,7 +41,7 @@ usersRouter.post("/forgotpassword", async (request, response) => {
 });
 
 // to insert the new password to the database and remove person from "forgotten" table
-usersRouter.post("/resetpassword", async (request, response) => {
+userRouter.post("/resetpassword", async (request, response) => {
 	const {code, password} = request.body;
 
 	const resetedPassword = await queries.resetUserPassword(code.code, password);
@@ -54,7 +54,7 @@ usersRouter.post("/resetpassword", async (request, response) => {
 	}
 });
 
-usersRouter.post("/verify", async (request, response) => {
+userRouter.post("/verify", async (request, response) => {
   const body = request.body;
   const verifyUser = await queries.verifyUser(body.code);
   if (verifyUser) {
@@ -66,7 +66,7 @@ usersRouter.post("/verify", async (request, response) => {
   }
 });
 
-usersRouter.post("/login", async (request, response) => {
+userRouter.post("/login", async (request, response) => {
   const body = request.body;
   const loggedUser = await queries.loginUser(body);
 
@@ -97,7 +97,7 @@ usersRouter.post("/login", async (request, response) => {
   }
 });
 
-usersRouter.post("/login/tk", async (request, response) => {
+userRouter.post("/login/tk", async (request, response) => {
   const body = request.body;
   const loggedUser = await queries.tokenLogin(body);
   if (loggedUser) {
@@ -119,7 +119,7 @@ const getToken = (request) => {
   return null;
 };
 
-usersRouter.post("/info", async (request, response) => {
+userRouter.post("/info", async (request, response) => {
   const ip = request.ip;
 
   const body = request.body;
@@ -140,7 +140,7 @@ usersRouter.post("/info", async (request, response) => {
   }
 });
 
-usersRouter.post("/pictures", async (request, response) => {
+userRouter.post("/pictures", async (request, response) => {
   const body = request.body;
   const token = getToken(request);
   const decodedToken = jwt.verify(token, process.env.SECRET);
@@ -163,7 +163,7 @@ usersRouter.post("/pictures", async (request, response) => {
   }
 });
 
-usersRouter.post("/infoFilledToken", async (request, response) => {
+userRouter.post("/infoFilledToken", async (request, response) => {
   const oldToken = getToken(request);
   const decodedToken = jwt.verify(oldToken, process.env.SECRET);
   if (!decodedToken.id) {
@@ -181,7 +181,7 @@ usersRouter.post("/infoFilledToken", async (request, response) => {
   });
 });
 
-usersRouter.get("/pictures/:id", async (request, response) => {
+userRouter.get("/pictures/:id", async (request, response) => {
   const id = request.params.id;
 
   const queryResponse = await infoQueries.getUserPictures(1);
@@ -196,7 +196,7 @@ usersRouter.get("/pictures/:id", async (request, response) => {
 });
 
 // used to get usernames and email from both tables users and user_verify
-usersRouter.post("/logins", async (request, response) => {
+userRouter.post("/logins", async (request, response) => {
   const body = request.body;
   let info;
   if (body.type === "username") {
@@ -213,17 +213,4 @@ usersRouter.post("/logins", async (request, response) => {
   }
 });
 
-usersRouter.post("/search", async (request, response) => {
-	const body = request.body;
-	console.log(body);
-	/* const queryResponse = await queryTools.advancedSearch(body);
-	if(queryResponse.rows) {
-		return response.status(200).send(info);
-	} else {
-	return response.status(404).json({
-		error: "no one found with search or bad request",
-	});
-	} */
-});
-
-module.exports = usersRouter;
+module.exports = userRouter;

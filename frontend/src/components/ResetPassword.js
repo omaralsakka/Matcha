@@ -2,7 +2,7 @@ import UseField from "./UseField";
 import logo from "../media/logo-black.png";
 import { useParams } from "react-router-dom";
 import { checkPassword } from "../utils/InputChecks";
-import { resetPassWordService } from "../services/Services";
+import { resetPassWordService } from "../services/userServices";
 import { Form, Button, Container, Alert } from "react-bootstrap";
 
 const ResetPassword = () => {

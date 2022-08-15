@@ -1,9 +1,9 @@
 import Signup from "./Signup";
 import { Routes, Route } from "react-router-dom";
-import Verified from "./Verified";
+import Verified from "../Verified";
 import Login from "./Login";
 import ForgotPassword from "./ForgotPassword";
-import ResetPassword from "./ResetPassword";
+import ResetPassword from "../ResetPassword";
 
 const Credentials = ({ setLoggedUser }) => {
   return (

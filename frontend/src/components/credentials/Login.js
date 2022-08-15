@@ -1,11 +1,11 @@
-import UseField from "./UseField";
+import UseField from "../UseField";
 import  { useState } from "react";
 import { Form, Container, Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../media/logo-black.png";
-import { checkUserName, checkPassword } from "../utils/InputChecks";
+import logo from "../../media/logo-black.png";
+import { checkUserName, checkPassword } from "../../utils/InputChecks";
 import { useDispatch } from "react-redux";
-import { logUser } from "../reducers/loginReducer";
+import { logUser } from "../../reducers/loginReducer";
 
 const Login = ({ setLoggedUser }) => {
   const username = UseField("text");

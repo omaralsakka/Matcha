@@ -5,7 +5,7 @@ import useImage from "../../utils/useImage";
 import {
   pictureFormService,
   InfoFilledTokenService,
-} from "../../services/Services";
+} from "../../services/userServices";
 
 const UserImageCard = ({ index, src, onImageUpdate, onImageRemove }) => {
   return (

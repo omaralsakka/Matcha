@@ -9,7 +9,7 @@ import {
   setServiceToken,
   loginService,
   tokenLoginService,
-} from "../services/Services";
+} from "../services/userServices";
 
 const initialState = {
   user: null,
@@ -55,7 +55,7 @@ const loginReducer = (state = initialState, action) => {
   }
 };
 
-export const loginSuccess = (user) => {
+const loginSuccess = (user) => {
   return {
     type: LOGIN_SUCCESS,
     payload: user,
@@ -69,14 +69,14 @@ const loginFailed = (error) => {
   };
 };
 
-export const logoutSuccess = () => {
+const logoutSuccess = () => {
   return {
     type: LOGOUT_SUCCESS,
     payload: "",
   };
 };
 
-export const logoutError = (error) => {
+const logoutError = (error) => {
   return {
     type: LOGOUT_ERROR,
     payload: error,

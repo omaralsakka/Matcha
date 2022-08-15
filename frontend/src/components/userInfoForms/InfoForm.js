@@ -3,7 +3,7 @@ import UseField from "../UseField";
 import { InputTags } from "react-bootstrap-tagsinput";
 import "react-bootstrap-tagsinput/dist/index.css";
 import { useState } from "react";
-import { infoFormService } from "../../services/Services";
+import { infoFormService } from "../../services/userServices";
 import useLocation from "../../utils/locationTool";
 
 const InfoForm = ({ setVisibleForm }) => {
@@ -13,7 +13,7 @@ const InfoForm = ({ setVisibleForm }) => {
   const [tags, setTags] = useState([]);
   /* const location = useLocation(); */ // dont use this unless forced and make sure there is no infinite render
   const location = "";
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -22,7 +22,7 @@ const InfoForm = ({ setVisibleForm }) => {
       sexualPreference: sexualPreference.value,
       bio: bio.value,
       tags: tags,
-	  location: location,
+      location: location,
     };
     infoFormService(userInfo).then(() => setVisibleForm(2));
   };
@@ -35,15 +35,20 @@ const InfoForm = ({ setVisibleForm }) => {
   return (
     <>
       <Container className="signup-container mb-3 mt-5">
-		{location.length === 0 ? (
-			<Alert variant="warning" className="location-alert">
-				Please accept the use of <strong>location services</strong> for optimal experience! Other users will be recomended based on your location.
-			</ Alert>
-		) : 
-			<Alert variant="success" className="location-alert location-alert-success">
-				Thank you for sharing your location! 
-			</ Alert>
-		}
+        {location.length === 0 ? (
+          <Alert variant="warning" className="location-alert">
+            Please accept the use of <strong>location services</strong> for
+            optimal experience! Other users will be recomended based on your
+            location.
+          </Alert>
+        ) : (
+          <Alert
+            variant="success"
+            className="location-alert location-alert-success"
+          >
+            Thank you for sharing your location!
+          </Alert>
+        )}
         <Form onSubmit={handleSubmit}>
           <Form.Group className="text-center mb-3">
             <Form.Label className="fs-3">Tell us more about you</Form.Label>

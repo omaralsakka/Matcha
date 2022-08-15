@@ -1,6 +1,6 @@
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { useNavigate, Outlet } from "react-router-dom";
+import { useNavigate, Outlet, Link } from "react-router-dom";
 import { logoutUser } from "../reducers/loginReducer";
 
 const Navigation = ({ loggedUser, setLoggedUser }) => {
@@ -22,7 +22,15 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
         <Container fluid>
           <Navbar.Brand href="#home">Matcha</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link to="/home">Home</Nav.Link>
+            <Link to="/home" className="nav-link">
+              Home
+            </Link>
+            <Link to="/profile" className="nav-link">
+              Profile
+            </Link>
+            <Link to="/settings" className="nav-link">
+              Settings
+            </Link>
           </Nav>
           <Navbar.Collapse className="justify-content-end">
             <Nav.Item className="mx-3">

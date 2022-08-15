@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const userUrl = "http://localhost:5000/api/users";
+const userUrl = "http://localhost:5000/api/user";
 let token;
 
 export const setServiceToken = (userToken) => {
@@ -69,8 +69,3 @@ export const getCredentials = async (type) => {
   const response = await axios.post(`${userUrl}/logins`, type);
   return response.data;
 };
-
-export const searchService = async (criterias) => {
-	const response = await axios.post(`${userUrl}/search`, criterias);
-	return response.data;
-}
