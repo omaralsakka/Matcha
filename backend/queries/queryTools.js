@@ -73,9 +73,18 @@ const updatePassword = async (password, email) => {
 	}
 }
 
+const advancedSearch = async (criterias) => {
+	try {
+		
+	} catch (error) {
+		
+	}
+}
+
 module.exports = {
   selectOneQualifier,
   unionOneQualifier,
   insertForgottenPassword,
   updatePassword,
+  advancedSearch,
 };

@@ -215,7 +215,15 @@ usersRouter.post("/logins", async (request, response) => {
 
 usersRouter.post("/search", async (request, response) => {
 	const body = request.body;
-
-})
+	console.log(body);
+	/* const queryResponse = await queryTools.advancedSearch(body);
+	if(queryResponse.rows) {
+		return response.status(200).send(info);
+	} else {
+	return response.status(404).json({
+		error: "no one found with search or bad request",
+	});
+	} */
+});
 
 module.exports = usersRouter;
