@@ -6,50 +6,70 @@ import {
   Carousel,
   Button,
   Collapse,
-  Accordion,
   Container,
   Fade,
 } from "react-bootstrap";
 
 import pic from "../../media/cp2.jpg";
-import pic2 from "../../media/cp3.jpg";
 import heartOutline from "../../media/heart-outline.png";
+import heartInline from "../../media/heart-inline.png";
 import blockIcon from "../../media/x-icon.png";
 import locationIcon from "../../media/location-icon.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { likeUser, disLikeUser } from "../../reducers/usersReducer";
 
-const UsersCards = ({ user, profilePictures }) => {
+const UsersCards = ({ user, profilePictures, loggedUserId }) => {
   const [open, setOpen] = useState(false);
   const [hide, setHide] = useState(true);
+  const [heart, setHeart] = useState(heartOutline);
+  const [liked, setLiked] = useState(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (user.liked_by) {
+      if (user.liked_by.includes(loggedUserId)) {
+        setHeart(heartInline);
+        setLiked(true);
+      }
+    }
+  }, [user, loggedUserId]);
 
   const displayUserInfo = () => {
     setOpen(!open);
     setHide(!hide);
   };
+
+  const likePerson = () => {
+    if (liked) {
+      dispatch(disLikeUser(user.user_id, loggedUserId));
+      setHeart(heartOutline);
+      setLiked(false);
+    } else {
+      dispatch(likeUser(user.user_id, loggedUserId));
+      setHeart(heartInline);
+      setLiked(true);
+    }
+  };
+
   return (
     <Col className="g-3">
       <Card className="w-auto">
         <Row>
-          <Col>
+          <Col key={user.user_id * 3}>
             <Carousel controls={false} pause="hover" className="carousel-cards">
               <Carousel.Item>
                 <Card.Img src={pic} />
                 <Fade in={hide}>
                   <Card.ImgOverlay>
-                    <Container className="card-overlay-text p-1 w-100 rounded-pill">
-                      <Card.Title className="text-white fs-1" fluid>
+                    <Container className="card-overlay-text p-1 rounded">
+                      <Card.Title className="text-white fs-1">
                         {user.fullname}
                       </Card.Title>
                     </Container>
                   </Card.ImgOverlay>
                 </Fade>
               </Carousel.Item>
-              {/* <Carousel.Item>
-                <Card.Img src={pic2} />
-                <Card.ImgOverlay className="mt-5">
-                  <Card.Title>{user.fullname}</Card.Title>
-                </Card.ImgOverlay>
-              </Carousel.Item> */}
             </Carousel>
             <Button
               onClick={displayUserInfo}
@@ -60,14 +80,14 @@ const UsersCards = ({ user, profilePictures }) => {
             </Button>
           </Col>
           <Collapse in={open} dimension="width">
-            <Col md={7} id="example-collapse-text">
+            <Col key={user.user_id * 4} md={7} id="example-collapse-text">
               <Card.Body className="cards-body h-100">
                 <div>
                   <Card.Title className="mb-3">
                     <strong className="fs-1">{user.fullname}</strong>
                     <span className="text-muted fs-3 m-3">{user.age}</span>
                   </Card.Title>
-                  <div className="d-flex align-items-center mb-3" fluid>
+                  <div className="d-flex align-items-center mb-3">
                     <div
                       className="opacity-75 cards-icons"
                       style={{ marginRight: "10px" }}
@@ -79,11 +99,9 @@ const UsersCards = ({ user, profilePictures }) => {
                     </Card.Text>
                   </div>
                   <Card.Text className="mb-4">
-                    <div>
-                      <strong className="fs-3">About me</strong>
-                    </div>
+                    <strong className="fs-3">About me</strong>
                     <br />
-                    <p className="fs-6 text-muted">
+                    <span className="fs-6 text-muted">
                       Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                       sed do eiusmod tempor incididunt ut labore et dolore magna
                       aliqua. Ut enim ad minim veniam, quis nostrud exercitation
@@ -94,27 +112,33 @@ const UsersCards = ({ user, profilePictures }) => {
                       officia deserunt mollit anim id est laborum.
                       <br />
                       <span className="fs-6">@{user.username}</span>
-                    </p>
+                    </span>
                   </Card.Text>
                   <hr />
                   <Card.Text>
-                    <div>
-                      <strong className="fs-3">Interests</strong>
-                    </div>
-                    <br />
-                    <div className="d-flex">
+                    <strong className="fs-3">Interests</strong>
+                  </Card.Text>
+                  <Card.Text>
+                    <span className="d-flex">
                       {user.tags.map((tag) => (
-                        <p className="cards-tags text-muted">{tag}</p>
+                        <span key={tag} className="cards-tags text-muted">
+                          {tag}
+                        </span>
                       ))}
-                    </div>
+                    </span>
                   </Card.Text>
                 </div>
+
                 <div className="cards-buttons">
                   <Button variant="light" className="rounded-pill">
                     <Image src={blockIcon} />
                   </Button>
-                  <Button variant="light" className="rounded-pill">
-                    <Image src={heartOutline} />
+                  <Button
+                    onClick={likePerson}
+                    variant="light"
+                    className="rounded-pill"
+                  >
+                    <Image src={heart} />
                   </Button>
                 </div>
               </Card.Body>
@@ -124,91 +148,6 @@ const UsersCards = ({ user, profilePictures }) => {
       </Card>
     </Col>
   );
-  //   <Col className="g-3">
-  //   <Card className="w-auto">
-  //     <Row>
-  //       <Col>
-  //         <Carousel controls={false} pause="hover" className="carousel-cards">
-  //           <Carousel.Item>
-  //             <Card.Img src={pic} />
-  //           </Carousel.Item>
-  //           <Carousel.Item>
-  //             <Card.Img src={pic2} />
-  //           </Carousel.Item>
-  //         </Carousel>
-  //         <Button
-  //           onClick={displayUserInfo}
-  //           aria-controls="example-collapse-text"
-  //           aria-expanded={open}
-  //           className="users-cards-btn"
-  //         >
-  //           Check me out
-  //         </Button>
-  //       </Col>
-  //       <Collapse in={open} dimension="width">
-  //         <Col md={7} id="example-collapse-text">
-  //           <Card.Body className="cards-body h-100">
-  //             <div>
-  //               <Card.Title className="mb-3">
-  //                 <strong className="fs-1">{user.fullname}</strong>
-  //                 <span className="text-muted fs-3 m-3">{user.age}</span>
-  //               </Card.Title>
-  //               <div className="d-flex align-items-center mb-3" fluid>
-  //                 <div
-  //                   className="opacity-75 cards-icons"
-  //                   style={{ marginRight: "10px" }}
-  //                 >
-  //                   <Image src={locationIcon} fluid></Image>
-  //                 </div>
-  //                 <Card.Text className="text-muted fs-4">
-  //                   Lives in {user.city}
-  //                 </Card.Text>
-  //               </div>
-  //               <Card.Text className="mb-4">
-  //                 <div>
-  //                   <strong className="fs-3">About me</strong>
-  //                 </div>
-  //                 <br />
-  //                 <p className="fs-6 text-muted">
-  //                   Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-  //                   sed do eiusmod tempor incididunt ut labore et dolore magna
-  //                   aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-  //                   ullamco laboris nisi ut aliquip ex ea commodo consequat.
-  //                   Duis aute irure dolor in reprehenderit in voluptate velit
-  //                   esse cillum dolore eu fugiat nulla pariatur. Excepteur
-  //                   sint occaecat cupidatat non proident, sunt in culpa qui
-  //                   officia deserunt mollit anim id est laborum.
-  //                   <br />
-  //                   <span className="fs-6">@{user.username}</span>
-  //                 </p>
-  //               </Card.Text>
-  //               <hr />
-  //               <Card.Text>
-  //                 <div>
-  //                   <strong className="fs-3">Interests</strong>
-  //                 </div>
-  //                 <br />
-  //                 <div className="d-flex">
-  //                   {user.tags.map((tag) => (
-  //                     <p className="cards-tags text-muted">{tag}</p>
-  //                   ))}
-  //                 </div>
-  //               </Card.Text>
-  //             </div>
-  //             <div className="cards-buttons">
-  //               <Button variant="light" className="rounded-pill">
-  //                 <Image src={blockIcon} />
-  //               </Button>
-  //               <Button variant="light" className="rounded-pill">
-  //                 <Image src={heartOutline} />
-  //               </Button>
-  //             </div>
-  //           </Card.Body>
-  //         </Col>
-  //       </Collapse>
-  //     </Row>
-  //   </Card>
-  // </Col>
 };
 
 export default UsersCards;

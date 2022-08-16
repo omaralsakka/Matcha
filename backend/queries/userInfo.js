@@ -72,9 +72,37 @@ const getProfilePictures = async () => {
   }
 };
 
+const likeUserQuery = async (likedUserId, LikedById) => {
+  try {
+    const queryResponse = await pool.query(
+      "UPDATE users set liked_by = array_append(liked_by, $1) WHERE user_id = $2 RETURNING *",
+      [LikedById, likedUserId]
+    );
+    return queryResponse;
+  } catch (error) {
+    console.error(error.message);
+    return false;
+  }
+};
+
+const disLikeUserQuery = async (disLikedUserId, disLikedById) => {
+  try {
+    const queryResponse = await pool.query(
+      "UPDATE users SET liked_by = array_remove(liked_by, $1) WHERE user_id = $2 RETURNING *",
+      [disLikedById, disLikedUserId]
+    );
+    return queryResponse;
+  } catch (error) {
+    console.error(error.message);
+    return false;
+  }
+};
+
 module.exports = {
   insertUserInfo,
   insertUserPictures,
   getUserPictures,
   getProfilePictures,
+  likeUserQuery,
+  disLikeUserQuery,
 };

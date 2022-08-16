@@ -27,5 +27,3 @@ export const useStoreUsers = () => {
   });
   return user;
 };
-
-// export default useStoreUser;

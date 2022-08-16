@@ -17,3 +17,13 @@ export const getUsersProfileImage = async () => {
   const response = await axios.get(`${userUrl}/profileimage`);
   return response.data;
 };
+
+export const likeUserService = async (usersIds) => {
+  const response = await axios.post(`${userUrl}/likeuser`, usersIds);
+  return response.data;
+};
+
+export const dislikeUserService = async (usersIds) => {
+  const response = await axios.post(`${userUrl}/dislikeuser`, usersIds);
+  return response.data;
+};
