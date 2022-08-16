@@ -279,7 +279,6 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
   width: 39vw;
 }
 
@@ -296,12 +295,21 @@
 
 .cards-buttons {
   display: flex;
-  width: 40%;
-  justify-content: space-evenly;
+  width: 100%;
+  justify-content: center;
+  gap: 3vw;
 }
 
 .carousel-cards {
   max-width: 27vw;
+}
+
+.like-btn > img {
+  transition: transform 0.2s ease;
+}
+
+.like-btn:active > img {
+  transform: scale(1.5);
 }
 
 @media only screen and (max-width: 450px) {

@@ -136,7 +136,7 @@ const UsersCards = ({ user, profilePictures, loggedUserId }) => {
                   <Button
                     onClick={likePerson}
                     variant="light"
-                    className="rounded-pill"
+                    className="rounded-pill like-btn"
                   >
                     <Image src={heart} />
                   </Button>
