@@ -259,8 +259,15 @@
 
 .users-cards-wrapper {
   display: flex;
-  background-color: red;
-  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.users-cards-btn {
+  position: absolute;
+  left: 0;
+  bottom: 0;
 }
 
 .settings-container {
@@ -292,9 +299,16 @@
   justify-content: space-evenly;
 }
 
+.carousel-cards {
+  max-width: 27vw;
+}
+
 @media only screen and (max-width: 450px) {
   .team-img-container {
     box-shadow: 20px 17px rgb(165, 165, 253);
+  }
+  .carousel-cards {
+    max-width: 100vw;
   }
 }
 

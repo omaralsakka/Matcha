@@ -26,16 +26,18 @@ const Home = () => {
       <>
         <Container>
           <HomeNavBar />
-          <Container>
-            <Row md={1}>
-              {Array.from(users).map((user) => (
-                <UsersCards
-                  key={user.username}
-                  user={user}
-                  profilePictures={profilePictures}
-                />
-              ))}
-            </Row>
+          <Container className="users-cards-wrapper">
+            {Array.from(users).map((user) => (
+              <>
+                <Row className="mb-5">
+                  <UsersCards
+                    key={user.username}
+                    user={user}
+                    profilePictures={profilePictures}
+                  />
+                </Row>
+              </>
+            ))}
           </Container>
         </Container>
       </>
