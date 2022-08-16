@@ -280,6 +280,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  width: 39vw;
 }
 
 .cards-icons {
@@ -309,6 +310,13 @@
   }
   .carousel-cards {
     max-width: 100vw;
+  }
+  .cards-body {
+    width: 98vw;
+  }
+  .cards-buttons {
+    width: 100%;
+    margin: 10vh 0;
   }
 }
 
