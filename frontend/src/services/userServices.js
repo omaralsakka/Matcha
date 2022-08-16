@@ -66,6 +66,20 @@ export const InfoFilledTokenService = async () => {
 };
 
 export const getCredentials = async (type) => {
-  const response = await axios.post(`${userUrl}/logins`, type);
+  const response = await axios.post(`${userUrl}/verify-username-email`, type);
   return response.data;
 };
+
+export const settingsService =  async (settingsObj) => {
+  const response = await axios.post(`${userUrl}/settings`, settingsObj);
+  return response.data;
+}
+
+export const verifyOldPassword = async (password, id, type) => {
+	const infoObj = {
+		pw : password,
+		id : id,
+	};
+	const response = await axios.post(`${userUrl}/verify-password`, infoObj);
+	return response.data;
+}

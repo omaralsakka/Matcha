@@ -196,7 +196,7 @@ userRouter.get("/pictures/:id", async (request, response) => {
 });
 
 // used to get usernames and email from both tables users and user_verify
-userRouter.post("/logins", async (request, response) => {
+userRouter.post("/verify-username-email", async (request, response) => {
   const body = request.body;
   let info;
   if (body.type === "username") {
@@ -211,6 +211,31 @@ userRouter.post("/logins", async (request, response) => {
       error: "no users in database or bad request",
     });
   }
+});
+
+userRouter.post("/settings", async (request, response) => {
+	const body = request.body;
+	const result = await infoQueries.insertSettings(body);
+	if(result) {
+		return response.status(200).send(result);
+	} else {
+		return response.status(404).json({
+			error: "issue with inserting new information by settings",
+	});
+	}
+});
+
+userRouter.post("/verify-password", async (request, response) => {
+
+	const body = request.body;
+	try {
+		const oldPassword = await infoQueries.getPassword(body);
+		return response.status(200).send(oldPassword);
+	} catch (error) {
+		return response.status(404).json({
+			error: "bad request"
+		});
+	}
 });
 
 module.exports = userRouter;

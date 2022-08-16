@@ -1,8 +1,10 @@
 import UseField from "../UseField";
-import { useState } from "react";
-import { Container, Form, Button } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import { Container, Form, Button, Alert } from "react-bootstrap";
 import { useStoreUser } from "../../utils/getStoreStates";
 import LoadingScreen from "../LoadingScreen";
+import { settingsService, verifyOldPassword, getCredentials } from "../../services/userServices"
+import { checkUserName, checkPassword, checkFullName, checkEmail, } from "../../utils/InputChecks"
 
 const Settings = () => {
   const { user } = useStoreUser();
@@ -12,9 +14,68 @@ const Settings = () => {
   const oldPassword = UseField("password");
   const newPassword = UseField("password");
   const [passType, setPassType] = useState("password");
+  const [verifyOldPw, setVerifyOldPw] = useState(0);
+  const [userVerify, setUsernameVerify] = useState(1);
+  const [emailVerify, setEmailVerify] = useState(1);
+
+  useEffect(() => {
+    getCredentials({ type: "username" }).then((res) => {
+      let obj = res.find((o) => o.username === username.value);
+      setUsernameVerify(1);
+      if (obj) {
+        if (obj.username === username.value) {
+          setUsernameVerify(0);
+        }
+      }
+    });
+  }, [username.value]);
+
+  useEffect(() => {
+    getCredentials({ type: "email" }).then((res) => {
+      let obj = res.find((o) => o.email === email.value);
+      setEmailVerify(1);
+      if (obj) {
+        if (obj.email === email.value) {
+          setEmailVerify(0);
+        }
+      }
+    });
+  }, [email.value]);
+
+  useEffect(() => {
+	  if(user)
+    	verifyOldPassword(oldPassword.value, user.user_id).then((res) => {
+      setVerifyOldPw(1);
+      if (res) {
+        if (res === "incorrect") {
+          setVerifyOldPw(0);
+        }
+      }
+    });
+  }, [oldPassword.value, user]);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+	e.preventDefault();
+	if(username.value.length === 0)
+		username.value = user.username;
+	if(fullname.value.length === 0)
+		fullname.value = user.fullname;
+	if(email.value.length === 0)
+		email.value = user.email;
+	const settingsInfo = {
+		username : username.value,
+		fullname : fullname.value,
+		email : email.value,
+		newPW : newPassword.value,
+		id : user.user_id,
+	}
+	settingsService(settingsInfo);
+	e.target.value = "";
+    username.onChange(e);
+	fullname.onChange(e);
+	email.onChange(e);
+	oldPassword.onChange(e);
+	newPassword.onChange(e);
   };
 
   if (!user) {
@@ -28,6 +89,11 @@ const Settings = () => {
           <Form.Group className="mb-3">
             <Form.Label>Change username</Form.Label>
             <Form.Control {...username} placeholder={user.username} />
+			{userVerify === 0 ? 
+			  	<Alert variant="danger" className="error-alert mt-4">
+					This <strong>username</strong> is already in use! Please choose an other one.
+				</Alert> : <></>
+			}
             <Form.Text className="text-muted">
               Username should contain letters and numbers only with minimum
               length of 3
@@ -37,6 +103,12 @@ const Settings = () => {
           <Form.Group className="mb-3">
             <Form.Label>Change email</Form.Label>
             <Form.Control {...email} placeholder={user.email} />
+			{emailVerify === 0 ?
+                <Alert variant="danger" className="error-alert mt-4">
+                  This <strong>email</strong> is already in use! Please choose
+                  an other one.
+                </Alert> : <></>
+              }
             <Form.Text className="text-muted">
               We'll never share your email with anyone else.
             </Form.Text>
@@ -50,6 +122,13 @@ const Settings = () => {
           <Form.Group className="mb-3">
             <Form.Label>Change password</Form.Label>
             <Form.Control {...oldPassword} placeholder="old password" />
+			{verifyOldPw === 1 || oldPassword.value.length === 0 ?
+                <></>
+               : 
+               ( <Alert variant="danger" className="username-alert mt-4">
+                  <strong>Password</strong> incorrect!
+                </Alert> )
+            }
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Control
@@ -71,7 +150,14 @@ const Settings = () => {
               }
             />
           </Form.Group>
-          <Button className="form-button" variant="primary" type="submit">
+          <Button disabled={
+            	checkUserName(username.value) ||
+				checkFullName(fullname.value) ||
+				checkEmail(email.value) ||
+				(checkPassword(newPassword.value) && verifyOldPw === 1)
+				? false
+                : true
+              } className="form-button" variant="primary" type="submit">
             Save
           </Button>
         </Form>
