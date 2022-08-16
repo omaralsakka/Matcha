@@ -87,7 +87,7 @@ const insertSettings = async ({username, fullname, email, newPW, id}) => {
 	try {
 	const queryResponse = await pool.query(
 		"UPDATE users SET username = $1, email = $2, fullname = $3, password = $4 WHERE user_id = $5",
-		[username, fullname, email, newPW, id]
+		[username, email, fullname, newPW, id]
 	);
 	return queryResponse.rows;
 	} catch (error) {
