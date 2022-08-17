@@ -1,15 +1,19 @@
-import { Form, Container, Button } from "react-bootstrap";
+import { Form, Container, Button, Alert } from "react-bootstrap";
 import InputRange from "react-input-range";
 import { InputTags } from "react-bootstrap-tagsinput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UseField from "./UseField";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserSearch } from "../reducers/searchReducer";
 
 const Search = () => {
   const dispatch = useDispatch();
+  const { search } = useSelector((state) => state.search);
+  const { user } = useSelector((state) => state.login);
   const city = UseField("text");
   const country = UseField("text");
   const [tags, setTags] = useState([]);
+  const [alert, setAlert] = useState(false);
   const [ranges, setRanges] = useState({
     ageValues: {
       min: 21,
@@ -20,7 +24,6 @@ const Search = () => {
       max: 60,
     },
   });
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const userSearch = {
@@ -36,13 +39,32 @@ const Search = () => {
       country: country.value,
       tags: tags,
     };
-    // dispatch(saveSearch(userSearch));
+    // then alert settings has been saved.
+    dispatch(updateUserSearch(user.loggedUser.user_id, userSearch)).then(
+      (resp) => {
+        if (resp.user_id) {
+          setAlert(true);
+          setTimeout(() => {
+            setAlert(false);
+          }, 5000);
+        }
+        console.log("this is resp: ", resp.user_id);
+      }
+    );
   };
+
   return (
     <Container className="signup-container mt-5 mb-3 w-50 ">
-      <h1 className="text-center">Advance search</h1>
+      <h1 className="text-center">Advanced search</h1>
       <hr />
-
+      {alert && (
+        <Alert
+          variant="success"
+          className="location-alert location-alert-success text-center"
+        >
+          Settings have been saved
+        </Alert>
+      )}
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-5">
           <Form.Label className="fs-5">Age range</Form.Label>

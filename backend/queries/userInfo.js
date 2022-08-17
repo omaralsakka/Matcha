@@ -1,5 +1,6 @@
 const pool = require("../utils/db");
 const locator = require("../utils/ipLocator");
+const queryTools = require("./queryTools");
 
 const insertUserInfo = async (
   { gender, sexualPreference, bio, tags, location },
@@ -98,6 +99,46 @@ const disLikeUserQuery = async (disLikedUserId, disLikedById) => {
   }
 };
 
+const updateUserSearchQuery = async (user_id, searchData) => {
+  try {
+    const getSearch = await queryTools.selectOneQualifier(
+      "user_search",
+      "user_id",
+      user_id
+    );
+    if (getSearch.rows.length) {
+      const queryResponse = await pool.query(
+        "UPDATE user_search SET age_range = $1, fame_range = $2, city = $3, country = $4, tags = $5 WHERE user_id = $6 RETURNING *",
+        [
+          searchData.ageRange,
+          searchData.fameRange,
+          searchData.city,
+          searchData.country,
+          searchData.tags,
+          user_id,
+        ]
+      );
+      return queryResponse.rows;
+    } else {
+      const queryResponse = await pool.query(
+        "INSERT INTO user_search(user_id, age_range, fame_range, city, country, tags) VALUES($1, $2, $3, $4, $5, $6) RETURNING *",
+        [
+          user_id,
+          searchData.ageRange,
+          searchData.fameRange,
+          searchData.city,
+          searchData.country,
+          searchData.tags,
+        ]
+      );
+      return queryResponse.rows;
+    }
+  } catch (error) {
+    console.error(error.message);
+    return false;
+  }
+};
+
 module.exports = {
   insertUserInfo,
   insertUserPictures,
@@ -105,4 +146,5 @@ module.exports = {
   getProfilePictures,
   likeUserQuery,
   disLikeUserQuery,
+  updateUserSearchQuery,
 };

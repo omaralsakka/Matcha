@@ -71,11 +71,11 @@ export const getCredentials = async (type) => {
 };
 
 export const getSearch = async (user_id) => {
-  const response = await axios.get(`${userUrl}/settings/:id`, user_id);
+  const response = await axios.get(`${userUrl}/search/${user_id}`);
   return response.data;
 };
 
 export const updateSearch = async (data) => {
-  const response = await axios.post(`${userUrl}/settings-update`, data);
+  const response = await axios.post(`${userUrl}/search-update`, data);
   return response.data;
 };

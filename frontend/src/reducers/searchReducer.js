@@ -8,7 +8,7 @@ import {
 import { getSearch, updateSearch } from "../services/userServices";
 
 const initialState = {
-  search: null,
+  search: {},
   error: null,
 };
 
@@ -61,14 +61,14 @@ const searchFetchError = (error) => {
 
 const searchUpdateSuccess = (search) => {
   return {
-    type: SEARCH_UPDATE_ERROR,
+    type: SEARCH_UPDATE_SUCCESS,
     payload: search,
   };
 };
 
 const searchUpdateError = (error) => {
   return {
-    type: SEARCH_FETCH_SUCCESS,
+    type: SEARCH_FETCH_ERROR,
     payload: error,
   };
 };
@@ -76,12 +76,8 @@ const searchUpdateError = (error) => {
 export const fetchUserSearch = (user_id) => {
   return async (dispatch) => {
     try {
-      const id = {
-        user_id,
-      };
-
-      const response = await getSearch(id);
-      dispatch(searchFetchSuccess(response));
+      const response = await getSearch(user_id);
+      dispatch(searchFetchSuccess(response[0]));
     } catch (error) {
       dispatch(searchFetchError(error.message));
       console.error(error.message);
@@ -90,7 +86,7 @@ export const fetchUserSearch = (user_id) => {
   };
 };
 
-export const updatehUserSearch = (user_id, newSettings) => {
+export const updateUserSearch = (user_id, newSettings) => {
   return async (dispatch) => {
     try {
       const data = {
@@ -99,7 +95,8 @@ export const updatehUserSearch = (user_id, newSettings) => {
       };
 
       const response = await updateSearch(data);
-      dispatch(searchUpdateSuccess(response));
+      dispatch(searchUpdateSuccess(response[0]));
+      return response[0];
     } catch (error) {
       dispatch(searchUpdateError(error.message));
       console.error(error.message);

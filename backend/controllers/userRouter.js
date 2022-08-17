@@ -24,34 +24,34 @@ userRouter.post("/", async (request, response) => {
 
 // when user submits as request for a password reset, they are added to a "forgotten" table and sent an email
 userRouter.post("/forgotpassword", async (request, response) => {
-	const body = request.body;
-	const verificationCode = await queryTools.insertForgottenPassword(body.email);
-	if (verificationCode.length === 50) {
-	  const emailResp = Mailer(
-		body.email,
-		"Change forgotten password for Matcha",
-		`Please click on the following link to create a new password: http://localhost:3000/api/forgotpassword/code=${verificationCode}`
-	  );
-	  return response.status(200);
-	} else {
-	  return response.status(401).json({
-		error: "email sending error",
-	  });
-	}
+  const body = request.body;
+  const verificationCode = await queryTools.insertForgottenPassword(body.email);
+  if (verificationCode.length === 50) {
+    const emailResp = Mailer(
+      body.email,
+      "Change forgotten password for Matcha",
+      `Please click on the following link to create a new password: http://localhost:3000/api/forgotpassword/code=${verificationCode}`
+    );
+    return response.status(200);
+  } else {
+    return response.status(401).json({
+      error: "email sending error",
+    });
+  }
 });
 
 // to insert the new password to the database and remove person from "forgotten" table
 userRouter.post("/resetpassword", async (request, response) => {
-	const {code, password} = request.body;
+  const { code, password } = request.body;
 
-	const resetedPassword = await queries.resetUserPassword(code.code, password);
-	if (resetedPassword) {
-	  return response.status(200).send(resetedPassword);
-	} else {
-	  return response.status(401).json({
-		error: "password was reset already",
-	  });
-	}
+  const resetedPassword = await queries.resetUserPassword(code.code, password);
+  if (resetedPassword) {
+    return response.status(200).send(resetedPassword);
+  } else {
+    return response.status(401).json({
+      error: "password was reset already",
+    });
+  }
 });
 
 userRouter.post("/verify", async (request, response) => {
@@ -213,4 +213,36 @@ userRouter.post("/logins", async (request, response) => {
   }
 });
 
+userRouter.get("/search/:id", async (request, response) => {
+  const id = request.params.id;
+  try {
+    const queryResponse = await queryTools.selectOneQualifier(
+      "user_search",
+      "user_id",
+      id
+    );
+    console.log("this is query response: ", queryResponse);
+    response.status(200).send(queryResponse.rows);
+  } catch (error) {
+    response.status(401).json({
+      error: "fetching user search settings error",
+    });
+  }
+});
+
+userRouter.post("/search-update", async (request, response) => {
+  try {
+    const body = request.body;
+    console.log("this is body: ", body);
+    const queryResponse = await infoQueries.updateUserSearchQuery(
+      body.user_id,
+      body.newSettings
+    );
+    response.status(200).send(queryResponse);
+  } catch (error) {
+    response.status(401).json({
+      error: "updating user search error",
+    });
+  }
+});
 module.exports = userRouter;
