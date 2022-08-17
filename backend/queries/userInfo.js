@@ -74,11 +74,11 @@ const getProfilePictures = async () => {
   }
 };
 
-const insertSettings = async ({username, fullname, email, newPW, id}) => {
+const insertSettings = async ({username, fullname, newPW, user_id}) => {
 	if(newPW.length === 0) {
 		const queryResponse = await pool.query(
 			"SELECT password FROM users WHERE user_id = $1",
-			[id]
+			[user_id]
 		)
 		newPW = queryResponse.rows[0].password;
 	} else {
@@ -86,8 +86,8 @@ const insertSettings = async ({username, fullname, email, newPW, id}) => {
 	}
 	try {
 	const queryResponse = await pool.query(
-		"UPDATE users SET username = $1, email = $2, fullname = $3, password = $4 WHERE user_id = $5",
-		[username, email, fullname, newPW, id]
+		"UPDATE users SET username = $1, fullname = $2, password = $3 WHERE user_id = $4",
+		[username, fullname, newPW, user_id]
 	);
 	return queryResponse.rows;
 	} catch (error) {

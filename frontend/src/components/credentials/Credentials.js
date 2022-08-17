@@ -4,6 +4,7 @@ import Verified from "../Verified";
 import Login from "./Login";
 import ForgotPassword from "./ForgotPassword";
 import ResetPassword from "../ResetPassword";
+import VerifyEmail from "../settings/VerifyEmail";
 
 const Credentials = ({ setLoggedUser }) => {
   return (
@@ -13,6 +14,7 @@ const Credentials = ({ setLoggedUser }) => {
       <Route path="/api/verify/:code" element={<Verified />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
 	  <Route path="/api/forgotpassword/:code" element={<ResetPassword />} />
+	  <Route path="/api/verify-email/:code" element={<VerifyEmail />} />
     </Routes>
   );
 };

@@ -226,7 +226,6 @@ userRouter.post("/settings", async (request, response) => {
 });
 
 userRouter.post("/verify-password", async (request, response) => {
-
 	const body = request.body;
 	try {
 		const oldPassword = await infoQueries.getPassword(body);
@@ -237,5 +236,48 @@ userRouter.post("/verify-password", async (request, response) => {
 		});
 	}
 });
+
+
+userRouter.post("/change-email", async (request, response) => {
+	const body = request.body;
+	try {
+		const verificationCode = await queryTools.emailChangeRequest(body);
+		if (verificationCode.length === 50) {
+			const emailResp = Mailer(
+			  body.oldEmail,
+			  "Verification to change Matcha users E-mail",
+			  `Please click on the following link to verify email: http://localhost:3000/api/verify-email/code=${verificationCode}`
+		)};
+		return response.status(200).send(verificationCode);
+	} catch (error) {
+		return response.status(404).json({
+			error: "user was not insterted into verify_user (email change request)"
+		});
+	}
+});
+
+userRouter.post("/verify-change-email", async (request, response) => {
+	const body = request.body;
+	const verifyUser = await queryTools.changeEmail(body.code);
+	if (verifyUser) {
+		return response.status(200).send(verifyUser);
+	} else {
+		return response.status(401).json({
+			error: "user was already verified",
+		});
+	}
+});
+/* userRouter.post("/user-info", async (request, response) => {
+	const body = request.body;
+	const user_id = body.user_id;
+	try {
+		const userInfo = await queryTools.selectOneQualifier("users", "user_id", user_id);
+		return response.status(200).send(userInfo);
+	} catch (error) {
+		return response.status(404).json({
+			error: "user was not found or bad request"
+		});
+	}
+}); */
 
 module.exports = userRouter;

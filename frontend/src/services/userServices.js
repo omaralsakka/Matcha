@@ -83,3 +83,18 @@ export const verifyOldPassword = async (password, id, type) => {
 	const response = await axios.post(`${userUrl}/verify-password`, infoObj);
 	return response.data;
 }
+
+export const changeEmailService = async (userObj) => {
+	const response = await axios.post(`${userUrl}/change-email`, userObj);
+	return response.data;
+}
+
+export const verifyEmailChangeService = async (code) => {
+	const response = await axios.post(`${userUrl}/verify-change-email`, code);
+	return response.data;
+}
+
+/* export const getUserService = async (userData) => {
+	const response = await axios.post(`${userUrl}/user-info`, userData);
+	return response.data;
+} */

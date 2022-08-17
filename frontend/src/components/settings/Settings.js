@@ -3,10 +3,12 @@ import { useState, useEffect } from "react";
 import { Container, Form, Button, Alert } from "react-bootstrap";
 import { useStoreUser } from "../../utils/getStoreStates";
 import LoadingScreen from "../LoadingScreen";
-import { settingsService, verifyOldPassword, getCredentials } from "../../services/userServices"
+import { settingsService, verifyOldPassword, getCredentials, changeEmailService } from "../../services/userServices"
 import { checkUserName, checkPassword, checkFullName, checkEmail, } from "../../utils/InputChecks"
+import { logUser, logoutUser } from "../../reducers/loginReducer";
+import { useDispatch } from "react-redux";
 
-const Settings = () => {
+const Settings = ({ setLoggedUser }) => {
   const { user } = useStoreUser();
   const username = UseField("text");
   const fullname = UseField("text");
@@ -17,6 +19,8 @@ const Settings = () => {
   const [verifyOldPw, setVerifyOldPw] = useState(0);
   const [userVerify, setUsernameVerify] = useState(1);
   const [emailVerify, setEmailVerify] = useState(1);
+  let changeEmail = 0;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getCredentials({ type: "username" }).then((res) => {
@@ -56,27 +60,53 @@ const Settings = () => {
 
   const handleSubmit = (e) => {
 	e.preventDefault();
-	if(username.value.length === 0)
-		username.value = user.username;
-	if(fullname.value.length === 0)
-		fullname.value = user.fullname;
-	if(email.value.length === 0)
-		email.value = user.email;
+	
 	const settingsInfo = {
 		username : username.value,
 		fullname : fullname.value,
+		oldEmail : user.email,
 		email : email.value,
 		newPW : newPassword.value,
-		id : user.user_id,
+		user_id : user.user_id,
 	}
+
+	const credentialsObj = {
+		username : username.value,
+		password : oldPassword.value
+	}
+
+	if(username.value.length === 0) {
+		settingsInfo.username = user.username;
+		credentialsObj.username = user.username;
+	}
+	if(fullname.value.length === 0)
+		settingsInfo.fullname = user.fullname;
+	if(email.value.length === 0) {
+		settingsInfo.email = user.email;
+	} else {
+		changeEmail = 1;
+	}
+
+
+	if(changeEmail === 1)
+		changeEmailService(settingsInfo);
+
 	settingsService(settingsInfo);
 	e.target.value = "";
-    username.onChange(e);
+	username.onChange(e);
 	fullname.onChange(e);
 	email.onChange(e);
 	oldPassword.onChange(e);
 	newPassword.onChange(e);
-  };
+
+	dispatch(logoutUser()).then((resp) => {
+		
+	}).then(() => {
+		dispatch(logUser(credentialsObj)).then((resp) => {
+			setLoggedUser(resp);
+		});
+	});
+	};
 
   if (!user) {
     return <LoadingScreen />;
@@ -120,17 +150,7 @@ const Settings = () => {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Change password</Form.Label>
-            <Form.Control {...oldPassword} placeholder="old password" />
-			{verifyOldPw === 1 || oldPassword.value.length === 0 ?
-                <></>
-               : 
-               ( <Alert variant="danger" className="username-alert mt-4">
-                  <strong>Password</strong> incorrect!
-                </Alert> )
-            }
-          </Form.Group>
-          <Form.Group className="mb-3">
+			<Form.Label>Change password</Form.Label>
             <Form.Control
               {...newPassword}
               type={passType}
@@ -150,11 +170,22 @@ const Settings = () => {
               }
             />
           </Form.Group>
+		  <Form.Group className="mb-3">
+            <Form.Label>Insert old password to confirm changes</Form.Label>
+            <Form.Control {...oldPassword} placeholder="old password" />
+			{verifyOldPw === 1 || oldPassword.value.length === 0 ?
+                <></>
+               : 
+               ( <Alert variant="danger" className="username-alert mt-4">
+                  <strong>Password</strong> incorrect!
+                </Alert> )
+            }
+          </Form.Group>
           <Button disabled={
-            	checkUserName(username.value) ||
+            	(checkUserName(username.value) ||
 				checkFullName(fullname.value) ||
 				checkEmail(email.value) ||
-				(checkPassword(newPassword.value) && verifyOldPw === 1)
+				checkPassword(newPassword.value)) && verifyOldPw === 1
 				? false
                 : true
               } className="form-button" variant="primary" type="submit">

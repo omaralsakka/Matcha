@@ -100,7 +100,7 @@ const App = () => {
               element={loggedUser.infoFilled ? <Home /> : <UserInfoForms />}
             />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/settings" element={<Settings />} />
+            <Route path="/settings" element={<Settings setLoggedUser={setLoggedUser}/>} />
           </Route>
           <Route path="/terms" element={<Terms />} />
           <Route path="/about" element={<About />} />
