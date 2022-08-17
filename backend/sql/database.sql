@@ -34,6 +34,16 @@ CREATE TABLE user_verify(
     verify_code VARCHAR (150) NOT NULL
 );
 
+CREATE TABLE user_search(
+    id SERIAL PRIMARY KEY,
+    user_id INT UNIQUE,
+    age_range json,
+    fame_range json,
+    city VARCHAR (150),
+    country VARCHAR (150),
+    tags VARCHAR [100]
+);
+
 ##
 CREATE TABLE forgotten_password(
 	id SERIAL PRIMARY KEY,

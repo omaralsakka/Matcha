@@ -28,9 +28,13 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
             <Link to="/profile" className="nav-link">
               Profile
             </Link>
+            <Link to="/search" className="nav-link">
+              Search
+            </Link>
             <Link to="/settings" className="nav-link">
               Settings
             </Link>
+
           </Nav>
           <Navbar.Collapse className="justify-content-end">
             <Nav.Item className="mx-3">

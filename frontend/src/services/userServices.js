@@ -69,3 +69,13 @@ export const getCredentials = async (type) => {
   const response = await axios.post(`${userUrl}/logins`, type);
   return response.data;
 };
+
+export const getSearch = async (user_id) => {
+  const response = await axios.get(`${userUrl}/settings/:id`, user_id);
+  return response.data;
+};
+
+export const updateSearch = async (data) => {
+  const response = await axios.post(`${userUrl}/settings-update`, data);
+  return response.data;
+};

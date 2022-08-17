@@ -30,18 +30,20 @@ const Home = () => {
       <>
         <Container>
           <HomeNavBar />
-          <Container className="users-cards-wrapper">
-            {Array.from(users).map((userToDisplay) => (
-              <div key={userToDisplay.user_id}>
-                <Row className="mb-5">
-                  <UsersCards
-                    user={userToDisplay}
-                    profilePictures={profilePictures}
-                    loggedUserId={user.user_id}
-                  />
-                </Row>
-              </div>
-            ))}
+          <Container className="d-flex">
+            <Container className="users-cards-wrapper">
+              {Array.from(users).map((userToDisplay) => (
+                <div key={userToDisplay.user_id}>
+                  <Row className="mb-5">
+                    <UsersCards
+                      user={userToDisplay}
+                      profilePictures={profilePictures}
+                      loggedUserId={user.user_id}
+                    />
+                  </Row>
+                </div>
+              ))}
+            </Container>
           </Container>
         </Container>
       </>

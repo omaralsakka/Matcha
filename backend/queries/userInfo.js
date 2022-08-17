@@ -75,7 +75,7 @@ const getProfilePictures = async () => {
 const likeUserQuery = async (likedUserId, LikedById) => {
   try {
     const queryResponse = await pool.query(
-      "UPDATE users set liked_by = array_append(liked_by, $1) WHERE user_id = $2 RETURNING *",
+      "UPDATE users SET liked_by = array_append(liked_by, $1) WHERE user_id = $2 RETURNING *",
       [LikedById, likedUserId]
     );
     return queryResponse;

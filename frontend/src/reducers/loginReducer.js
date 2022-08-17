@@ -127,8 +127,10 @@ export const tokenLoginCall = (userInfo, token) => {
       if (response) {
         dispatch(loginSuccess(response));
       }
+      return response;
     } catch (error) {
       dispatch(tokenLoginError(error.message));
+      return false;
     }
   };
 };
