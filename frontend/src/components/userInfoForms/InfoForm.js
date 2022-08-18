@@ -59,7 +59,7 @@ const InfoForm = ({ setVisibleForm }) => {
               <option value="">...</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
-              <option value="transgender">Transgender</option>
+              <option value="nonbinary">Non-binary</option>
             </Form.Select>
           </Form.Group>
 

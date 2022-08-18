@@ -2,7 +2,6 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Routes, Route, Navigate } from "react-router-dom";
-
 import { tokenLoginCall, logoutUser } from "./reducers/loginReducer";
 import LandingPage from "./components/LandingPage";
 import AppFooter from "./components/footer/Footer";
@@ -107,7 +106,7 @@ const App = () => {
             />
             <Route path="/profile" element={<Profile />} />
             <Route path="/search" element={<Search />} />
-            <Route path="/settings" element={<Settings />} />
+            <Route path="/settings" element={<Settings setLoggedUser={setLoggedUser}/>} />
           </Route>
           <Route path="/terms" element={<Terms />} />
           <Route path="/about" element={<About />} />

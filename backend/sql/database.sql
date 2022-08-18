@@ -27,6 +27,7 @@ CREATE TABLE users(
 CREATE TABLE user_verify(
     id SERIAL PRIMARY KEY,
     username VARCHAR (150) NOT NULL UNIQUE,
+	user_id INT,
     email VARCHAR (150) NOT NULL UNIQUE,
     fullname VARCHAR (150) NOT NULL,
     password VARCHAR (150) NOT NULL,

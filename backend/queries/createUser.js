@@ -54,7 +54,7 @@ const verifyUser = async (verificationCode) => {
       );
       return insertResponse.rows;
     } else {
-      return false;
+      return false; // this might give an error in console if the verification code does not exist ..
     }
   } catch (error) {
     console.error(error.message);
