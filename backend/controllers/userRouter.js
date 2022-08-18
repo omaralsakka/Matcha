@@ -4,7 +4,6 @@ const queryTools = require("../queries/queryTools");
 const infoQueries = require("../queries/userInfo");
 const Mailer = require("../utils/mailer");
 const jwt = require("jsonwebtoken");
-const createToken = require("../utils/createToken");
 
 userRouter.post("/", async (request, response) => {
   const body = request.body;
