@@ -59,7 +59,7 @@ const Settings = ({ setLoggedUser }) => {
   }, [oldPassword.value, user]);
 
   const handleSubmit = (e) => {
-	e.preventDefault();
+	 e.preventDefault();
 	
 	const settingsInfo = {
 		username : username.value,
@@ -87,7 +87,6 @@ const Settings = ({ setLoggedUser }) => {
 		changeEmail = 1;
 	}
 
-
 	if(changeEmail === 1)
 		changeEmailService(settingsInfo);
 
@@ -106,7 +105,7 @@ const Settings = ({ setLoggedUser }) => {
 			setLoggedUser(resp);
 		});
 	});
-	};
+};
 
   if (!user) {
     return <LoadingScreen />;
@@ -138,14 +137,14 @@ const Settings = ({ setLoggedUser }) => {
                   This <strong>email</strong> is already in use! Please choose
                   an other one.
                 </Alert> : <></>
-              }
+            }
             <Form.Text className="text-muted">
               We'll never share your email with anyone else.
             </Form.Text>
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Change fullname</Form.Label>
+            <Form.Label>Change full name</Form.Label>
             <Form.Control {...fullname} placeholder={user.fullname} />
           </Form.Group>
 

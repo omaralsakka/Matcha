@@ -267,6 +267,7 @@ userRouter.post("/verify-change-email", async (request, response) => {
 		});
 	}
 });
+
 /* userRouter.post("/user-info", async (request, response) => {
 	const body = request.body;
 	const user_id = body.user_id;
