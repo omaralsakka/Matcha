@@ -40,16 +40,16 @@ const Signup = () => {
   const [passType, setPassType] = useState("password");
   const [consent, setConsent] = useState(false);
   const [formSubmit, setFormSubmit] = useState(false);
-  const [userVerify, setUserVerify] = useState(1);
+  const [userVerify, setUsernameVerify] = useState(1);
   const [emailVerify, setEmailVerify] = useState(1);
 
   useEffect(() => {
     getCredentials({ type: "username" }).then((res) => {
       let obj = res.find((o) => o.username === username.value);
-      setUserVerify(1);
+      setUsernameVerify(1);
       if (obj) {
         if (obj.username === username.value) {
-          setUserVerify(0);
+          setUsernameVerify(0);
         }
       }
     });
@@ -111,7 +111,7 @@ const Signup = () => {
                 We'll never share your email with anyone else.
               </Form.Text>
               {emailVerify === 0 ? (
-                <Alert variant="danger">
+                <Alert variant="danger" className="error-alert mt-4">
                   This <strong>email</strong> is already in use! Please choose
                   an other one.
                 </Alert>
@@ -133,7 +133,7 @@ const Signup = () => {
 					length of 3
 				</Form.Text>
 			  {userVerify === 0 ? (
-			  	<Alert variant="danger">
+			  	<Alert variant="danger" className="error-alert mt-4">
 					This <strong>username</strong> is already in use! Please choose an other one.
 				</Alert>) : <></>
 				}
