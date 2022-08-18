@@ -7,7 +7,7 @@ import { resetPassWordService } from "../../services/userServices";
 import { Form, Button, Container, Alert } from "react-bootstrap";
 
 const ResetPassword = () => {
-  const password = UseField("text");
+  const password = UseField("text", "");
   const param = useParams().code;
   const code = { code: param.substring(param.indexOf("=") + 1, param.length) };
 

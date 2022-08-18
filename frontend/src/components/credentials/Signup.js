@@ -32,11 +32,11 @@ const CheckEmail = ({ setFormSubmit }) => {
 };
 
 const Signup = () => {
-  const email = UseField("email");
-  const username = UseField("text");
-  const fullname = UseField("text");
-  const password = UseField("password");
-  const age = UseField("date");
+  const email = UseField("email", "");
+  const username = UseField("text", "");
+  const fullname = UseField("text", "");
+  const password = UseField("password", "");
+  const age = UseField("date", "");
   const [passType, setPassType] = useState("password");
   const [consent, setConsent] = useState(false);
   const [formSubmit, setFormSubmit] = useState(false);
@@ -101,12 +101,13 @@ const Signup = () => {
             <Form.Group className="mb-3">
               <Form.Label>Email</Form.Label>
               <Form.Control {...email} />
-			{checkEmail(email.value) || email.value.length === 0 ? (
-					<></>
-			  ) : <Alert variant="danger" className="error-alert mt-4">
-			  		<strong>Email</strong> invalid!
-				  </Alert>
-			}
+              {checkEmail(email.value) || email.value.length === 0 ? (
+                <></>
+              ) : (
+                <Alert variant="danger" className="error-alert mt-4">
+                  <strong>Email</strong> invalid!
+                </Alert>
+              )}
               <Form.Text className="text-muted">
                 We'll never share your email with anyone else.
               </Form.Text>
@@ -122,21 +123,25 @@ const Signup = () => {
             <Form.Group className="mb-3">
               <Form.Label>Username</Form.Label>
               <Form.Control {...username} />
-			  {checkUserName(username.value) || username.value.length === 0 ? (
-					<></>
-			  ) : <Alert variant="danger" className="error-alert mt-4">
-			  		<strong>Username</strong> invalid!
-				  </Alert>
-			  }
-				<Form.Text className="text-muted">
-					Username should contain letters and numbers only with minimum
-					length of 3
-				</Form.Text>
-			  {userVerify === 0 ? (
-			  	<Alert variant="danger" className="error-alert mt-4">
-					This <strong>username</strong> is already in use! Please choose an other one.
-				</Alert>) : <></>
-				}
+              {checkUserName(username.value) || username.value.length === 0 ? (
+                <></>
+              ) : (
+                <Alert variant="danger" className="error-alert mt-4">
+                  <strong>Username</strong> invalid!
+                </Alert>
+              )}
+              <Form.Text className="text-muted">
+                Username should contain letters and numbers only with minimum
+                length of 3
+              </Form.Text>
+              {userVerify === 0 ? (
+                <Alert variant="danger" className="error-alert mt-4">
+                  This <strong>username</strong> is already in use! Please
+                  choose an other one.
+                </Alert>
+              ) : (
+                <></>
+              )}
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Full Name</Form.Label>

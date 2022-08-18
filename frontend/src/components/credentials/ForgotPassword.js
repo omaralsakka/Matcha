@@ -1,38 +1,41 @@
 import UseField from "../UseField";
-import { useState, useEffect} from "react";
-import { getCredentials, forgotPassWordService } from "../../services/userServices";
+import { useState, useEffect } from "react";
+import {
+  getCredentials,
+  forgotPassWordService,
+} from "../../services/userServices";
 import { Form, Button, Container, Alert } from "react-bootstrap";
 import logo from "../../media/logo-black.png";
 import { Link } from "react-router-dom";
 import { checkEmail } from "../../utils/InputChecks";
 
 const ForgotPassword = () => {
-	const email = UseField("email");
-	const [emailVerify, setEmailVerify] = useState(true);
+  const email = UseField("email", "");
+  const [emailVerify, setEmailVerify] = useState(true);
 
-	useEffect(() => {
-		getCredentials({type: "email"}).then((res) => {
-			let obj = res.find(o => o.email === email.value);
-			setEmailVerify(true);
-			if (obj) {
-				if (obj.email === email.value) {
-					setEmailVerify(false);
-				}
-			}
-		})
-	}, [email.value]);
-	
-	const handleSubmit = (e) => {
-		e.preventDefault();
-	
-		const user = {
-		  email: email.value,
-		};
+  useEffect(() => {
+    getCredentials({ type: "email" }).then((res) => {
+      let obj = res.find((o) => o.email === email.value);
+      setEmailVerify(true);
+      if (obj) {
+        if (obj.email === email.value) {
+          setEmailVerify(false);
+        }
+      }
+    });
+  }, [email.value]);
 
-		forgotPassWordService(user);
-		e.target.value = "";
-		email.onChange(e);
-	  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const user = {
+      email: email.value,
+    };
+
+    forgotPassWordService(user);
+    e.target.value = "";
+    email.onChange(e);
+  };
 
   return (
     <Container className="signup-container">
@@ -49,10 +52,13 @@ const ForgotPassword = () => {
           </div>
           <Form.Control {...email} placeholder="Enter email" />
         </Form.Group>
-		{emailVerify === false || email.value.length === 0 ? 
-			<></> : <Alert variant="danger">
-				This <strong>email</strong> does not exist, please try again.
-			</Alert>}
+        {emailVerify === false || email.value.length === 0 ? (
+          <></>
+        ) : (
+          <Alert variant="danger">
+            This <strong>email</strong> does not exist, please try again.
+          </Alert>
+        )}
         <Button
           disabled={checkEmail(email.value) ? false : true}
           className="form-button"

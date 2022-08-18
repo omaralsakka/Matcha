@@ -8,8 +8,8 @@ import { useDispatch } from "react-redux";
 import { logUser } from "../../reducers/loginReducer";
 
 const Login = ({ setLoggedUser }) => {
-  const username = UseField("text");
-  const password = UseField("password");
+  const username = UseField("text", "");
+  const password = UseField("password", "");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginCheck, setLoginCheck] = useState(true);
