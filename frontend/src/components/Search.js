@@ -1,7 +1,7 @@
 import { Form, Container, Button, Alert } from "react-bootstrap";
 import InputRange from "react-input-range";
 import { InputTags } from "react-bootstrap-tagsinput";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import UseField from "./UseField";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserSearch } from "../reducers/searchReducer";
