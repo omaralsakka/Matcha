@@ -66,6 +66,28 @@ userRouter.post("/verify", async (request, response) => {
   }
 });
 
+const createToken = (loggedUser) => {
+  
+  let infoFilled;
+  const userPictures = await queryTools.selectOneQualifier(
+    "pictures",
+    "user_id",
+    loggedUser.user_id
+  );
+  userPictures.rows.length ? (infoFilled = true) : (infoFilled = false)
+  
+  const userForToken = {
+    username: loggedUser.username,
+    id: loggedUser.user_id,
+    infoFilled: infoFilled,
+    name: loggedUser.fullname,
+  };
+
+  const token = jwt.sign(userForToken, process.env.SECRET);
+
+  return token
+}
+
 userRouter.post("/login", async (request, response) => {
   const body = request.body;
   const loggedUser = await queries.loginUser(body);

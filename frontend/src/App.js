@@ -38,8 +38,11 @@ const App = () => {
         "forgot-password",
         "terms",
         "about",
+        "verify",
       ];
-      !paths.includes(url) && window.location.assign("/");
+      !paths.includes(url) &&
+        url.includes("api/verify/code") &&
+        window.location.assign("/");
     }
   }, [loggedUser]);
 
