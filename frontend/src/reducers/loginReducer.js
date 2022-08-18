@@ -4,6 +4,7 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_ERROR,
   TOKEN_LOGIN_ERROR,
+  INFO_FILLED_ERROR,
 } from "../actions/types";
 import {
   setServiceToken,
@@ -50,6 +51,12 @@ const loginReducer = (state = initialState, action) => {
         user: null,
         error: payload,
       };
+    case INFO_FILLED_ERROR:
+      return {
+        ...state,
+        user: null,
+        error: payload,
+      };
     default:
       return state;
   }
@@ -86,6 +93,13 @@ const logoutError = (error) => {
 const tokenLoginError = (error) => {
   return {
     type: TOKEN_LOGIN_ERROR,
+    payload: error,
+  };
+};
+
+const infoFilledError = (error) => {
+  return {
+    type: INFO_FILLED_ERROR,
     payload: error,
   };
 };

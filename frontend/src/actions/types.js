@@ -4,6 +4,7 @@ export const LOGIN_ERROR = "LOGIN_ERROR";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const LOGOUT_ERROR = "LOGOUT_ERROR";
 export const TOKEN_LOGIN_ERROR = "TOKEN_LOGIN_ERROR";
+export const INFO_FILLED_ERROR = "INFO_FILLED_ERROR";
 
 // users fetching actions
 export const USERS_FETCHED_SUCCESS = "USERS_FETCHED_SUCCESS";

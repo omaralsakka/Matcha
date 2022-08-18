@@ -13,7 +13,6 @@ const Home = () => {
   const { user } = useStoreUser();
   const [users, setUsers] = useState([]);
   const [profilePictures, setProfilePictures] = useState([]);
-  console.log(user);
   useEffect(() => {
     dispatch(fetchUsers()).then((resp) => {
       setUsers(resp);

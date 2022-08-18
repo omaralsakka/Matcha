@@ -33,9 +33,8 @@ const UserImageCard = ({ index, src, onImageUpdate, onImageRemove }) => {
   );
 };
 
-const PicturesForm = ({ setVisibleForm }) => {
+const PicturesForm = ({ setVisibleForm, user }) => {
   const images = useImage();
-
   const saveImages = async () => {
     const picFormResponse = await pictureFormService(images.value);
     const infoFilledResponse = await InfoFilledTokenService();
@@ -46,7 +45,6 @@ const PicturesForm = ({ setVisibleForm }) => {
         JSON.stringify(infoFilledResponse)
       );
       window.location.reload();
-      setVisibleForm(3);
     }
   };
   return (

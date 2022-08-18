@@ -4,6 +4,7 @@ const queryTools = require("../queries/queryTools");
 const infoQueries = require("../queries/userInfo");
 const Mailer = require("../utils/mailer");
 const jwt = require("jsonwebtoken");
+const createToken = require("../utils/createToken");
 
 userRouter.post("/", async (request, response) => {
   const body = request.body;
@@ -65,28 +66,6 @@ userRouter.post("/verify", async (request, response) => {
     });
   }
 });
-
-const createToken = (loggedUser) => {
-  
-  let infoFilled;
-  const userPictures = await queryTools.selectOneQualifier(
-    "pictures",
-    "user_id",
-    loggedUser.user_id
-  );
-  userPictures.rows.length ? (infoFilled = true) : (infoFilled = false)
-  
-  const userForToken = {
-    username: loggedUser.username,
-    id: loggedUser.user_id,
-    infoFilled: infoFilled,
-    name: loggedUser.fullname,
-  };
-
-  const token = jwt.sign(userForToken, process.env.SECRET);
-
-  return token
-}
 
 userRouter.post("/login", async (request, response) => {
   const body = request.body;
@@ -191,9 +170,10 @@ userRouter.post("/infoFilledToken", async (request, response) => {
   if (!decodedToken.id) {
     return response.status(401).json({ error: "new token generating error" });
   }
+  console.log();
   const userForToken = {
     username: decodedToken.username,
-    id: decodedToken.user_id,
+    id: decodedToken.id,
     infoFilled: true,
     name: decodedToken.fullname,
   };
@@ -243,7 +223,6 @@ userRouter.get("/search/:id", async (request, response) => {
       "user_id",
       id
     );
-    console.log("this is query response: ", queryResponse);
     response.status(200).send(queryResponse.rows);
   } catch (error) {
     response.status(401).json({
@@ -255,7 +234,6 @@ userRouter.get("/search/:id", async (request, response) => {
 userRouter.post("/search-update", async (request, response) => {
   try {
     const body = request.body;
-    console.log("this is body: ", body);
     const queryResponse = await infoQueries.updateUserSearchQuery(
       body.user_id,
       body.newSettings
@@ -267,4 +245,5 @@ userRouter.post("/search-update", async (request, response) => {
     });
   }
 });
+
 module.exports = userRouter;
