@@ -5,6 +5,7 @@ import {
   USERS_LIKE_ERROR,
   USER_DISLIKE_SUCCESS,
   USER_DISLIKE_ERROR,
+  SORT_USERS_SUCCESS,
 } from "../actions/types";
 
 import {

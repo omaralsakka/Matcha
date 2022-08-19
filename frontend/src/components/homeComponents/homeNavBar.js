@@ -1,14 +1,31 @@
 import { Container, Nav, Navbar, NavDropdown, Form } from "react-bootstrap";
 
-const HomeNavBar = () => {
+const HomeNavBar = ({ setSort, setOrder }) => {
   return (
     <Navbar bg="light" expand="lg" className="mt-3">
       <Container>
         <Nav>
           <NavDropdown title="sort by">
-            <NavDropdown.Item href="#age">age</NavDropdown.Item>
-            <NavDropdown.Item href="#tags">tags</NavDropdown.Item>
-            <NavDropdown.Item href="#tags">fame rate</NavDropdown.Item>
+            <NavDropdown.Item onClick={() => setSort("age")}>
+              Age
+            </NavDropdown.Item>
+            <NavDropdown.Item onClick={() => setSort("location")}>
+              Location
+            </NavDropdown.Item>
+            <NavDropdown.Item onClick={() => setSort("tags")}>
+              Tags
+            </NavDropdown.Item>
+            <NavDropdown.Item onClick={() => setSort("liked_by")}>
+              Fame rate
+            </NavDropdown.Item>
+          </NavDropdown>
+          <NavDropdown title="order by">
+            <NavDropdown.Item onClick={() => setOrder("ascending")}>
+              Ascending
+            </NavDropdown.Item>
+            <NavDropdown.Item onClick={() => setOrder("descending")}>
+              Descending
+            </NavDropdown.Item>
           </NavDropdown>
         </Nav>
 
