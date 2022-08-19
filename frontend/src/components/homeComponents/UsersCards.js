@@ -67,8 +67,6 @@ const UsersCards = ({ user, profilePictures, loggedUserId }) => {
     }
   };
 
-  const blockPerson = () => {};
-
   if (!user) {
     return <Spinner animation="grow" />;
   } else {
