@@ -31,7 +31,7 @@ const Home = () => {
           <HomeNavBar />
           <Container className="d-flex">
             <Container className="users-cards-wrapper">
-              {Array.from(users).map((userToDisplay) => (
+              {users.map((userToDisplay) => (
                 <div key={userToDisplay.user_id}>
                   <Row className="mb-5">
                     <UsersCards

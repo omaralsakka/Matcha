@@ -182,11 +182,11 @@ const getPassword = async ({ pw, id }) => {
   }
 };
 
-const checkUserViewQuery = async (viewedUser, loggedUser) => {
+const checkColArrayValue = async (table, viewedUser, loggedUser, col) => {
   try {
     const queryResponse = await pool.query(
-      "SELECT * FROM users WHERE user_id = $1 AND $2 = ANY(views)",
-      [viewedUser, loggedUser]
+      `SELECT * FROM ${table} WHERE user_id = $1 AND $2 = ANY($3)`,
+      [viewedUser, loggedUser, col]
     );
     return queryResponse.rows;
   } catch (error) {
@@ -208,6 +208,19 @@ const insertUserViewQuery = async (viewedUser, loggedUser) => {
   }
 };
 
+const updateArrayQuery = async (table, col, newData, userId) => {
+  try {
+    const queryResponse = await pool.query(
+      `UPDATE ${table} SET ${col} = array_append(${col}, $1) WHERE user_id = $2 RETURNING *`,
+      [newData, userId]
+    );
+    return queryResponse.rows;
+  } catch (error) {
+    console.error(error.message);
+    return false;
+  }
+};
+
 module.exports = {
   insertUserInfo,
   insertUserPictures,
@@ -218,6 +231,7 @@ module.exports = {
   updateUserSearchQuery,
   insertSettings,
   getPassword,
-  checkUserViewQuery,
+  checkColArrayValue,
   insertUserViewQuery,
+  updateArrayQuery,
 };

@@ -168,7 +168,13 @@ const UsersCards = ({ user, profilePictures, loggedUserId }) => {
                         <Image src={blockIcon} alt="block user" />
                       </Button>
                     </OverlayToolTip>
-                    <BlockModalPopUp show={showModal} setShow={setShowModal} />
+                    <BlockModalPopUp
+                      show={showModal}
+                      setShow={setShowModal}
+                      loggedUser={loggedUserId}
+                      blockedUser={user.user_id}
+                    />
+
                     <OverlayToolTip toolTipText="Like user">
                       <Button
                         onClick={likePerson}

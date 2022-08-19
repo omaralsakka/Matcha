@@ -1,7 +1,15 @@
 import { Modal, Button } from "react-bootstrap";
+import { blockUserService } from "../../services/usersServices";
 
-const BlockModalPopUp = ({ show, setShow }) => {
+const BlockModalPopUp = ({ show, setShow, loggedUser, blockedUser }) => {
   const handleClose = () => setShow(false);
+  const usersIds = { loggedUser, blockedUser };
+
+  const blockUser = () => {
+    console.log("userIds: ", usersIds);
+    blockUserService(usersIds).then((resp) => console.log(resp));
+  };
+
   return (
     <>
       <Modal show={show} onHide={handleClose}>
@@ -18,7 +26,7 @@ const BlockModalPopUp = ({ show, setShow }) => {
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="danger" onClick={handleClose}>
+          <Button variant="danger" onClick={blockUser}>
             Block user
           </Button>
         </Modal.Footer>

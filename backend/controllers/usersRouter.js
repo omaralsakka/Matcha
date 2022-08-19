@@ -4,6 +4,7 @@ const usersQueries = require("../queries/userInfo");
 
 usersRouter.get("/all", async (request, response) => {
   const queryResponse = await queryTools.selectAllTable("users");
+
   if (queryResponse.rows.length) {
     response.status(200).send(queryResponse.rows);
   } else {
@@ -15,6 +16,7 @@ usersRouter.get("/all", async (request, response) => {
 
 usersRouter.get("/profileimage", async (request, response) => {
   const queryResponse = await usersQueries.getProfilePictures();
+
   if (queryResponse.rows.length) {
     response.status(200).send(queryResponse.rows);
   } else {
@@ -60,9 +62,11 @@ usersRouter.post("/dislikeuser", async (request, response) => {
 usersRouter.post("/viewedUser", async (request, response) => {
   const { viewedUser, loggedUser } = request.body;
 
-  const queryResponse = await usersQueries.checkUserViewQuery(
+  const queryResponse = await usersQueries.checkColArrayValue(
+    "users",
     viewedUser,
-    loggedUser
+    loggedUser,
+    "views"
   );
   if (!queryResponse.length) {
     const insertQueryResponse = await usersQueries.insertUserViewQuery(
@@ -77,6 +81,44 @@ usersRouter.post("/viewedUser", async (request, response) => {
         error: "inserting view error",
       });
     }
+  }
+});
+
+// working on this now
+usersRouter.post("/blockuser", async (request, response) => {
+  const { loggedUser, blockedUser } = request.body;
+
+  const checkQueryResponse = await usersQueries.checkColArrayValue(
+    "users",
+    blockedUser,
+    loggedUser,
+    "blocked"
+  );
+
+  if (!checkQueryResponse.length) {
+    const insertQueryResponse = await usersQueries.updateArrayQuery(
+      "users",
+      "blocked",
+      blockedUser,
+      loggedUser
+    );
+    if (insertQueryResponse.length) {
+      const insertSecondQueryResponse = await usersQueries.updateArrayQuery(
+        "users",
+        "blocked_by",
+        loggedUser,
+        blockedUser
+      );
+      if (insertSecondQueryResponse.length) {
+        response.status(200).send(insertQueryResponse);
+      }
+    } else {
+      response.status(401).json({
+        error: "blocking user error",
+      });
+    }
+  } else {
+    response.status(200).send({ message: "user already blocked" });
   }
 });
 

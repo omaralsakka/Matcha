@@ -1,33 +1,38 @@
 import axios from "axios";
 
-const userUrl = "http://localhost:5000/api/users";
+const usersUrl = "http://localhost:5000/api/users";
 
 export const getUsersImages = async (user_id) => {
-  const response = await axios.get(`${userUrl}/pictures/${user_id}`);
+  const response = await axios.get(`${usersUrl}/pictures/${user_id}`);
   return response.data;
 };
 
 export const getUsersService = async () => {
-  const response = await axios.get(`${userUrl}/all`);
+  const response = await axios.get(`${usersUrl}/all`);
   return response.data;
 };
 
 export const getUsersProfileImage = async () => {
-  const response = await axios.get(`${userUrl}/profileimage`);
+  const response = await axios.get(`${usersUrl}/profileimage`);
   return response.data;
 };
 
 export const likeUserService = async (usersIds) => {
-  const response = await axios.post(`${userUrl}/likeuser`, usersIds);
+  const response = await axios.post(`${usersUrl}/likeuser`, usersIds);
   return response.data;
 };
 
 export const dislikeUserService = async (usersIds) => {
-  const response = await axios.post(`${userUrl}/dislikeuser`, usersIds);
+  const response = await axios.post(`${usersUrl}/dislikeuser`, usersIds);
   return response.data;
 };
 
 export const viewUserService = async (usersIds) => {
-  const response = await axios.post(`${userUrl}/viewedUser`, usersIds);
+  const response = await axios.post(`${usersUrl}/viewedUser`, usersIds);
+  return response.data;
+};
+
+export const blockUserService = async (usersIds) => {
+  const response = await axios.post(`${usersUrl}/blockuser`, usersIds);
   return response.data;
 };
