@@ -20,7 +20,7 @@ CREATE TABLE users(
     blocked_by INT [],
     liked INT [],
     liked_by INT [],
-    views INT [] UNIQUE,
+    views INT [],
     pictures INT DEFAULT 0
 );
 

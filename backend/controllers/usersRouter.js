@@ -28,13 +28,23 @@ usersRouter.get("/profileimage", async (request, response) => {
 
 usersRouter.post("/likeuser", async (request, response) => {
   const { likedUserId, likedById } = request.body;
-  const queryResponse = await usersQueries.likeUserQuery(
+  const queryResponseLiked = await usersQueries.updateArrayQuery(
+    "users",
+    "liked",
     likedUserId,
     likedById
   );
 
-  if (queryResponse.rows.length) {
-    response.status(200).send(queryResponse.rows);
+  if (queryResponseLiked.length) {
+    const queryResponseLikedBy = await usersQueries.updateArrayQuery(
+      "users",
+      "liked_by",
+      likedById,
+      likedUserId
+    );
+    if (queryResponseLikedBy.length) {
+      response.status(200).send(queryResponseLikedBy);
+    }
   } else {
     response.status(401).json({
       error: "liking user error",
@@ -68,10 +78,13 @@ usersRouter.post("/viewedUser", async (request, response) => {
     loggedUser,
     "views"
   );
+
   if (!queryResponse.length) {
-    const insertQueryResponse = await usersQueries.insertUserViewQuery(
-      viewedUser,
-      loggedUser
+    const insertQueryResponse = await usersQueries.updateArrayQuery(
+      "users",
+      "views",
+      loggedUser,
+      viewedUser
     );
 
     if (insertQueryResponse.length) {

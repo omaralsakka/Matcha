@@ -75,19 +75,6 @@ const getProfilePictures = async () => {
   }
 };
 
-const likeUserQuery = async (likedUserId, LikedById) => {
-  try {
-    const queryResponse = await pool.query(
-      "UPDATE users SET liked_by = array_append(liked_by, $1) WHERE user_id = $2 RETURNING *",
-      [LikedById, likedUserId]
-    );
-    return queryResponse;
-  } catch (error) {
-    console.error(error.message);
-    return false;
-  }
-};
-
 const disLikeUserQuery = async (disLikedUserId, disLikedById) => {
   try {
     const queryResponse = await pool.query(
@@ -184,22 +171,10 @@ const getPassword = async ({ pw, id }) => {
 
 const checkColArrayValue = async (table, viewedUser, loggedUser, col) => {
   try {
+    console.log("params: ", table, viewedUser, loggedUser, col);
     const queryResponse = await pool.query(
-      `SELECT * FROM ${table} WHERE user_id = $1 AND $2 = ANY($3)`,
-      [viewedUser, loggedUser, col]
-    );
-    return queryResponse.rows;
-  } catch (error) {
-    console.error(error.message);
-    return false;
-  }
-};
-
-const insertUserViewQuery = async (viewedUser, loggedUser) => {
-  try {
-    const queryResponse = await pool.query(
-      "UPDATE users SET views = array_append(views, $1) WHERE user_id = $2 RETURNING *",
-      [loggedUser, viewedUser]
+      `SELECT * FROM ${table} WHERE user_id = $1 AND $2 = ANY(${col})`,
+      [viewedUser, loggedUser]
     );
     return queryResponse.rows;
   } catch (error) {
@@ -226,12 +201,10 @@ module.exports = {
   insertUserPictures,
   getUserPictures,
   getProfilePictures,
-  likeUserQuery,
   disLikeUserQuery,
   updateUserSearchQuery,
   insertSettings,
   getPassword,
   checkColArrayValue,
-  insertUserViewQuery,
   updateArrayQuery,
 };
