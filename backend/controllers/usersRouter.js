@@ -57,4 +57,27 @@ usersRouter.post("/dislikeuser", async (request, response) => {
   }
 });
 
+usersRouter.post("/viewedUser", async (request, response) => {
+  const { viewedUser, loggedUser } = request.body;
+
+  const queryResponse = await usersQueries.checkUserViewQuery(
+    viewedUser,
+    loggedUser
+  );
+  if (!queryResponse.length) {
+    const insertQueryResponse = await usersQueries.insertUserViewQuery(
+      viewedUser,
+      loggedUser
+    );
+
+    if (insertQueryResponse.length) {
+      response.status(200).send(insertQueryResponse);
+    } else {
+      response.status(401).json({
+        error: "inserting view error",
+      });
+    }
+  }
+});
+
 module.exports = usersRouter;

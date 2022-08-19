@@ -15,7 +15,6 @@ const Search = () => {
   const country = UseField("text", "");
   const [tags, setTags] = useState([]);
   const [alert, setAlert] = useState(false);
-  let e;
   const [ranges, setRanges] = useState({
     ageValues: {
       min: 21,

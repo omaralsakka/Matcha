@@ -26,3 +26,8 @@ export const dislikeUserService = async (usersIds) => {
   const response = await axios.post(`${userUrl}/dislikeuser`, usersIds);
   return response.data;
 };
+
+export const viewUserService = async (usersIds) => {
+  const response = await axios.post(`${userUrl}/viewedUser`, usersIds);
+  return response.data;
+};

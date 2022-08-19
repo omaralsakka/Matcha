@@ -19,6 +19,7 @@ import { Spinner } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { likeUser, disLikeUser } from "../../reducers/usersReducer";
+import { viewUserService } from "../../services/usersServices";
 
 const UsersCards = ({ user, profilePictures, loggedUserId }) => {
   const [open, setOpen] = useState(false);
@@ -39,6 +40,10 @@ const UsersCards = ({ user, profilePictures, loggedUserId }) => {
   }, [user, loggedUserId]);
 
   const displayUserInfo = () => {
+    if (!open) {
+      const userIds = { viewedUser: user.user_id, loggedUser: loggedUserId };
+      viewUserService(userIds);
+    }
     setOpen(!open);
     setHide(!hide);
   };
