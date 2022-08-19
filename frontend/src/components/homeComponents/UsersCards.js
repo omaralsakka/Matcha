@@ -20,12 +20,17 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { likeUser, disLikeUser } from "../../reducers/usersReducer";
 import { viewUserService } from "../../services/usersServices";
+import OverlayToolTip from "../../utils/OverlayToolTip";
+import BlockModalPopUp from "./BlockModalPopUp ";
 
 const UsersCards = ({ user, profilePictures, loggedUserId }) => {
   const [open, setOpen] = useState(false);
   const [hide, setHide] = useState(true);
   const [heart, setHeart] = useState(heartOutline);
   const [liked, setLiked] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const handleShowModal = () => setShowModal(true);
+
   const [fameRate, setFameRate] = useState(0);
   const dispatch = useDispatch();
 
@@ -61,6 +66,8 @@ const UsersCards = ({ user, profilePictures, loggedUserId }) => {
       setLiked(true);
     }
   };
+
+  const blockPerson = () => {};
 
   if (!user) {
     return <Spinner animation="grow" />;
@@ -154,16 +161,25 @@ const UsersCards = ({ user, profilePictures, loggedUserId }) => {
                   </div>
 
                   <div className="cards-buttons">
-                    <Button variant="light" className="rounded-pill">
-                      <Image src={blockIcon} />
-                    </Button>
-                    <Button
-                      onClick={likePerson}
-                      variant="light"
-                      className="rounded-pill like-btn"
-                    >
-                      <Image src={heart} />
-                    </Button>
+                    <OverlayToolTip toolTipText="Block user">
+                      <Button
+                        onClick={handleShowModal}
+                        variant="light"
+                        className="rounded-pill action-btns"
+                      >
+                        <Image src={blockIcon} alt="block user" />
+                      </Button>
+                    </OverlayToolTip>
+                    <BlockModalPopUp show={showModal} setShow={setShowModal} />
+                    <OverlayToolTip toolTipText="Like user">
+                      <Button
+                        onClick={likePerson}
+                        variant="light"
+                        className="rounded-pill action-btns"
+                      >
+                        <Image src={heart} />
+                      </Button>
+                    </OverlayToolTip>
                   </div>
                 </Card.Body>
               </Col>

@@ -308,15 +308,16 @@
   max-width: 27vw;
 }
 
-.like-btn > img {
+.action-btns > img {
   transition: transform 0.2s ease;
 }
 
-.like-btn:active > img {
+.action-btns:active > img {
   transform: scale(1.5);
 }
 
-.filterForm {
+#button-tooltip {
+  position: absolute;
 }
 
 @media only screen and (max-width: 450px) {
