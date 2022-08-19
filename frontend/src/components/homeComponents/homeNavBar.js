@@ -2,7 +2,11 @@ import { Container, Nav, Navbar, NavDropdown, Form } from "react-bootstrap";
 
 const HomeNavBar = ({ setSort, setOrder }) => {
   return (
-    <Navbar bg="light" expand="lg" className="mt-3">
+    <Navbar
+      bg="transparent"
+      expand="lg"
+      className="mt-3 border border-light rounded"
+    >
       <Container>
         <Nav>
           <NavDropdown title="sort by">

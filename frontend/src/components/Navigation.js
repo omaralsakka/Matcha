@@ -18,7 +18,7 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
   };
   return (
     <>
-      <Navbar bg="light" variant="light">
+      <Navbar bg="transparent" variant="light">
         <Container fluid>
           <Navbar.Brand href="#home">Matcha</Navbar.Brand>
           <Nav className="me-auto">
@@ -34,7 +34,6 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
             <Link to="/settings" className="nav-link">
               Settings
             </Link>
-
           </Nav>
           <Navbar.Collapse className="justify-content-end">
             <Nav.Item className="mx-3">
