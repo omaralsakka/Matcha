@@ -13,7 +13,6 @@ const InfoForm = ({ setVisibleForm }) => {
   const [tags, setTags] = useState([]);
   /* const location = useLocation(); */ // dont use this unless forced and make sure there is no infinite render
   const location = "";
-
   const handleSubmit = (e) => {
     e.preventDefault();
 

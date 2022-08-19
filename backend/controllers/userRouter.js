@@ -66,7 +66,7 @@ userRouter.post("/verify", async (request, response) => {
   }
 });
 
-const createToken = (loggedUser) => {
+/* const createToken = (loggedUser) => {
   
   let infoFilled;
   const userPictures = await queryTools.selectOneQualifier(
@@ -86,12 +86,11 @@ const createToken = (loggedUser) => {
   const token = jwt.sign(userForToken, process.env.SECRET);
 
   return token
-}
+} */
 
 userRouter.post("/login", async (request, response) => {
   const body = request.body;
   const loggedUser = await queries.loginUser(body);
-
   if (loggedUser) {
     let infoFilled;
     const userPictures = await queryTools.selectOneQualifier(
@@ -120,6 +119,7 @@ userRouter.post("/login", async (request, response) => {
 });
 
 userRouter.post("/login/tk", async (request, response) => {
+
   const body = request.body;
   const loggedUser = await queries.tokenLogin(body);
   if (loggedUser) {
@@ -243,7 +243,6 @@ userRouter.get("/search/:id", async (request, response) => {
       "user_id",
       id
     );
-    console.log("this is query response: ", queryResponse);
     response.status(200).send(queryResponse.rows);
   } catch (error) {
     response.status(401).json({
@@ -255,7 +254,6 @@ userRouter.get("/search/:id", async (request, response) => {
 userRouter.post("/search-update", async (request, response) => {
   try {
     const body = request.body;
-    console.log("this is body: ", body);
     const queryResponse = await infoQueries.updateUserSearchQuery(
       body.user_id,
       body.newSettings

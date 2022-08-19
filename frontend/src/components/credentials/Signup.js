@@ -53,9 +53,18 @@ const Signup = () => {
         }
       }
     });
-  }, [username.value]);
+	getCredentials({ type: "email" }).then((res) => {
+		let obj = res.find((o) => o.email === email.value);
+		setEmailVerify(1);
+		if (obj) {
+		  if (obj.email === email.value) {
+			setEmailVerify(0);
+		  }
+		}
+	  });
+  }, [username.value, email.value]);
 
-  useEffect(() => {
+ /*  useEffect(() => {
     getCredentials({ type: "email" }).then((res) => {
       let obj = res.find((o) => o.email === email.value);
       setEmailVerify(1);
@@ -65,7 +74,7 @@ const Signup = () => {
         }
       }
     });
-  }, [email.value]);
+  }, [email.value]); */
 
   const handleSubmit = (e) => {
     e.preventDefault();

@@ -7,11 +7,15 @@ import { settingsService, verifyOldPassword, getCredentials, changeEmailService 
 import { checkUserName, checkPassword, checkFullName, checkEmail, } from "../../utils/InputChecks"
 import { logUser, logoutUser } from "../../reducers/loginReducer";
 import { useDispatch } from "react-redux";
+import useLocation from "../../utils/locationTool";
+import getCapital from "../../utils/getCapital";
+import allCountries from "../../utils/allCountries";
 
 const Settings = ({ setLoggedUser }) => {
   const { user } = useStoreUser();
   const username = UseField("text");
   const fullname = UseField("text");
+  const country = UseField("text");
   const email = UseField("email");
   const oldPassword = UseField("password");
   const newPassword = UseField("password");
@@ -19,8 +23,12 @@ const Settings = ({ setLoggedUser }) => {
   const [verifyOldPw, setVerifyOldPw] = useState(0);
   const [userVerify, setUsernameVerify] = useState(1);
   const [emailVerify, setEmailVerify] = useState(1);
+  const [relocate, setRelocate] = useState(0);
   let changeEmail = 0;
   const dispatch = useDispatch();
+  const countries = allCountries();
+  /* let relocatedPosition = useLocation(); */
+  let relocatedPosition = "";
 
   useEffect(() => {
     getCredentials({ type: "username" }).then((res) => {
@@ -32,19 +40,16 @@ const Settings = ({ setLoggedUser }) => {
         }
       }
     });
-  }, [username.value]);
-
-  useEffect(() => {
-    getCredentials({ type: "email" }).then((res) => {
-      let obj = res.find((o) => o.email === email.value);
-      setEmailVerify(1);
-      if (obj) {
-        if (obj.email === email.value) {
-          setEmailVerify(0);
-        }
-      }
-    });
-  }, [email.value]);
+	getCredentials({ type: "email" }).then((res) => {
+		let obj = res.find((o) => o.email === email.value);
+		setEmailVerify(1);
+		if (obj) {
+		  if (obj.email === email.value) {
+			setEmailVerify(0);
+		  }
+		}
+	  });
+  }, [username.value, email.value]);
 
   useEffect(() => {
 	  if(user)
@@ -58,6 +63,36 @@ const Settings = ({ setLoggedUser }) => {
     });
   }, [oldPassword.value, user]);
 
+  const useHandleRelocation = (e) => {
+	e.preventDefault();
+	setRelocate(1);
+  }
+
+  const setCountry = async (country, settingsInfo, e, credentialsObj) => {
+	const location = await getCapital(country.value);
+	if(location === false) {
+		console.log("this is not a country");
+		return false;
+	}
+	settingsInfo.location = location;
+	settingsService(settingsInfo);
+	e.target.value = "";
+	username.onChange(e);
+	fullname.onChange(e);
+	email.onChange(e);
+	oldPassword.onChange(e);
+	newPassword.onChange(e);
+	country.onChange(e);
+
+	dispatch(logoutUser()).then((resp) => {
+			
+	}).then(() => {
+		setTimeout(() => {dispatch(logUser(credentialsObj)).then((resp) => {
+			setLoggedUser(resp);
+		})}, "1000");
+	});
+}
+
   const handleSubmit = (e) => {
 	 e.preventDefault();
 	
@@ -68,17 +103,28 @@ const Settings = ({ setLoggedUser }) => {
 		email : email.value,
 		newPW : newPassword.value,
 		user_id : user.user_id,
+		location : relocatedPosition
 	}
 
-	const credentialsObj = {
+	let credentialsObj = {
 		username : username.value,
-		password : oldPassword.value
+		password : newPassword.value
+	}
+
+	if(newPassword.value.length === 0) {
+		 credentialsObj = {
+			username : username.value,
+			password : oldPassword.value
+		}
 	}
 
 	if(username.value.length === 0) {
 		settingsInfo.username = user.username;
 		credentialsObj.username = user.username;
 	}
+
+	if(relocate === 0)
+		settingsInfo.location = user.city + ", " + user.country;
 	if(fullname.value.length === 0)
 		settingsInfo.fullname = user.fullname;
 	if(email.value.length === 0) {
@@ -89,22 +135,28 @@ const Settings = ({ setLoggedUser }) => {
 
 	if(changeEmail === 1)
 		changeEmailService(settingsInfo);
+	
+	if(country.value.length > 0) {
+		setCountry(country, settingsInfo, e, credentialsObj) 
+	} else {
+		settingsService(settingsInfo);
+		e.target.value = "";
+		username.onChange(e);
+		fullname.onChange(e);
+		email.onChange(e);
+		oldPassword.onChange(e);
+		newPassword.onChange(e);
+		country.onChange(e);
+		setRelocate(0);
 
-	settingsService(settingsInfo);
-	e.target.value = "";
-	username.onChange(e);
-	fullname.onChange(e);
-	email.onChange(e);
-	oldPassword.onChange(e);
-	newPassword.onChange(e);
-
-	dispatch(logoutUser()).then((resp) => {
-		
-	}).then(() => {
-		dispatch(logUser(credentialsObj)).then((resp) => {
-			setLoggedUser(resp);
+		dispatch(logoutUser()).then((resp) => {
+			
+		}).then(() => {
+			setTimeout(() => {dispatch(logUser(credentialsObj)).then((resp) => {
+				setLoggedUser(resp);
+			})}, "1000");
 		});
-	});
+	}
 };
 
   if (!user) {
@@ -148,6 +200,23 @@ const Settings = ({ setLoggedUser }) => {
             <Form.Control {...fullname} placeholder={user.fullname} />
           </Form.Group>
 
+			<Form.Group className="mb-3">
+				<Form.Label>Relocate location</Form.Label>
+				<br />
+				<Button className="mb-1" onClick={useHandleRelocation}>Relocate</Button>
+				<br />
+				<Form.Text>Click to relocate your position (access to location devices has to be enabled)</Form.Text>
+			</Form.Group>
+
+		  <Form.Group className="mb-3">
+            <Form.Label>Change country</Form.Label>
+			<Form.Select {...country}>
+				<option value="">...</option>
+				{countries.map(country => <option key={country} value={country}>{country}</option>)}
+			</Form.Select>
+			<Form.Text>If you choose to use this option you will be placed to the capital city of the chosen country!</Form.Text>
+          </Form.Group>
+
           <Form.Group className="mb-3">
 			<Form.Label>Change password</Form.Label>
             <Form.Control
@@ -184,6 +253,8 @@ const Settings = ({ setLoggedUser }) => {
             	(checkUserName(username.value) ||
 				checkFullName(fullname.value) ||
 				checkEmail(email.value) ||
+				country.value.length ||
+				relocate === 1 ||
 				checkPassword(newPassword.value)) && verifyOldPw === 1
 				? false
                 : true

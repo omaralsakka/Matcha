@@ -54,7 +54,7 @@ const App = () => {
       if (loggedUser.id) {
         dispatch(tokenLoginCall(decodedToken, token)).then((resp) => {
           if (resp.loggedUser.user_id) {
-            dispatch(fetchUserSearch(resp.loggedUser.user_id));
+            dispatch(fetchUserSearch(resp.loggedUser.user_id)); // some issue here ??
           }
         });
       }
