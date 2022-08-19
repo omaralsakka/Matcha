@@ -5,9 +5,12 @@ const BlockModalPopUp = ({ show, setShow, loggedUser, blockedUser }) => {
   const handleClose = () => setShow(false);
   const usersIds = { loggedUser, blockedUser };
 
-  const blockUser = () => {
-    console.log("userIds: ", usersIds);
-    blockUserService(usersIds).then((resp) => console.log(resp));
+  const blockUser = async () => {
+    const response = await blockUserService(usersIds);
+    if (response) {
+      setShow(false);
+      window.location.assign("/home");
+    }
   };
 
   return (
