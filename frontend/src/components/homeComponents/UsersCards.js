@@ -11,38 +11,19 @@ import {
 } from "react-bootstrap";
 
 import pic from "../../media/cp2.jpg";
-import heartOutline from "../../media/heart-outline.png";
-import heartInline from "../../media/heart-inline.png";
-import blockIcon from "../../media/x-icon.png";
+
 import locationIcon from "../../media/location-icon.png";
 import { Spinner } from "react-bootstrap";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { likeUser, disLikeUser } from "../../reducers/usersReducer";
+import { useState } from "react";
 import { viewUserService } from "../../services/usersServices";
-import OverlayToolTip from "../../utils/OverlayToolTip";
-import BlockModalPopUp from "./BlockModalPopUp ";
+import BlockButton from "./BlockButton";
+import LikeButton from "./LikeButton";
 
 const UsersCards = ({ user, profilePictures, loggedUserId }) => {
   const [open, setOpen] = useState(false);
   const [hide, setHide] = useState(true);
-  const [heart, setHeart] = useState(heartOutline);
-  const [liked, setLiked] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const handleShowModal = () => setShowModal(true);
 
   const [fameRate, setFameRate] = useState(0);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (user.liked_by) {
-      if (user.liked_by.includes(loggedUserId)) {
-        setHeart(heartInline);
-        setLiked(true);
-      }
-      setFameRate(user.liked_by.length);
-    }
-  }, [user, loggedUserId]);
 
   const displayUserInfo = () => {
     if (!open) {
@@ -51,20 +32,6 @@ const UsersCards = ({ user, profilePictures, loggedUserId }) => {
     }
     setOpen(!open);
     setHide(!hide);
-  };
-
-  const likePerson = () => {
-    if (liked) {
-      dispatch(disLikeUser(user.user_id, loggedUserId));
-      setHeart(heartOutline);
-      setFameRate(fameRate - 1);
-      setLiked(false);
-    } else {
-      dispatch(likeUser(user.user_id, loggedUserId));
-      setHeart(heartInline);
-      setFameRate(fameRate + 1);
-      setLiked(true);
-    }
   };
 
   if (!user) {
@@ -159,32 +126,20 @@ const UsersCards = ({ user, profilePictures, loggedUserId }) => {
                   </div>
 
                   <div className="cards-buttons">
-                    <OverlayToolTip toolTipText="Block user">
-                      <Button
-                        onClick={handleShowModal}
-                        variant="light"
-                        className="rounded-pill action-btns"
-                      >
-                        <Image src={blockIcon} alt="block user" />
-                      </Button>
-                    </OverlayToolTip>
-                    <BlockModalPopUp
-                      show={showModal}
-                      setShow={setShowModal}
-                      loggedUser={loggedUserId}
-                      blockedUser={user.user_id}
+                    <BlockButton loggedUserId={loggedUserId} user={user} />
+                    <LikeButton
+                      loggedUserId={loggedUserId}
+                      user={user}
+                      fameRate={fameRate}
+                      setFameRate={setFameRate}
                     />
-
-                    <OverlayToolTip toolTipText="Like user">
-                      <Button
-                        onClick={likePerson}
-                        variant="light"
-                        className="rounded-pill action-btns"
-                      >
-                        <Image src={heart} />
-                      </Button>
-                    </OverlayToolTip>
                   </div>
+                  <Button
+                    variant="danger"
+                    className="rounded border-0 w-25 mx-auto"
+                  >
+                    Report account
+                  </Button>
                 </Card.Body>
               </Col>
             </Collapse>
