@@ -79,29 +79,29 @@ export const updateSearch = async (data) => {
   const response = await axios.post(`${userUrl}/search-update`, data);
   return response.data;
 };
-export const settingsService =  async (settingsObj) => {
+export const settingsService = async (settingsObj) => {
   const response = await axios.post(`${userUrl}/settings`, settingsObj);
   return response.data;
-}
+};
 
 export const verifyOldPassword = async (password, id, type) => {
-	const infoObj = {
-		pw : password,
-		id : id,
-	};
-	const response = await axios.post(`${userUrl}/verify-password`, infoObj);
-	return response.data;
-}
+  const infoObj = {
+    pw: password,
+    id: id,
+  };
+  const response = await axios.post(`${userUrl}/verify-password`, infoObj);
+  return response.data;
+};
 
 export const changeEmailService = async (userObj) => {
-	const response = await axios.post(`${userUrl}/change-email`, userObj);
-	return response.data;
-}
+  const response = await axios.post(`${userUrl}/change-email`, userObj);
+  return response.data;
+};
 
 export const verifyEmailChangeService = async (code) => {
-	const response = await axios.post(`${userUrl}/verify-change-email`, code);
-	return response.data;
-}
+  const response = await axios.post(`${userUrl}/verify-change-email`, code);
+  return response.data;
+};
 
 /* export const getUserService = async (userData) => {
 	const response = await axios.post(`${userUrl}/user-info`, userData);

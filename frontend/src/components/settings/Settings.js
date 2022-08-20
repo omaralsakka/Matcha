@@ -3,18 +3,28 @@ import { useState, useEffect } from "react";
 import { Container, Form, Button, Alert } from "react-bootstrap";
 import { useStoreUser } from "../../utils/getStoreStates";
 import LoadingScreen from "../LoadingScreen";
-import { settingsService, verifyOldPassword, getCredentials, changeEmailService } from "../../services/userServices"
-import { checkUserName, checkPassword, checkFullName, checkEmail, } from "../../utils/InputChecks"
+import {
+  settingsService,
+  verifyOldPassword,
+  getCredentials,
+  changeEmailService,
+} from "../../services/userServices";
+import {
+  checkUserName,
+  checkPassword,
+  checkFullName,
+  checkEmail,
+} from "../../utils/InputChecks";
 import { logUser, logoutUser } from "../../reducers/loginReducer";
 import { useDispatch } from "react-redux";
 
 const Settings = ({ setLoggedUser }) => {
   const { user } = useStoreUser();
-  const username = UseField("text");
-  const fullname = UseField("text");
-  const email = UseField("email");
-  const oldPassword = UseField("password");
-  const newPassword = UseField("password");
+  const username = UseField("text", "");
+  const fullname = UseField("text", "");
+  const email = UseField("email", "");
+  const oldPassword = UseField("password", "");
+  const newPassword = UseField("password", "");
   const [passType, setPassType] = useState("password");
   const [verifyOldPw, setVerifyOldPw] = useState(0);
   const [userVerify, setUsernameVerify] = useState(1);
@@ -47,65 +57,63 @@ const Settings = ({ setLoggedUser }) => {
   }, [email.value]);
 
   useEffect(() => {
-	  if(user)
-    	verifyOldPassword(oldPassword.value, user.user_id).then((res) => {
-      setVerifyOldPw(1);
-      if (res) {
-        if (res === "incorrect") {
-          setVerifyOldPw(0);
+    if (user)
+      verifyOldPassword(oldPassword.value, user.user_id).then((res) => {
+        setVerifyOldPw(1);
+        if (res) {
+          if (res === "incorrect") {
+            setVerifyOldPw(0);
+          }
         }
-      }
-    });
+      });
   }, [oldPassword.value, user]);
 
   const handleSubmit = (e) => {
-	 e.preventDefault();
-	
-	const settingsInfo = {
-		username : username.value,
-		fullname : fullname.value,
-		oldEmail : user.email,
-		email : email.value,
-		newPW : newPassword.value,
-		user_id : user.user_id,
-	}
+    e.preventDefault();
 
-	const credentialsObj = {
-		username : username.value,
-		password : oldPassword.value
-	}
+    const settingsInfo = {
+      username: username.value,
+      fullname: fullname.value,
+      oldEmail: user.email,
+      email: email.value,
+      newPW: newPassword.value,
+      user_id: user.user_id,
+    };
 
-	if(username.value.length === 0) {
-		settingsInfo.username = user.username;
-		credentialsObj.username = user.username;
-	}
-	if(fullname.value.length === 0)
-		settingsInfo.fullname = user.fullname;
-	if(email.value.length === 0) {
-		settingsInfo.email = user.email;
-	} else {
-		changeEmail = 1;
-	}
+    const credentialsObj = {
+      username: username.value,
+      password: oldPassword.value,
+    };
 
-	if(changeEmail === 1)
-		changeEmailService(settingsInfo);
+    if (username.value.length === 0) {
+      settingsInfo.username = user.username;
+      credentialsObj.username = user.username;
+    }
+    if (fullname.value.length === 0) settingsInfo.fullname = user.fullname;
+    if (email.value.length === 0) {
+      settingsInfo.email = user.email;
+    } else {
+      changeEmail = 1;
+    }
 
-	settingsService(settingsInfo);
-	e.target.value = "";
-	username.onChange(e);
-	fullname.onChange(e);
-	email.onChange(e);
-	oldPassword.onChange(e);
-	newPassword.onChange(e);
+    if (changeEmail === 1) changeEmailService(settingsInfo);
 
-	dispatch(logoutUser()).then((resp) => {
-		
-	}).then(() => {
-		dispatch(logUser(credentialsObj)).then((resp) => {
-			setLoggedUser(resp);
-		});
-	});
-};
+    settingsService(settingsInfo);
+    e.target.value = "";
+    username.onChange(e);
+    fullname.onChange(e);
+    email.onChange(e);
+    oldPassword.onChange(e);
+    newPassword.onChange(e);
+
+    dispatch(logoutUser())
+      .then((resp) => {})
+      .then(() => {
+        dispatch(logUser(credentialsObj)).then((resp) => {
+          setLoggedUser(resp);
+        });
+      });
+  };
 
   if (!user) {
     return <LoadingScreen />;
@@ -118,11 +126,14 @@ const Settings = ({ setLoggedUser }) => {
           <Form.Group className="mb-3">
             <Form.Label>Change username</Form.Label>
             <Form.Control {...username} placeholder={user.username} />
-			{userVerify === 0 ? 
-			  	<Alert variant="danger" className="error-alert mt-4">
-					This <strong>username</strong> is already in use! Please choose an other one.
-				</Alert> : <></>
-			}
+            {userVerify === 0 ? (
+              <Alert variant="danger" className="error-alert mt-4">
+                This <strong>username</strong> is already in use! Please choose
+                an other one.
+              </Alert>
+            ) : (
+              <></>
+            )}
             <Form.Text className="text-muted">
               Username should contain letters and numbers only with minimum
               length of 3
@@ -132,12 +143,14 @@ const Settings = ({ setLoggedUser }) => {
           <Form.Group className="mb-3">
             <Form.Label>Change email</Form.Label>
             <Form.Control {...email} placeholder={user.email} />
-			{emailVerify === 0 ?
-                <Alert variant="danger" className="error-alert mt-4">
-                  This <strong>email</strong> is already in use! Please choose
-                  an other one.
-                </Alert> : <></>
-            }
+            {emailVerify === 0 ? (
+              <Alert variant="danger" className="error-alert mt-4">
+                This <strong>email</strong> is already in use! Please choose an
+                other one.
+              </Alert>
+            ) : (
+              <></>
+            )}
             <Form.Text className="text-muted">
               We'll never share your email with anyone else.
             </Form.Text>
@@ -149,7 +162,7 @@ const Settings = ({ setLoggedUser }) => {
           </Form.Group>
 
           <Form.Group className="mb-3">
-			<Form.Label>Change password</Form.Label>
+            <Form.Label>Change password</Form.Label>
             <Form.Control
               {...newPassword}
               type={passType}
@@ -169,25 +182,31 @@ const Settings = ({ setLoggedUser }) => {
               }
             />
           </Form.Group>
-		  <Form.Group className="mb-3">
-            <Form.Label>Insert old password to confirm changes</Form.Label>
-            <Form.Control {...oldPassword} placeholder="old password" />
-			{verifyOldPw === 1 || oldPassword.value.length === 0 ?
-                <></>
-               : 
-               ( <Alert variant="danger" className="username-alert mt-4">
-                  <strong>Password</strong> incorrect!
-                </Alert> )
-            }
+          <Form.Group className="mb-3 mt-5">
+            <Form.Label>Insert your current password</Form.Label>
+            <Form.Control {...oldPassword} />
+            {verifyOldPw === 1 || oldPassword.value.length === 0 ? (
+              <></>
+            ) : (
+              <Alert variant="danger" className="username-alert mt-4">
+                <strong>Password</strong> incorrect!
+              </Alert>
+            )}
           </Form.Group>
-          <Button disabled={
-            	(checkUserName(username.value) ||
-				checkFullName(fullname.value) ||
-				checkEmail(email.value) ||
-				checkPassword(newPassword.value)) && verifyOldPw === 1
-				? false
+          <Button
+            disabled={
+              (checkUserName(username.value) ||
+                checkFullName(fullname.value) ||
+                checkEmail(email.value) ||
+                checkPassword(newPassword.value)) &&
+              verifyOldPw === 1
+                ? false
                 : true
-              } className="form-button" variant="primary" type="submit">
+            }
+            className="form-button"
+            variant="primary"
+            type="submit"
+          >
             Save
           </Button>
         </Form>

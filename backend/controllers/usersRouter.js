@@ -26,6 +26,24 @@ usersRouter.get("/profileimage", async (request, response) => {
   }
 });
 
+// working on this
+usersRouter.get("/pictures/:id", async (request, response) => {
+  const userId = request.params.id;
+  const queryResponse = queryTools.selectOneQualifier(
+    "pictures",
+    "user_id",
+    userId
+  );
+
+  if (queryResponse.length) {
+    response.status(200).send(queryResponse);
+  } else {
+    response.status(404).json({
+      error: "pictures not found",
+    });
+  }
+});
+
 usersRouter.post("/likeuser", async (request, response) => {
   const { likedUserId, likedById } = request.body;
   const queryResponseLiked = await usersQueries.updateArrayQuery(
