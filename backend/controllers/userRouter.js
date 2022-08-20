@@ -169,7 +169,6 @@ userRouter.post("/infoFilledToken", async (request, response) => {
   if (!decodedToken.id) {
     return response.status(401).json({ error: "new token generating error" });
   }
-  console.log();
   const userForToken = {
     username: decodedToken.username,
     id: decodedToken.id,

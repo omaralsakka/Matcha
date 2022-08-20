@@ -7,6 +7,7 @@ import { fetchUsers } from "../reducers/usersReducer";
 import LoadingScreen from "./LoadingScreen";
 import { getUsersProfileImage } from "../services/usersServices";
 import { useStoreUser } from "../utils/getStoreStates";
+import sortUsers from "../utils/sortUsers";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -27,36 +28,10 @@ const Home = () => {
 
   useEffect(() => {
     if (sort) {
-      const sortedUsers = [...users];
-
-      switch (`${sort} ${order}`) {
-        case "age ascending":
-          sortedUsers.sort((a, b) => a.age - b.age);
-          setUsers(sortedUsers);
-          break;
-        case "age descending":
-          sortedUsers.sort((a, b) => b.age - a.age);
-          setUsers(sortedUsers);
-          break;
-        // case "location":
-        //   setSortedUsers(users);
-        //   break;
-        // case "tags":
-        //   setSortedUsers(users);
-        //   break;
-        case "liked_by ascending":
-          sortedUsers.sort((a, b) => a.liked_by.length - b.liked_by.length);
-          setUsers(sortedUsers);
-          break;
-        case "liked_by descending":
-          sortedUsers.sort((a, b) => b.liked_by.length - a.liked_by.length);
-          setUsers(sortedUsers);
-          break;
-        default:
-          setUsers(sortedUsers);
-      }
+      setUsers(sortUsers(users, sort, order));
     }
   }, [sort, order]);
+
   if (!users.length || !profilePictures.length || !user) {
     return <LoadingScreen />;
   } else {

@@ -171,7 +171,6 @@ const getPassword = async ({ pw, id }) => {
 
 const checkColArrayValue = async (table, viewedUser, loggedUser, col) => {
   try {
-    console.log("params: ", table, viewedUser, loggedUser, col);
     const queryResponse = await pool.query(
       `SELECT * FROM ${table} WHERE user_id = $1 AND $2 = ANY(${col})`,
       [viewedUser, loggedUser]
