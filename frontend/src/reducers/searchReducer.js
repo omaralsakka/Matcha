@@ -1,8 +1,7 @@
 import {
   SEARCH_FETCH_SUCCESS,
-  SEARCH_FETCH_ERROR,
   SEARCH_UPDATE_SUCCESS,
-  SEARCH_UPDATE_ERROR,
+  SEARCH_REDUCER_ERROR,
 } from "../actions/types";
 
 import { getSearch, updateSearch } from "../services/userServices";
@@ -22,19 +21,15 @@ const searchReducer = (state = initialState, action) => {
         search: payload,
         error: null,
       };
-    case SEARCH_FETCH_ERROR:
-      return {
-        ...state,
-        search: null,
-        error: payload,
-      };
+
     case SEARCH_UPDATE_SUCCESS:
       return {
         ...state,
         search: payload,
         error: null,
       };
-    case SEARCH_UPDATE_ERROR:
+
+    case SEARCH_REDUCER_ERROR:
       return {
         ...state,
         search: null,
@@ -52,13 +47,6 @@ const searchFetchSuccess = (search) => {
   };
 };
 
-const searchFetchError = (error) => {
-  return {
-    type: SEARCH_UPDATE_SUCCESS,
-    payload: error,
-  };
-};
-
 const searchUpdateSuccess = (search) => {
   return {
     type: SEARCH_UPDATE_SUCCESS,
@@ -66,9 +54,9 @@ const searchUpdateSuccess = (search) => {
   };
 };
 
-const searchUpdateError = (error) => {
+const searchReducerError = (error) => {
   return {
-    type: SEARCH_FETCH_ERROR,
+    type: SEARCH_REDUCER_ERROR,
     payload: error,
   };
 };
@@ -79,7 +67,7 @@ export const fetchUserSearch = (user_id) => {
       const response = await getSearch(user_id);
       dispatch(searchFetchSuccess(response[0]));
     } catch (error) {
-      dispatch(searchFetchError(error.message));
+      dispatch(searchReducerError(error.message));
       console.error(error.message);
       return false;
     }
@@ -98,7 +86,7 @@ export const updateUserSearch = (user_id, newSettings) => {
       dispatch(searchUpdateSuccess(response[0]));
       return response[0];
     } catch (error) {
-      dispatch(searchUpdateError(error.message));
+      dispatch(searchReducerError(error.message));
       console.error(error.message);
       return false;
     }

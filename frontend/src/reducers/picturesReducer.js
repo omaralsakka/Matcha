@@ -1,6 +1,6 @@
 import {
-  FETCH_IMAGES_SUCCESS,
-  FETCH_IMAGES_ERROR,
+  IMAGES_FETCH_SUCCESS,
+  IMAGES_REDUCER_ERROR,
   CLEAR_STORE_IMAGES,
 } from "../actions/types";
 
@@ -11,17 +11,12 @@ const picturesReducer = (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case FETCH_IMAGES_SUCCESS:
+    case IMAGES_FETCH_SUCCESS:
+      let stateCopy = [...state];
       return {
         ...state,
-        pictures: state.push(payload),
+        pictures: stateCopy.push(payload),
         error: null,
-      };
-    case FETCH_IMAGES_ERROR:
-      return {
-        ...state,
-        pictures: [],
-        error: payload,
       };
 
     case CLEAR_STORE_IMAGES:
@@ -31,6 +26,12 @@ const picturesReducer = (state = initialState, action) => {
         error: null,
       };
 
+    case IMAGES_REDUCER_ERROR:
+      return {
+        ...state,
+        pictures: [],
+        error: payload,
+      };
     default:
       return state;
   }
@@ -38,14 +39,14 @@ const picturesReducer = (state = initialState, action) => {
 
 const fetchImagesSuccess = (pictures) => {
   return {
-    type: FETCH_IMAGES_SUCCESS,
+    type: IMAGES_FETCH_SUCCESS,
     payload: pictures,
   };
 };
 
-const fetchImagesError = (error) => {
+const imagesReducerError = (error) => {
   return {
-    type: FETCH_IMAGES_ERROR,
+    type: IMAGES_REDUCER_ERROR,
     payload: error,
   };
 };
@@ -68,7 +69,7 @@ export const fetchUserImages = (userId) => {
       }
     } catch (error) {
       console.error(error.message);
-      dispatch(fetchImagesError(error.message));
+      dispatch(imagesReducerError(error.message));
     }
   };
 };
@@ -80,6 +81,7 @@ export const clearStoreImages = () => {
       return true;
     } catch (error) {
       console.error(error.message);
+      dispatch(imagesReducerError(error.message));
     }
   };
 };

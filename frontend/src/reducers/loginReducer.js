@@ -1,10 +1,7 @@
 import {
   LOGIN_SUCCESS,
-  LOGIN_ERROR,
   LOGOUT_SUCCESS,
-  LOGOUT_ERROR,
-  TOKEN_LOGIN_ERROR,
-  INFO_FILLED_ERROR,
+  LOGIN_REDUCER_ERROR,
 } from "../actions/types";
 import {
   setServiceToken,
@@ -27,31 +24,13 @@ const loginReducer = (state = initialState, action) => {
         user: payload,
         error: "",
       };
-    case LOGIN_ERROR:
-      return {
-        ...state,
-        user: null,
-        error: payload,
-      };
     case LOGOUT_SUCCESS:
       return {
         ...state,
         user: null,
         error: "",
       };
-    case LOGOUT_ERROR:
-      return {
-        ...state,
-        user: null,
-        error: payload,
-      };
-    case TOKEN_LOGIN_ERROR:
-      return {
-        ...state,
-        user: null,
-        error: payload,
-      };
-    case INFO_FILLED_ERROR:
+    case LOGIN_REDUCER_ERROR:
       return {
         ...state,
         user: null,
@@ -69,9 +48,9 @@ const loginSuccess = (user) => {
   };
 };
 
-const loginFailed = (error) => {
+const loginReducerError = (error) => {
   return {
-    type: LOGIN_ERROR,
+    type: LOGIN_REDUCER_ERROR,
     payload: error,
   };
 };
@@ -80,27 +59,6 @@ const logoutSuccess = () => {
   return {
     type: LOGOUT_SUCCESS,
     payload: "",
-  };
-};
-
-const logoutError = (error) => {
-  return {
-    type: LOGOUT_ERROR,
-    payload: error,
-  };
-};
-
-const tokenLoginError = (error) => {
-  return {
-    type: TOKEN_LOGIN_ERROR,
-    payload: error,
-  };
-};
-
-const infoFilledError = (error) => {
-  return {
-    type: INFO_FILLED_ERROR,
-    payload: error,
   };
 };
 
@@ -113,7 +71,7 @@ export const logUser = (userInfo) => {
       window.localStorage.setItem("LoggedMatchaUser", JSON.stringify(response));
       return response;
     } catch (error) {
-      dispatch(loginFailed(error.message));
+      dispatch(loginReducerError(error.message));
       return false;
     }
   };
@@ -127,7 +85,7 @@ export const logoutUser = () => {
       window.localStorage.removeItem("LoggedMatchaUser");
       return true;
     } catch (error) {
-      dispatch(logoutError(error.message));
+      dispatch(loginReducerError(error.message));
       return false;
     }
   };
@@ -143,7 +101,7 @@ export const tokenLoginCall = (userInfo, token) => {
       }
       return response;
     } catch (error) {
-      dispatch(tokenLoginError(error.message));
+      dispatch(loginReducerError(error.message));
       return false;
     }
   };

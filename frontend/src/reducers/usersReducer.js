@@ -1,10 +1,8 @@
 import {
   USERS_FETCHED_SUCCESS,
-  USERS_FETCHED_ERROR,
   USER_LIKE_SUCCESS,
-  USERS_LIKE_ERROR,
   USER_DISLIKE_SUCCESS,
-  USER_DISLIKE_ERROR,
+  USERS_REDUCER_ERROR,
 } from "../actions/types";
 
 import {
@@ -29,13 +27,6 @@ const usersReducer = (state = initialState, action) => {
         error: null,
       };
 
-    case USERS_FETCHED_ERROR:
-      return {
-        ...state,
-        users: [],
-        error: payload,
-      };
-
     case USER_LIKE_SUCCESS:
       return {
         ...state,
@@ -46,13 +37,6 @@ const usersReducer = (state = initialState, action) => {
           return user;
         }),
         error: null,
-      };
-
-    case USERS_LIKE_ERROR:
-      return {
-        ...state,
-        users: [],
-        error: payload,
       };
 
     case USER_DISLIKE_SUCCESS:
@@ -67,7 +51,7 @@ const usersReducer = (state = initialState, action) => {
         error: null,
       };
 
-    case USER_DISLIKE_ERROR:
+    case USERS_REDUCER_ERROR:
       return {
         ...state,
         users: [],
@@ -85,24 +69,10 @@ const usersFetchSuccess = (users) => {
   };
 };
 
-const usersFetchError = (error) => {
-  return {
-    type: USERS_FETCHED_ERROR,
-    payload: error,
-  };
-};
-
 const likeUserSuccess = (updatedUser) => {
   return {
     type: USER_LIKE_SUCCESS,
     payload: updatedUser,
-  };
-};
-
-const likeUserError = (error) => {
-  return {
-    type: USERS_LIKE_ERROR,
-    payload: error,
   };
 };
 
@@ -113,9 +83,9 @@ const disLikeUserSuccess = (updatedUser) => {
   };
 };
 
-const disLikeUserError = (error) => {
+const usersReducerError = (error) => {
   return {
-    type: USER_DISLIKE_ERROR,
+    type: USERS_REDUCER_ERROR,
     payload: error,
   };
 };
@@ -127,7 +97,7 @@ export const fetchUsers = () => {
       dispatch(usersFetchSuccess(response));
       return response;
     } catch (error) {
-      dispatch(usersFetchError(error.message));
+      dispatch(usersReducerError(error.message));
       console.error(error.message);
       return error.message;
     }
@@ -144,7 +114,7 @@ export const likeUser = (likedUserId, likedById) => {
 
       return updatedUser;
     } catch (error) {
-      dispatch(likeUserError(error.message));
+      dispatch(usersReducerError(error.message));
       console.error(error.message);
       return error.message;
     }
@@ -160,7 +130,7 @@ export const disLikeUser = (likedUserId, likedById) => {
 
       return updatedUser;
     } catch (error) {
-      dispatch(disLikeUserError(error.message));
+      dispatch(usersReducerError(error.message));
       console.error(error.message);
       return error.message;
     }
