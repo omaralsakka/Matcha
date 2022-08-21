@@ -21,7 +21,8 @@ CREATE TABLE users(
     liked INT [],
     liked_by INT [],
     views INT [],
-    pictures INT DEFAULT 0
+    pictures INT DEFAULT 0,
+    reports INT DEFAULT 0
 );
 
 CREATE TABLE user_verify(

@@ -153,4 +153,25 @@ usersRouter.post("/blockuser", async (request, response) => {
   }
 });
 
+usersRouter.post("/report-user", async (request, response) => {
+  const { userId } = request.body;
+  const responseQuery = await usersQueries.updateUsersOneQualifier(
+    "user_id",
+    "reports",
+    "reports + 1",
+    userId
+  );
+
+  // There should be rule if reports are 3 for example,
+  // the account should be deleted and an email sent to the user.
+
+  if (responseQuery.length) {
+    response.status(200).send(responseQuery);
+  } else {
+    response.status(401).json({
+      error: "reporting router error",
+    });
+  }
+});
+
 module.exports = usersRouter;

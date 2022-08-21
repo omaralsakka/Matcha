@@ -43,7 +43,7 @@ const LikeButton = ({ loggedUserId, user, fameRate, setFameRate }) => {
           variant="light"
           className="rounded-pill action-btns"
         >
-          <Image src={heart} />
+          <Image src={heart} fluid />
         </Button>
       </OverlayToolTip>
     </>

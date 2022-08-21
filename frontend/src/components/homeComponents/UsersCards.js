@@ -18,11 +18,11 @@ import { useState } from "react";
 import { viewUserService } from "../../services/usersServices";
 import BlockButton from "./BlockButton";
 import LikeButton from "./LikeButton";
+import ReportAccount from "./ReportAccount";
 
 const UsersCards = ({ user, profilePictures, loggedUserId }) => {
   const [open, setOpen] = useState(false);
   const [hide, setHide] = useState(true);
-
   const [fameRate, setFameRate] = useState(0);
 
   const displayUserInfo = () => {
@@ -125,7 +125,7 @@ const UsersCards = ({ user, profilePictures, loggedUserId }) => {
                     </Card.Text>
                   </div>
 
-                  <div className="cards-buttons">
+                  <div className="cards-buttons w-100">
                     <BlockButton loggedUserId={loggedUserId} user={user} />
                     <LikeButton
                       loggedUserId={loggedUserId}
@@ -134,12 +134,8 @@ const UsersCards = ({ user, profilePictures, loggedUserId }) => {
                       setFameRate={setFameRate}
                     />
                   </div>
-                  <Button
-                    variant="danger"
-                    className="rounded border-0 w-25 mx-auto"
-                  >
-                    Report account
-                  </Button>
+
+                  <ReportAccount userId={user.user_id} />
                 </Card.Body>
               </Col>
             </Collapse>

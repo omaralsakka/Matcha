@@ -195,6 +195,18 @@ const updateArrayQuery = async (table, col, newData, userId) => {
   }
 };
 
+const updateUsersOneQualifier = async (col, colToUp, newData, qualifier) => {
+  try {
+    const queryResponse = await pool.query(
+      `UPDATE users SET ${colToUp} = ${newData} WHERE ${col} = ${qualifier} RETURNING *`
+    );
+    return queryResponse.rows;
+  } catch (error) {
+    console.error(error.message);
+    return error.message;
+  }
+};
+
 module.exports = {
   insertUserInfo,
   insertUserPictures,
@@ -206,4 +218,5 @@ module.exports = {
   getPassword,
   checkColArrayValue,
   updateArrayQuery,
+  updateUsersOneQualifier,
 };
