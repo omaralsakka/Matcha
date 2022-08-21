@@ -135,7 +135,7 @@ const UsersCards = ({ user, profilePictures, loggedUserId }) => {
                     />
                   </div>
 
-                  <ReportAccount userId={user.user_id} />
+                  <ReportAccount loggedUserId={loggedUserId} user={user} />
                 </Card.Body>
               </Col>
             </Collapse>

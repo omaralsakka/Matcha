@@ -38,7 +38,7 @@ export const blockUserService = async (usersIds) => {
   return response.data;
 };
 
-export const reportUserService = async (userId) => {
-  const response = await axios.post(`${usersUrl}/report-user`, userId);
+export const reportUserService = async (usersId) => {
+  const response = await axios.post(`${usersUrl}/report-user`, usersId);
   return response.data;
 };

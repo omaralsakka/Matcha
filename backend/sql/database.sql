@@ -22,7 +22,7 @@ CREATE TABLE users(
     liked_by INT [],
     views INT [],
     pictures INT DEFAULT 0,
-    reports INT DEFAULT 0
+    reports_by INT [],
 );
 
 CREATE TABLE user_verify(

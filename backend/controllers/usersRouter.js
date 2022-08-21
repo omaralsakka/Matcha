@@ -154,19 +154,32 @@ usersRouter.post("/blockuser", async (request, response) => {
 });
 
 usersRouter.post("/report-user", async (request, response) => {
-  const { userId } = request.body;
-  const responseQuery = await usersQueries.updateUsersOneQualifier(
-    "user_id",
-    "reports",
-    "reports + 1",
-    userId
+  const { loggedUserId, reportedUser } = request.body;
+  const insertReportQuery = await usersQueries.updateArrayQuery(
+    "users",
+    "reports_by",
+    loggedUserId,
+    reportedUser
   );
 
   // There should be rule if reports are 3 for example,
   // the account should be deleted and an email sent to the user.
-
-  if (responseQuery.length) {
-    response.status(200).send(responseQuery);
+  if (insertReportQuery.length) {
+    if (insertReportQuery[0].reports_by.length >= 3) {
+      const deleteReportedQuery = await queryTools.deleteOneQualifier(
+        "users",
+        "user_id",
+        reportedUser
+      );
+      const deletePicturesQuery = await queryTools.deleteOneQualifier(
+        "pictures",
+        "user_id",
+        reportedUser
+      );
+      response.status(200).send([]);
+    } else {
+      response.status(200).send(insertReportQuery);
+    }
   } else {
     response.status(401).json({
       error: "reporting router error",

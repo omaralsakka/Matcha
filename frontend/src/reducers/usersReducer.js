@@ -2,6 +2,8 @@ import {
   USERS_FETCHED_SUCCESS,
   USER_LIKE_SUCCESS,
   USER_DISLIKE_SUCCESS,
+  USER_REPORT_SUCCESS,
+  DELETE_REPORTED_USER,
   USERS_REDUCER_ERROR,
 } from "../actions/types";
 
@@ -9,6 +11,7 @@ import {
   getUsersService,
   likeUserService,
   dislikeUserService,
+  reportUserService,
 } from "../services/usersServices";
 
 const initialState = {
@@ -51,6 +54,25 @@ const usersReducer = (state = initialState, action) => {
         error: null,
       };
 
+    case USER_REPORT_SUCCESS:
+      return {
+        ...state,
+        users: state.users.map((user) => {
+          if (user.user_id === payload[0].user_id) {
+            return { ...user, reports_by: payload[0].reports_by };
+          }
+          return user;
+        }),
+        error: null,
+      };
+
+    case DELETE_REPORTED_USER:
+      console.log("this is payload: ", payload);
+      return {
+        ...state,
+        users: state.users.filter((user) => user.user_id !== payload),
+        error: null,
+      };
     case USERS_REDUCER_ERROR:
       return {
         ...state,
@@ -80,6 +102,20 @@ const disLikeUserSuccess = (updatedUser) => {
   return {
     type: USER_DISLIKE_SUCCESS,
     payload: updatedUser,
+  };
+};
+
+const reportUserSuccess = (updatedUser) => {
+  return {
+    type: USER_REPORT_SUCCESS,
+    payload: updatedUser,
+  };
+};
+
+const deleteReportedUser = (userId) => {
+  return {
+    type: DELETE_REPORTED_USER,
+    payload: userId,
   };
 };
 
@@ -130,9 +166,30 @@ export const disLikeUser = (likedUserId, likedById) => {
 
       return updatedUser;
     } catch (error) {
-      dispatch(usersReducerError(error.message));
       console.error(error.message);
+      dispatch(usersReducerError(error.message));
       return error.message;
+    }
+  };
+};
+
+export const reportUser = (loggedUserId, reportedUser) => {
+  return async (dispatch) => {
+    try {
+      const usersId = { loggedUserId, reportedUser };
+      const serviceResponse = await reportUserService(usersId);
+
+      if (serviceResponse.length) {
+        dispatch(reportUserSuccess(serviceResponse));
+      } else {
+        dispatch(deleteReportedUser(reportedUser));
+      }
+
+      return true;
+    } catch (error) {
+      console.error(error.message);
+      dispatch(usersReducerError(error.message));
+      return false;
     }
   };
 };

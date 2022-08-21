@@ -1,28 +1,36 @@
 import { Button } from "react-bootstrap";
 import ModalPopUp from "./ModalPopUp";
 import { useState, useEffect } from "react";
-import { reportUserService } from "../../services/usersServices";
-const ReportAccount = ({ userId }) => {
+import { useDispatch } from "react-redux";
+import { reportUser } from "../../reducers/usersReducer";
+
+const ReportAccount = ({ loggedUserId, user }) => {
   const [showModal, setShowModal] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const handleShowModal = () => setShowModal(true);
+  const dispatch = useDispatch();
+
   const modalText = {
     title: "Report user",
     body: "Do you wish to report this user ?",
     confirm: "Report sent successfully",
   };
-  const reportUser = async () => {
-    const response = await reportUserService({ userId });
-    if (response) {
-      setTimeout(() => {
-        window.location.assign("/home");
-      }, 2000);
+  const report = () => {
+    if (!user.reports_by.includes(loggedUserId)) {
+      dispatch(reportUser(loggedUserId, user.user_id)).then((response) => {
+        if (response) {
+          setTimeout(() => {
+            setConfirm(false);
+            // window.location.assign("/home");
+          }, 3000);
+        }
+      });
     }
   };
 
   useEffect(() => {
     if (confirm) {
-      reportUser();
+      report();
     }
   }, [confirm]);
 

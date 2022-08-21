@@ -37,6 +37,19 @@ const unionOneQualifier = async (column, tableTwo) => {
   }
 };
 
+const deleteOneQualifier = async (table, col, qualifier) => {
+  try {
+    const queryResponse = await pool.query(
+      `DELETE FROM ${table} WHERE ${col} = $1 RETURNING *`,
+      [qualifier]
+    );
+    return queryResponse;
+  } catch (error) {
+    console.error(error.message);
+    return false;
+  }
+};
+
 const insertForgottenPassword = async (email) => {
   try {
     const users = await pool.query(
@@ -143,6 +156,7 @@ module.exports = {
   selectAllTable,
   selectOneQualifier,
   unionOneQualifier,
+  deleteOneQualifier,
   insertForgottenPassword,
   updatePassword,
   emailChangeRequest,
