@@ -1,6 +1,7 @@
 const usersRouter = require("express").Router();
 const queryTools = require("../queries/queryTools");
 const usersQueries = require("../queries/userInfo");
+const userQueries = require("../queries/createUser");
 const Mailer = require("../utils/mailer");
 const mailsFormat = require("../utils/mailsFormat");
 
@@ -193,6 +194,50 @@ usersRouter.post("/report-user", async (request, response) => {
     response.status(401).json({
       error: "reporting router error",
     });
+  }
+});
+
+usersRouter.post("/random-users", async (request, response) => {
+  const { results } = request.body;
+  const sexPref = ["straigth", "gay", "bi"];
+  const tags = [
+    ["vegan", "happy"],
+    ["cool", "smart", "coding"],
+    ["funny", "hungry", "chill", "love"],
+  ];
+  if (results.length) {
+    let i = 0;
+    for (let index = 0; index < results.length; index++) {
+      if (i > 2) {
+        i = 0;
+      }
+      const userInfo = {
+        username: results[index].login.username,
+        email: results[index].email,
+        fullname: `${results[index].name.first} ${results[index].name.last}`,
+        password: results[index].login.password,
+        age: results[index].dob.age,
+      };
+      const queryResponse = await userQueries.insertUser(userInfo);
+      const userData = {
+        gender: results[index].gender,
+        sexualPreference: sexPref[i],
+        bio: "life is good all the time",
+        tags: tags[i],
+        location: `${results[index].location.city}, ${results[index].location.country}`,
+      };
+      const dataQueryResponse = await usersQueries.insertUserInfo(
+        userData,
+        queryResponse.rows[0].user_id,
+        "192.166.125.62"
+      );
+      const picturesQueryResponse = await usersQueries.insertUserPictures(
+        results[index].picture.large,
+        queryResponse.rows[0].user_id
+      );
+      console.log(picturesQueryResponse);
+      i++;
+    }
   }
 });
 

@@ -16,12 +16,16 @@ import Settings from "./components/settings/Settings";
 import Profile from "./components/Profile";
 import Search from "./components/Search";
 import { fetchUserSearch } from "./reducers/searchReducer";
+import { getRandomUsers } from "./services/usersServices";
 
 const App = () => {
   const dispatch = useDispatch();
   const [loggedUser, setLoggedUser] = useState("");
   const [token, setToken] = useState("");
   const { decodedToken, isExpired } = useJWT(token);
+
+  // This function to add random users, BECAREFUL this will add plenty of users
+  // getRandomUsers();
 
   useEffect(() => {
     const loggedUserJson = window.localStorage.getItem("LoggedMatchaUser");
@@ -111,7 +115,10 @@ const App = () => {
             />
             <Route path="/profile" element={<Profile />} />
             <Route path="/search" element={<Search />} />
-            <Route path="/settings" element={<Settings setLoggedUser={setLoggedUser}/>} />
+            <Route
+              path="/settings"
+              element={<Settings setLoggedUser={setLoggedUser} />}
+            />
           </Route>
           <Route path="/terms" element={<Terms />} />
           <Route path="/about" element={<About />} />

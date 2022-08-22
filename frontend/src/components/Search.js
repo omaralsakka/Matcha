@@ -25,7 +25,6 @@ const Search = () => {
       max: 60,
     },
   });
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const userSearch = {
@@ -53,7 +52,7 @@ const Search = () => {
       }
     );
   };
-  if (!user) {
+  if (!user || !search) {
     return <LoadingScreen />;
   } else {
     return (

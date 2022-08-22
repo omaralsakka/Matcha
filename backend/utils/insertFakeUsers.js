@@ -2,7 +2,7 @@ const userQueries = require("../queries/userInfo");
 const insertQueries = require("../queries/createUser");
 const userNames = [
   { name: "ana", gender: "female", sexualPreference: "straight" },
-  { name: "alba", gender: "female", sexualPreference: "gay"},
+  { name: "alba", gender: "female", sexualPreference: "gay" },
   { name: "juho", gender: "male", sexualPreference: "gay" },
   { name: "amadeo", gender: "male", sexualPreference: "bi" },
   { name: "luke", gender: "male", sexualPreference: "bi" },

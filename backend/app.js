@@ -3,7 +3,8 @@ const app = express();
 const cors = require("cors");
 const userRouter = require("./controllers/userRouter");
 const usersRouter = require("./controllers/usersRouter");
-// const insertFakeUsers = require("./utils/insertFakeUsers");
+const insertFakeUsers = require("./utils/insertFakeUsers");
+
 app.use(
   cors({
     origin: "http://localhost:3000",

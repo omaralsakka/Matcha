@@ -70,6 +70,7 @@ export const fetchUserImages = (userId) => {
     } catch (error) {
       console.error(error.message);
       dispatch(imagesReducerError(error.message));
+      return false;
     }
   };
 };
@@ -82,6 +83,7 @@ export const clearStoreImages = () => {
     } catch (error) {
       console.error(error.message);
       dispatch(imagesReducerError(error.message));
+      return false;
     }
   };
 };
