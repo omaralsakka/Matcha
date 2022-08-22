@@ -127,6 +127,7 @@ const UsersCards = ({ user, profilePictures, loggedUserId }) => {
 
                   <div className="cards-buttons w-100">
                     <BlockButton loggedUserId={loggedUserId} user={user} />
+
                     <LikeButton
                       loggedUserId={loggedUserId}
                       user={user}
