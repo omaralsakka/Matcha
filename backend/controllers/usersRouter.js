@@ -2,11 +2,11 @@ const usersRouter = require("express").Router();
 const queryTools = require("../queries/queryTools");
 const usersQueries = require("../queries/userInfo");
 
-usersRouter.get("/all", async (request, response) => {
-  const queryResponse = await queryTools.selectAllTable("users");
-
-  if (queryResponse.rows.length) {
-    response.status(200).send(queryResponse.rows);
+usersRouter.post("/all", async (request, response) => {
+  const body = request.body;
+  const queryResponse = await queryTools.selectAllWithFilter(body);
+  if (queryResponse.length) {
+    response.status(200).send(queryResponse);
   } else {
     response.status(401).json({
       error: "fetching users query error",

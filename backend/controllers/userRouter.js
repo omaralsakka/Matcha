@@ -69,7 +69,6 @@ userRouter.post("/verify", async (request, response) => {
 userRouter.post("/login", async (request, response) => {
   const body = request.body;
   const loggedUser = await queries.loginUser(body);
-
   if (loggedUser) {
     let infoFilled;
     const userPictures = await queryTools.selectOneQualifier(
@@ -98,6 +97,7 @@ userRouter.post("/login", async (request, response) => {
 });
 
 userRouter.post("/login/tk", async (request, response) => {
+
   const body = request.body;
   const loggedUser = await queries.tokenLogin(body);
   if (loggedUser) {

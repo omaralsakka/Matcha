@@ -10,7 +10,7 @@ const ipLocator = async (ip) => {
 		if(response.data.length) {
 			const country = response.data[0].name.common;
 			const location = city + ', ' + country;
-			return (location)
+			return (location);
 		}
 	} catch (error) {
 		console.log(error.message)

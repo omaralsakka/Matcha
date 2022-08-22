@@ -1,15 +1,15 @@
 const userQueries = require("../queries/userInfo");
 const insertQueries = require("../queries/createUser");
 const userNames = [
-  { name: "ana", gender: "female" },
-  { name: "alba", gender: "female" },
-  { name: "juho", gender: "male" },
-  { name: "amadeo", gender: "male" },
-  { name: "luke", gender: "male" },
-  { name: "salla", gender: "female" },
-  { name: "goro", gender: "transgender" },
-  { name: "paul", gender: "transgender" },
-  { name: "koko", gender: "transgender" },
+  { name: "ana", gender: "female", sexualPreference: "straight" },
+  { name: "alba", gender: "female", sexualPreference: "gay"},
+  { name: "juho", gender: "male", sexualPreference: "gay" },
+  { name: "amadeo", gender: "male", sexualPreference: "bi" },
+  { name: "luke", gender: "male", sexualPreference: "bi" },
+  { name: "salla", gender: "female", sexualPreference: "straight" },
+  { name: "goro", gender: "transgender", sexualPreference: "straight" },
+  { name: "paul", gender: "transgender", sexualPreference: "bi" },
+  { name: "koko", gender: "transgender", sexualPreference: "gay" },
 ];
 
 const fakeUsers = async () => {
@@ -25,7 +25,7 @@ const fakeUsers = async () => {
     const user_id = queryResponseCreate.rows[0].user_id;
     const body = {
       gender: user.gender,
-      sexualPreference: "straight",
+      sexualPreference: user.sexualPreference,
       bio: "hello I am happy",
       tags: ["helsinki", "vantaa"],
       location: "",

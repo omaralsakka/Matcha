@@ -7,13 +7,12 @@ import { infoFormService } from "../../services/userServices";
 import useLocation from "../../utils/locationTool";
 
 const InfoForm = ({ setVisibleForm }) => {
-  const gender = UseField("text");
-  const sexualPreference = UseField("text");
-  const bio = UseField("text");
+  const gender = UseField("text", "");
+  const sexualPreference = UseField("text", "");
+  const bio = UseField("text", "");
   const [tags, setTags] = useState([]);
   /* const location = useLocation(); */ // dont use this unless forced and make sure there is no infinite render
   const location = "";
-
   const handleSubmit = (e) => {
     e.preventDefault();
 

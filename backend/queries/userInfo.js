@@ -127,27 +127,28 @@ const updateUserSearchQuery = async (user_id, searchData) => {
     return false;
   }
 };
-const insertSettings = async ({ username, fullname, newPW, user_id }) => {
-  if (newPW.length === 0) {
-    const queryResponse = await pool.query(
-      "SELECT password FROM users WHERE user_id = $1",
-      [user_id]
-    );
-    newPW = queryResponse.rows[0].password;
-  } else {
-    newPW = await bcrypt.hash(newPW, 10);
-  }
-  try {
-    const queryResponse = await pool.query(
-      "UPDATE users SET username = $1, fullname = $2, password = $3 WHERE user_id = $4",
-      [username, fullname, newPW, user_id]
-    );
-    return queryResponse.rows;
-  } catch (error) {
-    console.error(error.message);
-    return false;
-  }
-};
+const insertSettings = async ({username, fullname, newPW, user_id, location}) => {
+	if(newPW.length === 0) {
+		const queryResponse = await pool.query(
+			"SELECT password FROM users WHERE user_id = $1",
+			[user_id]
+		)
+		newPW = queryResponse.rows[0].password;
+	} else {
+		newPW = await bcrypt.hash(newPW, 10);
+	}
+	const locationArr = location.split(", ");
+	try {
+	const queryResponse = await pool.query(
+		"UPDATE users SET username = $1, fullname = $2, password = $3, city = $4, country = $5 WHERE user_id = $6",
+		[username, fullname, newPW, locationArr[0], locationArr[1], user_id]
+	);
+	return queryResponse.rows;
+	} catch (error) {
+		console.error(error.message);
+		return false;
+	}
+}
 
 const getPassword = async ({ pw, id }) => {
   try {
