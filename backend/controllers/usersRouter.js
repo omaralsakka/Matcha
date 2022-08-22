@@ -169,23 +169,21 @@ usersRouter.post("/report-user", async (request, response) => {
   if (insertReportQuery.length) {
     if (insertReportQuery[0].reports_by.length >= 3) {
       const htmlMail = mailsFormat.reportMail(insertReportQuery[0].fullname);
-      console.log(insertReportQuery[0].email);
       const mailResponse = Mailer(
         insertReportQuery[0].email,
         "Account reported",
         htmlMail
       );
-      console.log("this is mailResp: ", mailResponse);
-      // const deleteReportedQuery = await queryTools.deleteOneQualifier(
-      //   "users",
-      //   "user_id",
-      //   reportedUser
-      // );
-      // const deletePicturesQuery = await queryTools.deleteOneQualifier(
-      //   "pictures",
-      //   "user_id",
-      //   reportedUser
-      // );
+      const deleteReportedQuery = await queryTools.deleteOneQualifier(
+        "users",
+        "user_id",
+        reportedUser
+      );
+      const deletePicturesQuery = await queryTools.deleteOneQualifier(
+        "pictures",
+        "user_id",
+        reportedUser
+      );
 
       response.status(200).send([]);
     } else {
