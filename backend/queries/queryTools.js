@@ -25,6 +25,33 @@ const selectOneQualifier = async (table, column, qualifier) => {
   }
 };
 
+const selectAllWithFilter = async (user) => {
+	let queryResponse;
+	try {
+		if(user.gender === "male") {
+			if(user.sexuality === "straight") {
+				queryResponse = await pool.query("SELECT * FROM users WHERE gender = 'female' AND sexuality = 'straight'");
+			} else if(user.sexuality === "gay") {
+				queryResponse = await pool.query("SELECT * FROM users WHERE gender = 'male' AND sexuality = 'gay' OR sexuality = 'bi'");
+			} else if(user.sexuality === "bi") {
+				queryResponse = await pool.query("SELECT * FROM users WHERE gender = 'female' AND sexuality = 'straight' OR sexuality = 'bi' OR gender = 'male' AND sexuality = 'gay' OR sexuality = 'bi'");
+			}
+		} else if (user.gender === "female") {
+			if(user.sexuality === "straight") {
+				queryResponse = await pool.query("SELECT * FROM users WHERE gender = 'male' AND sexuality = 'straight'");
+			} else if(user.sexuality === "gay") {
+				queryResponse = await pool.query("SELECT * FROM users WHERE gender = 'female' AND sexuality = 'gay' OR sexuality = 'bi'");
+			} else if(user.sexuality === "bi") {
+				queryResponse = await pool.query("SELECT * FROM users WHERE gender = 'male' AND sexuality = 'straight' OR sexuality = 'bi' OR gender = 'female' AND sexuality = 'gay' OR sexuality = 'bi'");
+			}
+		}
+		return queryResponse.rows;
+	  } catch (error) {
+		console.error(error.message);
+		return false;
+	  }
+}
+
 const unionOneQualifier = async (column, tableTwo) => {
   try {
     const queryResponse = await pool.query(
@@ -144,6 +171,7 @@ const changeEmail = async (verificationCode) => {
 module.exports = {
   selectAllTable,
   selectOneQualifier,
+  selectAllWithFilter,
   unionOneQualifier,
   insertForgottenPassword,
   updatePassword,

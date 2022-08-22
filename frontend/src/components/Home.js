@@ -128,24 +128,17 @@ const Home = () => {
   const { user } = useStoreUser();
   const [users, setUsers] = useState([]);
   const [profilePictures, setProfilePictures] = useState([]);
-  const [filter, setFilter] = useState(0);
 
   useEffect(() => {
-    dispatch(fetchUsers()).then((resp) => {
-      setUsers(resp);
-    });
-    getUsersProfileImage().then((resp) => {
-      setProfilePictures(resp);
-	  setFilter(1);
-    });
-  }, [dispatch]);
-
-	if(user && filter === 1){
-		let filteredUsers = choosePrefrence(getPrefrence(user.gender, user.sexuality), users);
-		filteredUsers = countryFilter(user.country, filteredUsers);
-		setUsers(filteredUsers);
-		setFilter(0);
+	if(user) {
+		dispatch(fetchUsers(user)).then((resp) => {
+		  setUsers(resp);
+		});
+		getUsersProfileImage().then((resp) => {
+		  setProfilePictures(resp);
+		});
 	}
+  }, [dispatch, user]);
 
   if (!users.length || !profilePictures.length || !user) {
     return <LoadingScreen />;

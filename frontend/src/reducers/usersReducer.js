@@ -120,12 +120,15 @@ const disLikeUserError = (error) => {
   };
 };
 
-export const fetchUsers = () => {
+export const fetchUsers = (user) => {
   return async (dispatch) => {
     try {
-      const response = await getUsersService();
-      dispatch(usersFetchSuccess(response));
-      return response;
+      const response = await getUsersService(user);
+	  console.log(user.user_id);
+	  const filteredUsersArr = response.filter((elem) => elem.user_id !== user.user_id);
+	  console.log(filteredUsersArr)
+      dispatch(usersFetchSuccess(filteredUsersArr));
+      return filteredUsersArr;
     } catch (error) {
       dispatch(usersFetchError(error.message));
       console.error(error.message);

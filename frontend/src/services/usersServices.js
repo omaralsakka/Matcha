@@ -7,8 +7,8 @@ export const getUsersImages = async (user_id) => {
   return response.data;
 };
 
-export const getUsersService = async () => {
-  const response = await axios.get(`${userUrl}/all`);
+export const getUsersService = async (user) => {
+  const response = await axios.post(`${userUrl}/all`, user);
   return response.data;
 };
 

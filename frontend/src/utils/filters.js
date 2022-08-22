@@ -1,3 +1,39 @@
+/* export const tagsFilter = (user, users) => {
+	const filteredUsersArr = users.filter((elem) => {
+		return (
+			
+		);
+	});
+	return filteredUsersArr;
+} */
+
+export const filterLoggedin = (user, users) => {
+	const filteredUsersArr = users.filter((elem) => {
+		return (
+			elem.user_id !== user.user_id
+		);
+	});
+	return filteredUsersArr;
+}
+
+export const fameGap = (minFame, maxFame, users) => {
+	const filteredUsersArr = users.filter((elem) => {
+		return (
+			elem.fame_rating <= maxFame && elem.age >= minFame
+		);
+	});
+	return filteredUsersArr;
+}
+
+export const ageGap = (minAge, maxAge, users) => {
+	const filteredUsersArr = users.filter((elem) => {
+		return (
+			elem.age <= maxAge && elem.age >= minAge
+		);
+	});
+	return filteredUsersArr;
+}
+
 export const straightMale = (users) => {
 	const filteredUsersArr = users.filter((elem) => {
 		return (
