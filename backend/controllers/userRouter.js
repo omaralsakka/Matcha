@@ -3,17 +3,19 @@ const queries = require("../queries/createUser");
 const queryTools = require("../queries/queryTools");
 const infoQueries = require("../queries/userInfo");
 const Mailer = require("../utils/mailer");
+const mailsFormat = require("../utils/mailsFormat");
 const jwt = require("jsonwebtoken");
 
 userRouter.post("/", async (request, response) => {
   const body = request.body;
   const verificationCode = await queries.insertUserVerify(body);
   if (verificationCode.length === 50) {
-    const emailResp = Mailer(
-      body.email,
-      "Verification for Matcha",
-      `Please click on the following link to be verified: http://localhost:3000/api/verify/code=${verificationCode}`
+    const htmlMail = mailsFormat.verificationMail(
+      body.fullname,
+      verificationCode
     );
+
+    const emailResp = Mailer(body.email, "Verification for Matcha", htmlMail);
     return response.status(200);
   } else {
     return response.status(401).json({
@@ -27,10 +29,14 @@ userRouter.post("/forgotpassword", async (request, response) => {
   const body = request.body;
   const verificationCode = await queryTools.insertForgottenPassword(body.email);
   if (verificationCode.length === 50) {
+    const htmlMail = mailsFormat.verificationMail(
+      body.fullname,
+      verificationCode
+    );
     const emailResp = Mailer(
       body.email,
       "Change forgotten password for Matcha",
-      `Please click on the following link to create a new password: http://localhost:3000/api/forgotpassword/code=${verificationCode}`
+      htmlMail
     );
     return response.status(200);
   } else {
@@ -97,7 +103,6 @@ userRouter.post("/login", async (request, response) => {
 });
 
 userRouter.post("/login/tk", async (request, response) => {
-
   const body = request.body;
   const loggedUser = await queries.tokenLogin(body);
   if (loggedUser) {

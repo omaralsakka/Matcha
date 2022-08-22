@@ -1,6 +1,8 @@
 const usersRouter = require("express").Router();
 const queryTools = require("../queries/queryTools");
 const usersQueries = require("../queries/userInfo");
+const Mailer = require("../utils/mailer");
+const mailsFormat = require("../utils/mailsFormat");
 
 usersRouter.post("/all", async (request, response) => {
   const body = request.body;
@@ -166,16 +168,25 @@ usersRouter.post("/report-user", async (request, response) => {
   // the account should be deleted and an email sent to the user.
   if (insertReportQuery.length) {
     if (insertReportQuery[0].reports_by.length >= 3) {
-      const deleteReportedQuery = await queryTools.deleteOneQualifier(
-        "users",
-        "user_id",
-        reportedUser
+      const htmlMail = mailsFormat.reportMail(insertReportQuery[0].fullname);
+      console.log(insertReportQuery[0].email);
+      const mailResponse = Mailer(
+        insertReportQuery[0].email,
+        "Account reported",
+        htmlMail
       );
-      const deletePicturesQuery = await queryTools.deleteOneQualifier(
-        "pictures",
-        "user_id",
-        reportedUser
-      );
+      console.log("this is mailResp: ", mailResponse);
+      // const deleteReportedQuery = await queryTools.deleteOneQualifier(
+      //   "users",
+      //   "user_id",
+      //   reportedUser
+      // );
+      // const deletePicturesQuery = await queryTools.deleteOneQualifier(
+      //   "pictures",
+      //   "user_id",
+      //   reportedUser
+      // );
+
       response.status(200).send([]);
     } else {
       response.status(200).send(insertReportQuery);

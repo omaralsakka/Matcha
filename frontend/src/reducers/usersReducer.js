@@ -67,7 +67,6 @@ const usersReducer = (state = initialState, action) => {
       };
 
     case DELETE_REPORTED_USER:
-      console.log("this is payload: ", payload);
       return {
         ...state,
         users: state.users.filter((user) => user.user_id !== payload),
@@ -130,9 +129,9 @@ export const fetchUsers = (user) => {
   return async (dispatch) => {
     try {
       const response = await getUsersService(user);
-	  console.log(user.user_id);
-	  const filteredUsersArr = response.filter((elem) => elem.user_id !== user.user_id);
-	  console.log(filteredUsersArr)
+      const filteredUsersArr = response.filter(
+        (elem) => elem.user_id !== user.user_id
+      );
       dispatch(usersFetchSuccess(filteredUsersArr));
       return filteredUsersArr;
     } catch (error) {
