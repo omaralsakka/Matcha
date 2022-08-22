@@ -6,15 +6,20 @@ import UseField from "./UseField";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserSearch } from "../reducers/searchReducer";
 import LoadingScreen from "./LoadingScreen";
+import { useStoreUser } from "../utils/getStoreStates";
+import allCountries from "../utils/allCountries";
+import getCapital from "../utils/getCapital";
+import { searchDefaultService } from "../services/userServices";
 
 const Search = () => {
   const dispatch = useDispatch();
   const { search } = useSelector((state) => state.search);
-  const { user } = useSelector((state) => state.login);
-  const city = UseField("text", "");
+  /* const { user } = useSelector((state) => state.login); */
+  const { user } = useStoreUser();
   const country = UseField("text", "");
   const [tags, setTags] = useState([]);
   const [alert, setAlert] = useState(false);
+  const countries = allCountries();
   const [ranges, setRanges] = useState({
     ageValues: {
       min: 21,
@@ -28,32 +33,50 @@ const Search = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const userSearch = {
-      ageRange: {
-        min: ranges.ageValues.min,
-        max: ranges.ageValues.max,
-      },
-      fameRange: {
-        min: ranges.fameValues.min,
-        max: ranges.fameValues.max,
-      },
-      city: city.value,
-      country: country.value,
-      tags: tags,
-    };
-
-    dispatch(updateUserSearch(user.loggedUser.user_id, userSearch)).then(
-      (resp) => {
-        if (resp.user_id) {
-          setAlert(true);
-          setTimeout(() => {
-            setAlert(false);
-          }, 5000);
-        }
-      }
-    );
+	const setCountry = async (country) => {
+		const location = await getCapital(country)
+		const locationArr = location.split(", ");
+		const userSearch = {
+		  ageRange: {
+			min: ranges.ageValues.min,
+			max: ranges.ageValues.max,
+		  },
+		  fameRange: {
+			min: ranges.fameValues.min,
+			max: ranges.fameValues.max,
+		  },
+		  city: locationArr[0],
+		  country: locationArr[1],
+		  tags: tags,
+		};
+		dispatch(updateUserSearch(user.user_id, userSearch)).then(
+		  (resp) => {
+			if (resp.user_id) {
+			  setAlert(true);
+			  setTimeout(() => {
+				setAlert(false);
+			  }, 5000);
+			}
+		  }
+		);
+	}
+	if(country.value.length === 0) {
+		setCountry(user.country);
+	} else {
+		setCountry(country.value);
+	}
   };
-  if (!user) {
+
+  const setDefault = (e) => {
+	e.preventDefault();
+	searchDefaultService(user);
+	setAlert(true);
+	  setTimeout(() => {
+		setAlert(false);
+	  }, 5000);
+  }
+
+  if (!user || !search) {
     return <LoadingScreen />;
   } else {
     return (
@@ -97,20 +120,13 @@ const Search = () => {
             </div>
           </Form.Group>
 
-          <Form.Group className="mb-4">
-            <Form.Label className="fs-5">Location</Form.Label>
-            <div className="mb-3 w-50">
-              <Form.Control
-                {...city}
-                placeholder={search.city ? search.city : "City"}
-              ></Form.Control>
-            </div>
-            <div className="w-50">
-              <Form.Control
-                {...country}
-                placeholder={search.country ? search.country : "Country"}
-              ></Form.Control>
-            </div>
+		  <Form.Group className="mb-3">
+            <Form.Label>Location</Form.Label>
+			<Form.Select {...country}>
+				<option value="">...</option>
+				{countries.map(country => <option key={country} value={country}>{country}</option>)}
+			</Form.Select>
+			<Form.Text>If you choose to use this option your search will be placed to the capital city of the chosen country!</Form.Text>
           </Form.Group>
 
           <Form.Group className="mb-5">
@@ -124,6 +140,7 @@ const Search = () => {
           </Form.Group>
           <div className="d-flex" style={{ gap: "10px" }}>
             <Button type="submit">Save</Button>
+			<Button onClick={setDefault}>Set all to default</Button>
           </div>
         </Form>
       </Container>

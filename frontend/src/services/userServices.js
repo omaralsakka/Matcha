@@ -84,7 +84,7 @@ export const settingsService = async (settingsObj) => {
   return response.data;
 };
 
-export const verifyOldPassword = async (password, id, type) => {
+export const verifyOldPassword = async (password, id) => {
   const infoObj = {
     pw: password,
     id: id,
@@ -102,6 +102,11 @@ export const verifyEmailChangeService = async (code) => {
   const response = await axios.post(`${userUrl}/verify-change-email`, code);
   return response.data;
 };
+
+export const searchDefaultService = async (user) => {
+  const response = await axios.post(`${userUrl}/search-default`, user);
+  return response.data;
+}
 
 /* export const getUserService = async (userData) => {
 	const response = await axios.post(`${userUrl}/user-info`, userData);

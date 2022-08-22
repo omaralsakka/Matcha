@@ -254,7 +254,7 @@ const Settings = ({ setLoggedUser }) => {
             />
           </Form.Group>
           <Form.Group className="mb-3 mt-5">
-            <Form.Label>Insert your current password</Form.Label>
+            <Form.Label>Insert your current password to confirm changes.</Form.Label>
             <Form.Control {...oldPassword} />
             {verifyOldPw === 1 || oldPassword.value.length === 0 ? (
               <></>

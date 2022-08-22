@@ -7,9 +7,16 @@ import {
 import { getSearch, updateSearch } from "../services/userServices";
 
 const initialState = {
-  search: {},
-  error: null,
-};
+	search: {
+	  user_id: "",
+	  age_range: {},
+	  fame_range: {},
+	  city: "",
+	  country: "",
+	  tags: [],
+	},
+	error: null,
+  };
 
 const searchReducer = (state = initialState, action) => {
   const { type, payload } = action;
@@ -65,7 +72,8 @@ export const fetchUserSearch = (user_id) => {
   return async (dispatch) => {
     try {
       const response = await getSearch(user_id);
-      dispatch(searchFetchSuccess(response[0]));
+	  if(response.length)
+      	dispatch(searchFetchSuccess(response[0]));
     } catch (error) {
       dispatch(searchReducerError(error.message));
       console.error(error.message);
