@@ -88,6 +88,18 @@ const deleteOneQualifier = async (table, col, qualifier) => {
   }
 };
 
+const updateOneQualifier = async (table, setCol, newData, col, qualifier) => {
+  try {
+    const queryResponse = await pool.query(
+      `UPDATE ${table} SET ${setCol} = '${newData}' WHERE ${col} = ${qualifier} RETURNING *`
+    );
+    return queryResponse.rows;
+  } catch (error) {
+    console.error(error.message);
+    return false;
+  }
+};
+
 const insertForgottenPassword = async (email) => {
   try {
     const users = await pool.query(
@@ -215,4 +227,5 @@ module.exports = {
   emailChangeRequest,
   changeEmail,
   setSearchDefault,
+  updateOneQualifier,
 };

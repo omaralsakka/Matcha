@@ -106,7 +106,15 @@ export const verifyEmailChangeService = async (code) => {
 export const searchDefaultService = async (user) => {
   const response = await axios.post(`${userUrl}/search-default`, user);
   return response.data;
-}
+};
+
+export const userBioService = async (newBio) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await axios.post(`${userUrl}/edit-bio`, newBio, config);
+  return response.data;
+};
 
 /* export const getUserService = async (userData) => {
 	const response = await axios.post(`${userUrl}/user-info`, userData);

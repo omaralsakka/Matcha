@@ -2,11 +2,13 @@ import {
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
   LOGIN_REDUCER_ERROR,
+  UPDATE_INFO_SUCCESS,
 } from "../actions/types";
 import {
   setServiceToken,
   loginService,
   tokenLoginService,
+  userBioService,
 } from "../services/userServices";
 
 const initialState = {
@@ -28,6 +30,12 @@ const loginReducer = (state = initialState, action) => {
       return {
         ...state,
         user: null,
+        error: "",
+      };
+    case UPDATE_INFO_SUCCESS:
+      return {
+        ...state,
+        user: { loggedUser: payload },
         error: "",
       };
     case LOGIN_REDUCER_ERROR:
@@ -59,6 +67,13 @@ const logoutSuccess = () => {
   return {
     type: LOGOUT_SUCCESS,
     payload: "",
+  };
+};
+
+const updateInfoSuccess = (newUserInfo) => {
+  return {
+    type: UPDATE_INFO_SUCCESS,
+    payload: newUserInfo,
   };
 };
 
@@ -100,6 +115,23 @@ export const tokenLoginCall = (userInfo, token) => {
         dispatch(loginSuccess(response));
       }
       return response;
+    } catch (error) {
+      dispatch(loginReducerError(error.message));
+      return false;
+    }
+  };
+};
+
+export const editUserBio = (newBio) => {
+  return async (dispatch) => {
+    try {
+      const userNewBio = { newBio };
+      const response = await userBioService(userNewBio);
+
+      if (response) {
+        console.log("this is response: ", response);
+        dispatch(updateInfoSuccess(response[0]));
+      }
     } catch (error) {
       dispatch(loginReducerError(error.message));
       return false;

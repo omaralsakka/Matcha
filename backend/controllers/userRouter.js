@@ -5,6 +5,7 @@ const infoQueries = require("../queries/userInfo");
 const Mailer = require("../utils/mailer");
 const mailsFormat = require("../utils/mailsFormat");
 const jwt = require("jsonwebtoken");
+const tokenTools = require("../utils/tokenTools");
 
 userRouter.post("/", async (request, response) => {
   const body = request.body;
@@ -116,19 +117,19 @@ userRouter.post("/login/tk", async (request, response) => {
   }
 });
 
-const getToken = (request) => {
-  const auth = request.get("authorization");
-  if (auth && auth.toLowerCase().startsWith("bearer")) {
-    return auth.substring(7);
-  }
-  return null;
-};
+// const getToken = (request) => {
+//   const auth = request.get("authorization");
+//   if (auth && auth.toLowerCase().startsWith("bearer")) {
+//     return auth.substring(7);
+//   }
+//   return null;
+// };
 
 userRouter.post("/info", async (request, response) => {
   const ip = request.ip;
 
   const body = request.body;
-  const token = getToken(request);
+  const token = tokenTools.getToken(request);
 
   const decodedToken = jwt.verify(token, process.env.SECRET);
   if (!decodedToken.id) {
@@ -147,7 +148,7 @@ userRouter.post("/info", async (request, response) => {
 
 userRouter.post("/pictures", async (request, response) => {
   const body = request.body;
-  const token = getToken(request);
+  const token = tokenTools.getToken(request);
   const decodedToken = jwt.verify(token, process.env.SECRET);
   if (!decodedToken.id) {
     return response.status(401).json({ error: "token missing or expired" });
@@ -173,10 +174,20 @@ userRouter.post("/pictures", async (request, response) => {
   }
 });
 
+// const verifyToken = (request) => {
+//   const userToken = getToken(request);
+//   const decodedToken = jwt.verify(userToken, process.env.SECRET);
+//   if (!decodedToken.id) {
+//     return false;
+//   }
+//   return decodedToken;
+// };
+
 userRouter.post("/infoFilledToken", async (request, response) => {
-  const oldToken = getToken(request);
-  const decodedToken = jwt.verify(oldToken, process.env.SECRET);
-  if (!decodedToken.id) {
+  const decodedToken = tokenTools.verifyToken(request);
+  // const oldToken = getToken(request);
+  // const decodedToken = jwt.verify(oldToken, process.env.SECRET);
+  if (!decodedToken) {
     return response.status(401).json({ error: "new token generating error" });
   }
   const userForToken = {
@@ -310,14 +321,42 @@ userRouter.post("/verify-change-email", async (request, response) => {
 });
 
 userRouter.post("/search-default", async (request, response) => {
-	const body = request.body;
-	const searchDefault = await queryTools.setSearchDefault(body.user_id);
-	if(searchDefault) {
-		return response.status(200).send(searchDefault);
-	} else {
-		return response.status(401).json({
-			error: "search settings were not found or some other error",
-	});
+  const body = request.body;
+  const searchDefault = await queryTools.setSearchDefault(body.user_id);
+  if (searchDefault) {
+    return response.status(200).send(searchDefault);
+  } else {
+    return response.status(401).json({
+      error: "search settings were not found or some other error",
+    });
+  }
+});
+
+userRouter.post("/edit-bio", async (request, response) => {
+  const decodedToken = tokenTools.verifyToken(request);
+  const body = request.body;
+
+  if (!decodedToken) {
+    response.status(401).json({
+      error: "token error",
+    });
+  }
+  console.log("decoded token id: ", decodedToken.id);
+  console.log("this is body: ", body.newBio);
+  const queryResponse = await queryTools.updateOneQualifier(
+    "users",
+    "bio",
+    body.newBio,
+    "user_id",
+    decodedToken.id
+  );
+
+  if (queryResponse.length) {
+    response.status(200).send(queryResponse);
+  } else {
+    response.status(401).json({
+      error: "error updating user info",
+    });
   }
 });
 

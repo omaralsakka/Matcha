@@ -198,7 +198,7 @@ usersRouter.post("/report-user", async (request, response) => {
 
 usersRouter.post("/random-users", async (request, response) => {
   const { results } = request.body;
-  const sexPref = ["straigth", "gay", "bi"];
+  const sexPref = ["straight", "gay", "bi"];
   const tags = [
     ["vegan", "happy"],
     ["cool", "smart", "coding"],
