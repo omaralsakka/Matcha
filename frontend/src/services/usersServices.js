@@ -8,8 +8,13 @@ export const getUsersImages = async (user_id) => {
   return response.data;
 };
 
-export const getUsersService = async (user) => {
-  const response = await axios.post(`${usersUrl}/all`, user);
+export const getUsersService = async (user, country) => {
+	const userObj = {
+		gender : user.gender,
+		sexuality : user.sexuality,
+		country: country
+	}
+  const response = await axios.post(`${usersUrl}/all`, userObj);
   return response.data;
 };
 

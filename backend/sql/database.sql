@@ -16,13 +16,14 @@ CREATE TABLE users(
     fame_rating INT DEFAULT 0,
     city VARCHAR(150),
     country VARCHAR(150),
+    coordinates NUMERIC [],
     blocked INT [],
     blocked_by INT [],
     liked INT [],
     liked_by INT [],
     views INT [],
     pictures INT DEFAULT 0,
-    reports_by INT [],
+    reports_by INT []
 );
 
 CREATE TABLE user_verify(

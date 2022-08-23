@@ -187,6 +187,20 @@ const changeEmail = async (verificationCode) => {
     }
   } catch (error) {
     console.error(error.message);
+    return error.message;
+  }
+};
+
+const setSearchDefault = async (user_id) => {
+  try {
+    const queryResponse = await pool.query(
+      "DELETE FROM user_search WHERE user_id = $1",
+      [user_id]
+    );
+    return queryResponse.rows;
+  } catch (error) {
+    console.error(error.message);
+    return error.message;
   }
 };
 
@@ -200,4 +214,5 @@ module.exports = {
   updatePassword,
   emailChangeRequest,
   changeEmail,
+  setSearchDefault,
 };
