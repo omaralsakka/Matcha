@@ -30,7 +30,7 @@ const selectAllWithFilter = async (user) => {
 	try {
 		if(user.gender === "male") {
 			if(user.sexuality === "straight") {
-				queryResponse = await pool.query(`SELECT * FROM users WHERE gender = 'female' AND sexuality = 'straight' AND country = ''${user.country}''`);
+				queryResponse = await pool.query(`SELECT * FROM users WHERE gender = 'female' AND sexuality = 'straight' AND country = '${user.country}'`);
 			} else if(user.sexuality === "gay") {
 				queryResponse = await pool.query(`SELECT * FROM users WHERE gender = 'male' AND sexuality = 'gay' OR sexuality = 'bi' AND country = '${user.country}'`);
 			} else if(user.sexuality === "bi") {

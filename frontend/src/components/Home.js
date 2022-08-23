@@ -19,15 +19,15 @@ const Home = () => {
   const [profilePictures, setProfilePictures] = useState([]);
   const [sort, setSort] = useState(false);
   const [order, setOrder] = useState("ascending");
-  let advancedFilter; //  this can be a state maybe but not necessary
-  
+  let advancedFilter; //  this can be a state but maybe not necessary
+
   const getUsers = (user, country) => {
 	dispatch(fetchUsers(user, country)).then((resp) => {
 		const filtered = filterBlockedBy(user, filterBlocked(user, resp));
 		setUsers(filtered);
 	});
   }
-  
+
   useEffect(() => {
 	if(user) {
 		getUsers(user, user.country);
@@ -85,7 +85,7 @@ const Home = () => {
         </Container>
       </>
     );
-  }
+  };
 };
 
 export default Home;

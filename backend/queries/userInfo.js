@@ -5,17 +5,18 @@ const queryTools = require("./queryTools");
 const checkPassword = require("../utils/cryptPassword");
 
 const insertUserInfo = async (
-  { gender, sexualPreference, bio, tags, location },
+  { gender, sexualPreference, bio, tags, location, coords },
   user_id,
   ip
 ) => {
+	console.log(coords);
   if (location.length === 0) {
     location = await locator(ip);
   }
   const locationArr = location.split(", ");
   try {
     const queryResponse = await pool.query(
-      "UPDATE users SET gender = $1, sexuality = $2, bio = $3, tags = $4, city = $5, country = $6 WHERE user_id = $7",
+      "UPDATE users SET gender = $1, sexuality = $2, bio = $3, tags = $4, city = $5, country = $6, coordinates = $7 WHERE user_id = $8",
       [
         gender,
         sexualPreference,
@@ -23,6 +24,7 @@ const insertUserInfo = async (
         tags,
         locationArr[0],
         locationArr[1],
+		coords,
         user_id,
       ]
     );
@@ -127,7 +129,7 @@ const updateUserSearchQuery = async (user_id, searchData) => {
     return false;
   }
 };
-const insertSettings = async ({username, fullname, newPW, user_id, location}) => {
+const insertSettings = async ({username, fullname, newPW, user_id, location, coords}) => {
 	if(newPW.length === 0) {
 		const queryResponse = await pool.query(
 			"SELECT password FROM users WHERE user_id = $1",
@@ -140,8 +142,8 @@ const insertSettings = async ({username, fullname, newPW, user_id, location}) =>
 	const locationArr = location.split(", ");
 	try {
 	const queryResponse = await pool.query(
-		"UPDATE users SET username = $1, fullname = $2, password = $3, city = $4, country = $5 WHERE user_id = $6",
-		[username, fullname, newPW, locationArr[0], locationArr[1], user_id]
+		"UPDATE users SET username = $1, fullname = $2, password = $3, city = $4, country = $5, coordinates = $6 WHERE user_id = $7",
+		[username, fullname, newPW, locationArr[0], locationArr[1], coords, user_id]
 	);
 	return queryResponse.rows;
 	} catch (error) {

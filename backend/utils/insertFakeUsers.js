@@ -7,9 +7,9 @@ const userNames = [
   { name: "amadeo", gender: "male", sexualPreference: "bi" },
   { name: "luke", gender: "male", sexualPreference: "bi" },
   { name: "salla", gender: "female", sexualPreference: "straight" },
-  { name: "goro", gender: "transgender", sexualPreference: "straight" },
-  { name: "paul", gender: "transgender", sexualPreference: "bi" },
-  { name: "koko", gender: "transgender", sexualPreference: "gay" },
+  { name: "goro", gender: "male", sexualPreference: "straight" },
+  { name: "paul", gender: "male", sexualPreference: "bi" },
+  { name: "koko", gender: "male", sexualPreference: "gay" },
 ];
 
 const fakeUsers = async () => {
@@ -29,6 +29,7 @@ const fakeUsers = async () => {
       bio: "hello I am happy",
       tags: ["helsinki", "vantaa"],
       location: "",
+	  coords: "",
     };
     const queryReponseInfo = await userQueries.insertUserInfo(
       body,

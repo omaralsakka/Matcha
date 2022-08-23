@@ -1,9 +1,10 @@
 const pool = require("../utils/db");
 const generateRandom = require("../utils/generateRandom");
 const { cryptPassword, checkPassword } = require("../utils/cryptPassword");
-const queryTools = require("./queryTools")
+const queryTools = require("./queryTools");
 
 const insertUser = async ({ username, email, fullname, password, age }) => {
+
   try {
     const queryResponse = await pool.query(
       "INSERT INTO users(username, email, fullname, password, age) VALUES($1, $2, $3, $4, $5) RETURNING *",
