@@ -1,25 +1,30 @@
 import Geocode from "react-geocode";
 import { useState, useEffect } from "react";
 
-const reverseGeocoder = async (setResults) => {
+const reverseGeocoder = async (setResults, setCoords) => {
   navigator.geolocation.getCurrentPosition(async (position) => {
-    let lat = position.coords.latitude;
-    let long = position.coords.longitude;
+    const lat = position.coords.latitude;
+    const long = position.coords.longitude;
+	const coords = [lat, long];
+	setCoords(coords);
     Geocode.setApiKey("");
     Geocode.fromLatLng(lat, long).then((response) => {
-      setResults(response.results[10].formatted_address);
+      setResults(response.results[6].formatted_address);
     });
   });
 };
 
 const useLocation = () => {
   const [results, setResults] = useState("");
+  const [coords, setCoords] = useState([]);
 
   useEffect(() => {
-    reverseGeocoder(setResults);
+    reverseGeocoder(setResults, setCoords);
   }, []);
 
-  return results;
-};
+  return {
+	  location : results,
+	  coords : coords};
+  };
 
 export default useLocation;

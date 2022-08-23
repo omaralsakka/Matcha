@@ -55,7 +55,7 @@ userRouter.post("/resetpassword", async (request, response) => {
     return response.status(200).send(resetedPassword);
   } else {
     return response.status(401).json({
-      error: "password was reset already",
+      error: "password was reset already or incorrect url code",
     });
   }
 });
@@ -301,6 +301,18 @@ userRouter.post("/verify-change-email", async (request, response) => {
     return response.status(401).json({
       error: "user was already verified",
     });
+  }
+});
+
+userRouter.post("/search-default", async (request, response) => {
+	const body = request.body;
+	const searchDefault = await queryTools.setSearchDefault(body.user_id);
+	if(searchDefault) {
+		return response.status(200).send(searchDefault);
+	} else {
+		return response.status(401).json({
+			error: "search settings were not found or some other error",
+	});
   }
 });
 

@@ -1,11 +1,35 @@
-/* export const tagsFilter = (user, users) => {
+export const tagsFilter = (user, users) => {
 	const filteredUsersArr = users.filter((elem) => {
-		return (
-			
-		);
+			return (
+				elem.tags.some(o => user.tags.includes(o)) // some can be changed to every if we want al tags to match
+			)
 	});
 	return filteredUsersArr;
-} */
+}
+
+export const filterBlockedBy = (user, users) => {
+	const filteredUsersArr = users.filter((elem) => {
+		if(elem.blocked !== null) {
+			return (
+				!elem.blocked.includes(user.user_id)
+			)
+		}
+		return elem
+	});
+	return filteredUsersArr;
+}
+
+export const filterBlocked = (user, users) => {
+	const filteredUsersArr = users.filter((elem) => {
+		if(elem.blocked_by !== null) {
+			return (
+				!elem.blocked_by.includes(user.user_id)
+			)
+		}
+		return elem
+	});
+	return filteredUsersArr;
+}
 
 export const filterLoggedin = (user, users) => {
 	const filteredUsersArr = users.filter((elem) => {
@@ -19,7 +43,7 @@ export const filterLoggedin = (user, users) => {
 export const fameGap = (minFame, maxFame, users) => {
 	const filteredUsersArr = users.filter((elem) => {
 		return (
-			elem.fame_rating <= maxFame && elem.age >= minFame
+			elem.fame_rating <= maxFame && elem.fame_rating >= minFame
 		);
 	});
 	return filteredUsersArr;
@@ -104,7 +128,7 @@ export const biFemale = (users) => {
 	return filteredUsersArr;
 }
 
-export const countryFilter = (country, users) => {
+export const filterCountry = (country, users) => {
 	const filteredUsersArr = users.filter((elem) => {
 		return elem.country === country;
 	});

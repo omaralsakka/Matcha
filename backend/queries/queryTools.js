@@ -30,19 +30,19 @@ const selectAllWithFilter = async (user) => {
 	try {
 		if(user.gender === "male") {
 			if(user.sexuality === "straight") {
-				queryResponse = await pool.query("SELECT * FROM users WHERE gender = 'female' AND sexuality = 'straight'");
+				queryResponse = await pool.query(`SELECT * FROM users WHERE gender = 'female' AND sexuality = 'straight' AND country = '${user.country}'`);
 			} else if(user.sexuality === "gay") {
-				queryResponse = await pool.query("SELECT * FROM users WHERE gender = 'male' AND sexuality = 'gay' OR sexuality = 'bi'");
+				queryResponse = await pool.query(`SELECT * FROM users WHERE gender = 'male' AND sexuality = 'gay' OR sexuality = 'bi' AND country = '${user.country}'`);
 			} else if(user.sexuality === "bi") {
-				queryResponse = await pool.query("SELECT * FROM users WHERE gender = 'female' AND sexuality = 'straight' OR sexuality = 'bi' OR gender = 'male' AND sexuality = 'gay' OR sexuality = 'bi'");
+				queryResponse = await pool.query(`SELECT * FROM users WHERE gender = 'female' AND sexuality = 'straight' OR sexuality = 'bi' OR gender = 'male' AND sexuality = 'gay' OR sexuality = 'bi' AND country = '${user.country}'`);
 			}
 		} else if (user.gender === "female") {
 			if(user.sexuality === "straight") {
-				queryResponse = await pool.query("SELECT * FROM users WHERE gender = 'male' AND sexuality = 'straight'");
+				queryResponse = await pool.query(`SELECT * FROM users WHERE gender = 'male' AND sexuality = 'straight' AND country = '${user.country}'`);
 			} else if(user.sexuality === "gay") {
-				queryResponse = await pool.query("SELECT * FROM users WHERE gender = 'female' AND sexuality = 'gay' OR sexuality = 'bi'");
+				queryResponse = await pool.query(`SELECT * FROM users WHERE gender = 'female' AND sexuality = 'gay' OR sexuality = 'bi' AND country = '${user.country}'`);
 			} else if(user.sexuality === "bi") {
-				queryResponse = await pool.query("SELECT * FROM users WHERE gender = 'male' AND sexuality = 'straight' OR sexuality = 'bi' OR gender = 'female' AND sexuality = 'gay' OR sexuality = 'bi'");
+				queryResponse = await pool.query(`SELECT * FROM users WHERE gender = 'male' AND sexuality = 'straight' OR sexuality = 'bi' OR gender = 'female' AND sexuality = 'gay' OR sexuality = 'bi' AND country = '${user.country}'`);
 			}
 		}
 		return queryResponse.rows;
@@ -176,8 +176,22 @@ const changeEmail = async (verificationCode) => {
     }
   } catch (error) {
     console.error(error.message);
+	return error.message
   }
 };
+
+const setSearchDefault = async (user_id) => {
+	try {
+		const queryResponse = await pool.query(
+			"DELETE FROM user_search WHERE user_id = $1",
+			[user_id]
+		);
+		return (queryResponse.rows)
+	} catch (error) {
+		console.error(error.message);
+    	return error.message;
+	}
+}
 
 module.exports = {
   selectAllTable,
@@ -189,4 +203,5 @@ module.exports = {
   updatePassword,
   emailChangeRequest,
   changeEmail,
+  setSearchDefault,
 };
