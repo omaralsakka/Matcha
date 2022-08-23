@@ -4,7 +4,7 @@ const usersUrl = "http://localhost:5000/api/users";
 
 // working on this
 export const getUsersImages = async (user_id) => {
-  const response = await axios.get(`${usersUrl}/pictures/${user_id}`);
+  const response = await axios.get(`${usersUrl}/user-pictures/${user_id}`);
   return response.data;
 };
 

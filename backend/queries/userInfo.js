@@ -127,6 +127,7 @@ const updateUserSearchQuery = async (user_id, searchData) => {
     return false;
   }
 };
+
 const insertSettings = async ({username, fullname, newPW, user_id, location}) => {
 	if(newPW.length === 0) {
 		const queryResponse = await pool.query(

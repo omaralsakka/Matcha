@@ -34,9 +34,7 @@ const UserInfoForms = () => {
       case 1:
         return <InfoForm setVisibleForm={setVisibleForm} />;
       case 2:
-        return (
-          <PicturesForm setVisibleForm={setVisibleForm} user={userStore} />
-        );
+        return <PicturesForm defaultValue={""} />;
       case 3:
         return <LoadingScreen />;
       default:

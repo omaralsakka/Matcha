@@ -30,16 +30,15 @@ usersRouter.get("/profileimage", async (request, response) => {
 });
 
 // working on this
-usersRouter.get("/pictures/:id", async (request, response) => {
+usersRouter.get("/user-pictures/:id", async (request, response) => {
   const userId = request.params.id;
-  const queryResponse = queryTools.selectOneQualifier(
+  const queryResponse = await queryTools.selectOneQualifier(
     "pictures",
     "user_id",
     userId
   );
-
-  if (queryResponse.length) {
-    response.status(200).send(queryResponse);
+  if (queryResponse.rows.length) {
+    response.status(200).send(queryResponse.rows);
   } else {
     response.status(404).json({
       error: "pictures not found",
@@ -235,7 +234,6 @@ usersRouter.post("/random-users", async (request, response) => {
         results[index].picture.large,
         queryResponse.rows[0].user_id
       );
-      console.log(picturesQueryResponse);
       i++;
     }
   }

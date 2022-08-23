@@ -33,8 +33,8 @@ const UserImageCard = ({ index, src, onImageUpdate, onImageRemove }) => {
   );
 };
 
-const PicturesForm = ({ setVisibleForm, user }) => {
-  const images = useImage();
+const PicturesForm = ({ defaultValue }) => {
+  const images = useImage(defaultValue);
   const saveImages = async () => {
     const picFormResponse = await pictureFormService(images.value);
     const infoFilledResponse = await InfoFilledTokenService();

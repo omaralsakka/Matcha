@@ -2,7 +2,7 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { tokenLoginCall, logoutUser } from "./reducers/loginReducer";
+import { tokenLoginCall } from "./reducers/loginReducer";
 import LandingPage from "./components/LandingPage";
 import AppFooter from "./components/footer/Footer";
 import Credentials from "./components/credentials/Credentials";
@@ -16,7 +16,9 @@ import Settings from "./components/settings/Settings";
 import Profile from "./components/Profile";
 import Search from "./components/Search";
 import { fetchUserSearch } from "./reducers/searchReducer";
-import { getRandomUsers } from "./services/usersServices";
+
+// This is needed for generating random users, DONT UNCOMMENT
+// import { getRandomUsers } from "./services/usersServices";
 
 const App = () => {
   const dispatch = useDispatch();

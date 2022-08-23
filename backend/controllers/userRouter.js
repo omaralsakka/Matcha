@@ -154,6 +154,11 @@ userRouter.post("/pictures", async (request, response) => {
   }
   if (body.length) {
     let queryResponse;
+    const deleteQueryResponse = await queryTools.deleteOneQualifier(
+      "pictures",
+      "user_id",
+      decodedToken.id
+    );
     for (let index = 0; index < body.length; index++) {
       queryResponse = await infoQueries.insertUserPictures(
         body[index].data_url,
