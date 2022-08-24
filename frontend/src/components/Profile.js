@@ -1,4 +1,4 @@
-import { Container, Card, Row, Col, Image } from "react-bootstrap";
+import { Container, Card, Row, Col, Image, Carousel } from "react-bootstrap";
 import { useStoreUser } from "../utils/getStoreStates";
 import LoadingScreen from "./LoadingScreen";
 import PicturesForm from "./userInfoForms/PicturesForm";
@@ -8,6 +8,7 @@ import EditTags from "./profileComponents/EditTags";
 import locationIcon from "../media/location-icon.png";
 import EditBio from "./profileComponents/EditBio";
 import EditTogglable from "./profileComponents/EditTogglable";
+import ProfileImagesCarousel from "./profileComponents/ProfileImagesCarousel";
 
 const Profile = () => {
   const { user } = useStoreUser();
@@ -28,9 +29,9 @@ const Profile = () => {
         <h1>@{user.username}</h1>
         <hr />
         <Card className="mb-3 mx-auto w-100">
-          <Row className="no-gutters mb-3 mw-100">
+          <Row className="no-gutters mb-3 ">
             <Col md={4}>
-              <Card.Img src={userPictures[0].picture} />
+              <ProfileImagesCarousel userPictures={userPictures} />
             </Col>
             <Col md={8}>
               <Card.Body>

@@ -8,7 +8,6 @@ import { InputTags } from "react-bootstrap-tagsinput";
 const EditTags = ({ userTags }) => {
   const [tags, setTags] = useState();
   const [saveButton, setSaveButton] = useState(true);
-  console.log("this is tags: ", tags);
   const dispatch = useDispatch();
 
   const handleSave = () => {

@@ -237,6 +237,13 @@ body {
   object-fit: cover;
 }
 
+.card-img-profile {
+  width: 100%;
+  min-height: 460px;
+  max-height: 40vh;
+  object-fit: cover;
+}
+
 .location-alert {
   font-size: calc(5px + 1vw);
 }
