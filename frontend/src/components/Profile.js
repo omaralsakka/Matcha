@@ -1,4 +1,4 @@
-import { Container, Card, Row, Col, Image, Carousel } from "react-bootstrap";
+import { Container, Card, Row, Col, Image } from "react-bootstrap";
 import { useStoreUser } from "../utils/getStoreStates";
 import LoadingScreen from "./LoadingScreen";
 import PicturesForm from "./userInfoForms/PicturesForm";
@@ -36,7 +36,7 @@ const Profile = () => {
             <Col md={8}>
               <Card.Body>
                 <Card.Title className="fs-1">
-                  {user.fullname}
+                  <strong>{user.fullname}</strong>
                   <span className="mx-3 fs-3 text-muted">{user.age}</span>
                 </Card.Title>
                 <Card.Text className="text-muted fs-4 d-flex mb-4">
@@ -49,7 +49,9 @@ const Profile = () => {
                 <Card.Title className="fs-3">
                   <strong>About me</strong>
                 </Card.Title>
-                <Card.Text className="mb-3">{user.bio}</Card.Text>
+                <Card.Text className="mb-3 fs-6 text-muted">
+                  {user.bio}
+                </Card.Text>
                 <Card.Text className="mb-3 text-muted">
                   @{user.username}
                 </Card.Text>
@@ -68,6 +70,13 @@ const Profile = () => {
                   </span>
                 </Card.Text>
                 <EditTags userTags={user.tags} />
+                <hr />
+                <Card.Title className="fs-3 mb-3">
+                  <strong>Fame rate</strong>
+                </Card.Title>
+                <Card.Text className="text-muted fs-4">
+                  {user.liked_by ? user.liked_by.length : 0}
+                </Card.Text>
               </Card.Body>
             </Col>
           </Row>
