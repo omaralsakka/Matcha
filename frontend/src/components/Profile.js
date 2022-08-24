@@ -4,10 +4,10 @@ import LoadingScreen from "./LoadingScreen";
 import PicturesForm from "./userInfoForms/PicturesForm";
 import { useState, useEffect } from "react";
 import { getUsersImages } from "../services/usersServices";
-import EditTogglable from "./profileComponents/EditTogglable";
 import EditTags from "./profileComponents/EditTags";
 import locationIcon from "../media/location-icon.png";
 import EditBio from "./profileComponents/EditBio";
+import EditTogglable from "./profileComponents/EditTogglable";
 
 const Profile = () => {
   const { user } = useStoreUser();
@@ -25,9 +25,10 @@ const Profile = () => {
   } else {
     return (
       <Container className="mt-5">
-        <h1>This is profile page</h1>
-        <Card className="mb-3" style={{ maxWidth: "50vw" }}>
-          <Row className="no-gutters">
+        <h1>@{user.username}</h1>
+        <hr />
+        <Card className="mb-3 mx-auto w-100">
+          <Row className="no-gutters mb-3 mw-100">
             <Col md={4}>
               <Card.Img src={userPictures[0].picture} />
             </Col>
@@ -69,8 +70,14 @@ const Profile = () => {
               </Card.Body>
             </Col>
           </Row>
+          <Row className="mx-1 mb-3">
+            <Col>
+              <EditTogglable buttonText="Edit pictures">
+                <PicturesForm defaultValue={userPictures} />
+              </EditTogglable>
+            </Col>
+          </Row>
         </Card>
-        {/* <PicturesForm defaultValue={userPictures} /> */}
       </Container>
     );
   }

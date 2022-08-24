@@ -9,14 +9,15 @@ import {
 
 const UserImageCard = ({ index, src, onImageUpdate, onImageRemove }) => {
   return (
-    <Card style={{ width: "18rem" }} className="m-3">
+    <Card style={{ width: "18rem", minWidth: "12rem" }} className="m-3">
       <Card.Img className="card-img-top" variant="top" src={src} />
-      <Card.Body>
-        <div className="d-flex justify-content-between">
+      <Card.Body className="w-100">
+        <Container className="d-flex justify-content-between">
           <Button
             onClick={() => onImageUpdate(index)}
             className="landing-signup-Button"
             variant="dark"
+            size="sm"
           >
             Change
           </Button>
@@ -24,10 +25,11 @@ const UserImageCard = ({ index, src, onImageUpdate, onImageRemove }) => {
             onClick={() => onImageRemove(index)}
             className="landing-signup-Button"
             variant="dark"
+            size="sm"
           >
             Delete
           </Button>
-        </div>
+        </Container>
       </Card.Body>
     </Card>
   );
@@ -77,7 +79,7 @@ const PicturesForm = ({ defaultValue }) => {
                 <Button
                   className="landing-signup-Button"
                   variant="dark"
-                  size="lg"
+                  size="md"
                   style={isDragging ? { color: "red" } : null}
                   onClick={onImageUpload}
                   {...dragProps}

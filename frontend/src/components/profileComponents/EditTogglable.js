@@ -5,7 +5,11 @@ const EditTogglable = (props) => {
     const handleClick = useAccordionButton(eventKey);
 
     return (
-      <Button variant="outline-dark" onClick={handleClick}>
+      <Button
+        variant="outline-dark"
+        className="text-nowrap"
+        onClick={handleClick}
+      >
         {props.buttonText}
       </Button>
     );
