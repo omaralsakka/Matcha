@@ -8,7 +8,7 @@ import {
   setServiceToken,
   loginService,
   tokenLoginService,
-  userBioService,
+  userNewDataService,
 } from "../services/userServices";
 
 const initialState = {
@@ -122,14 +122,12 @@ export const tokenLoginCall = (userInfo, token) => {
   };
 };
 
-export const editUserBio = (newBio) => {
+export const editUserData = (newData) => {
   return async (dispatch) => {
     try {
-      const userNewBio = { newBio };
-      const response = await userBioService(userNewBio);
+      const response = await userNewDataService(newData);
 
       if (response) {
-        console.log("this is response: ", response);
         dispatch(updateInfoSuccess(response[0]));
       }
     } catch (error) {

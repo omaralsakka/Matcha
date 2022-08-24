@@ -332,24 +332,51 @@ userRouter.post("/search-default", async (request, response) => {
   }
 });
 
-userRouter.post("/edit-bio", async (request, response) => {
+userRouter.post("/edit-user-data", async (request, response) => {
   const decodedToken = tokenTools.verifyToken(request);
   const body = request.body;
-
+  let queryResponse;
   if (!decodedToken) {
     response.status(401).json({
       error: "token error",
     });
   }
   console.log("decoded token id: ", decodedToken.id);
-  console.log("this is body: ", body.newBio);
-  const queryResponse = await queryTools.updateOneQualifier(
-    "users",
-    "bio",
-    body.newBio,
-    "user_id",
-    decodedToken.id
-  );
+  switch (body.infoType) {
+    case "bio":
+      queryResponse = await queryTools.updateOneQualifier(
+        "users",
+        "bio",
+        body.newBio,
+        "user_id",
+        decodedToken.id
+      );
+      break;
+    case "tags":
+      const deleteResponse = await queryTools.updateOneQualifier(
+        "users",
+        "tags",
+        "{}",
+        "user_id",
+        decodedToken.id
+      );
+      queryResponse = await queryTools.updateOneQualifier(
+        "users",
+        "tags",
+        `{${body.tags}}`,
+        "user_id",
+        decodedToken.id
+      );
+      break;
+  }
+
+  // const queryResponse = await queryTools.updateOneQualifier(
+  //   "users",
+  //   "bio",
+  //   body.newBio,
+  //   "user_id",
+  //   decodedToken.id
+  // );
 
   if (queryResponse.length) {
     response.status(200).send(queryResponse);

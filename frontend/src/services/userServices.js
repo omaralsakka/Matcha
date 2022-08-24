@@ -108,11 +108,15 @@ export const searchDefaultService = async (user) => {
   return response.data;
 };
 
-export const userBioService = async (newBio) => {
+export const userNewDataService = async (newData) => {
   const config = {
     headers: { Authorization: token },
   };
-  const response = await axios.post(`${userUrl}/edit-bio`, newBio, config);
+  const response = await axios.post(
+    `${userUrl}/edit-user-data`,
+    newData,
+    config
+  );
   return response.data;
 };
 

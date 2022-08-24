@@ -1,16 +1,19 @@
 import { useDispatch } from "react-redux";
 import UseField from "../UseField";
 import EditTogglable from "./EditTogglable";
-import { editUserBio } from "../../reducers/loginReducer";
+import { editUserData } from "../../reducers/loginReducer";
 import { Form, Button, Container } from "react-bootstrap";
 import { useState, useEffect } from "react";
+
 const EditBio = ({ tags }) => {
   const newBio = UseField("text", "");
   const dispatch = useDispatch();
   const [saveButton, setSaveButton] = useState(true);
 
   const handleSave = () => {
-    dispatch(editUserBio(newBio.value));
+    const newInfo = { infoType: "bio", newBio: newBio.value };
+
+    dispatch(editUserData(newInfo));
   };
 
   const handleDelete = (e) => {

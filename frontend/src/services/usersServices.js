@@ -2,18 +2,17 @@ import axios from "axios";
 
 const usersUrl = "http://localhost:5000/api/users";
 
-// working on this
 export const getUsersImages = async (user_id) => {
   const response = await axios.get(`${usersUrl}/user-pictures/${user_id}`);
   return response.data;
 };
 
 export const getUsersService = async (user, country) => {
-	const userObj = {
-		gender : user.gender,
-		sexuality : user.sexuality,
-		country: country
-	}
+  const userObj = {
+    gender: user.gender,
+    sexuality: user.sexuality,
+    country: country,
+  };
   const response = await axios.post(`${usersUrl}/all`, userObj);
   return response.data;
 };
