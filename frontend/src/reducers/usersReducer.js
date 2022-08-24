@@ -12,6 +12,7 @@ import {
   likeUserService,
   dislikeUserService,
   reportUserService,
+  getUsersByCountryService,
 } from "../services/usersServices";
 
 const initialState = {
@@ -129,9 +130,26 @@ export const fetchUsers = (user, country) => {
   return async (dispatch) => {
     try {
       const response = await getUsersService(user, country);
-	  const filteredUsersArr = response.filter((elem) => elem.user_id !== user.user_id);
+      const filteredUsersArr = response.filter(
+        (elem) => elem.user_id !== user.user_id
+      );
       dispatch(usersFetchSuccess(filteredUsersArr));
       return filteredUsersArr;
+    } catch (error) {
+      dispatch(usersReducerError(error.message));
+      console.error(error.message);
+      return error.message;
+    }
+  };
+};
+
+export const getUsersByCountry = (country, user) => {
+  return async (dispatch) => {
+    try {
+      const data = { country, user };
+      const response = await getUsersByCountryService(data);
+      dispatch(usersFetchSuccess(response));
+      return response;
     } catch (error) {
       dispatch(usersReducerError(error.message));
       console.error(error.message);

@@ -17,6 +17,11 @@ export const getUsersService = async (user, country) => {
   return response.data;
 };
 
+export const getUsersByCountryService = async (data) => {
+  const response = await axios.post(`${usersUrl}/country`, data);
+  return response.data;
+};
+
 export const getUsersProfileImage = async () => {
   const response = await axios.get(`${usersUrl}/profileimage`);
   return response.data;

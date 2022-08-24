@@ -15,7 +15,6 @@ import {
   fameGap,
   tagsFilter,
 } from "../utils/filters";
-/* import { SEARCH_FETCH_SUCCESS } from "../actions/types"; */
 
 const Home = () => {
   const dispatch = useDispatch();

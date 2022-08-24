@@ -4,6 +4,7 @@ const usersQueries = require("../queries/userInfo");
 const userQueries = require("../queries/createUser");
 const Mailer = require("../utils/mailer");
 const mailsFormat = require("../utils/mailsFormat");
+const filterUsers = require("../utils/FilterUsers");
 
 usersRouter.post("/all", async (request, response) => {
   const body = request.body;
@@ -14,6 +15,21 @@ usersRouter.post("/all", async (request, response) => {
     response.status(401).json({
       error: "fetching users query error",
     });
+  }
+});
+
+usersRouter.post("/country", async (request, response) => {
+  const body = request.body;
+  const queryResponse = await queryTools.selectOneQualifier(
+    "users",
+    "country",
+    `'${body.country}'`
+  );
+  if (queryResponse.rows.length) {
+    const filteredUsers = filterUsers(queryResponse.rows, body.user);
+    response.status(200).send(filteredUsers);
+  } else {
+    response.status(200).send([]);
   }
 });
 

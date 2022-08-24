@@ -1,5 +1,6 @@
 import { Container, Nav, Navbar, NavDropdown, Form } from "react-bootstrap";
 
+import AdvanceSearch from "./AdvanceSearch";
 const HomeNavBar = ({ setSort, setOrder }) => {
   return (
     <Navbar
@@ -8,7 +9,7 @@ const HomeNavBar = ({ setSort, setOrder }) => {
       className="mt-3 border border-light rounded"
     >
       <Container>
-        <Nav>
+        <Nav bg="light">
           <NavDropdown title="sort by">
             <NavDropdown.Item onClick={() => setSort("age")}>
               Age
@@ -41,6 +42,7 @@ const HomeNavBar = ({ setSort, setOrder }) => {
             aria-label="Search"
           />
         </Form>
+        <AdvanceSearch />
       </Container>
     </Navbar>
   );
