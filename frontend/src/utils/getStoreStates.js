@@ -19,10 +19,10 @@ export const useStoreUser = () => {
 
 export const useStoreUsers = () => {
   const user = useSelector((state) => {
-    if (state.users) {
-      console.log(state.users);
+    if (state.users.users) {
+      return state.users;
     } else {
-      console.log("error in useSelector");
+      return false;
     }
   });
   return user;

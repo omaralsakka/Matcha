@@ -205,10 +205,10 @@ userRouter.post("/infoFilledToken", async (request, response) => {
 userRouter.get("/pictures/:id", async (request, response) => {
   const id = request.params.id;
 
-  const queryResponse = await infoQueries.getUserPictures(1);
+  const queryResponse = await infoQueries.getUserPictures(id);
   if (queryResponse.rows.length) {
     const pictures = queryResponse.rows.map((row) => row.picture);
-    return response.status(200).send(pictures);
+    return response.status(200).send(pictures[0]);
   } else {
     return response.status(401).json({
       error: "image does not exist",
