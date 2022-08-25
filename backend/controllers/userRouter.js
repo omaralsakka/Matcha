@@ -234,37 +234,6 @@ userRouter.post("/verify-username-email", async (request, response) => {
   }
 });
 
-userRouter.get("/search/:id", async (request, response) => {
-  const id = request.params.id;
-  try {
-    const queryResponse = await queryTools.selectOneQualifier(
-      "user_search",
-      "user_id",
-      id
-    );
-    response.status(200).send(queryResponse.rows);
-  } catch (error) {
-    response.status(401).json({
-      error: "fetching user search settings error",
-    });
-  }
-});
-
-userRouter.post("/search-update", async (request, response) => {
-  try {
-    const body = request.body;
-    const queryResponse = await infoQueries.updateUserSearchQuery(
-      body.user_id,
-      body.newSettings
-    );
-    response.status(200).send(queryResponse);
-  } catch (error) {
-    response.status(401).json({
-      error: "updating user search error",
-    });
-  }
-});
-
 userRouter.post("/settings", async (request, response) => {
   const body = request.body;
   const result = await infoQueries.insertSettings(body);
@@ -316,18 +285,6 @@ userRouter.post("/verify-change-email", async (request, response) => {
   } else {
     return response.status(401).json({
       error: "user was already verified",
-    });
-  }
-});
-
-userRouter.post("/search-default", async (request, response) => {
-  const body = request.body;
-  const searchDefault = await queryTools.setSearchDefault(body.user_id);
-  if (searchDefault) {
-    return response.status(200).send(searchDefault);
-  } else {
-    return response.status(401).json({
-      error: "search settings were not found or some other error",
     });
   }
 });

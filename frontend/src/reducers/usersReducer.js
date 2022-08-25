@@ -148,7 +148,6 @@ export const getUsersByCountry = (country, user) => {
     try {
       const data = { country, user };
       const response = await getUsersByCountryService(data);
-      // console.log("this is response: ", response);
       dispatch(usersFetchSuccess(response));
       return response;
     } catch (error) {

@@ -52,7 +52,12 @@ const Home = () => {
     return (
       <>
         <Container>
-          <HomeNavBar setSort={setSort} setOrder={setOrder} />
+          <HomeNavBar
+            setSort={setSort}
+            setOrder={setOrder}
+            setUsers={setUsers}
+            users={users}
+          />
           <Container className="d-flex">
             {users.length ? (
               <Container className="users-cards-wrapper">

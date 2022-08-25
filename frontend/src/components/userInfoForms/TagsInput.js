@@ -16,7 +16,6 @@ const TagsInput = ({ tags, setTags }) => {
     if (tags) {
       const currentTags = tags.join("");
       currentLen = 20 - currentTags.length;
-      console.log("this is maxLength: ", currentLen);
       if (currentLen <= 0) {
         return 0;
       }

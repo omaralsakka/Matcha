@@ -70,15 +70,6 @@ export const getCredentials = async (type) => {
   return response.data;
 };
 
-export const getSearch = async (user_id) => {
-  const response = await axios.get(`${userUrl}/search/${user_id}`);
-  return response.data;
-};
-
-export const updateSearch = async (data) => {
-  const response = await axios.post(`${userUrl}/search-update`, data);
-  return response.data;
-};
 export const settingsService = async (settingsObj) => {
   const response = await axios.post(`${userUrl}/settings`, settingsObj);
   return response.data;
@@ -100,11 +91,6 @@ export const changeEmailService = async (userObj) => {
 
 export const verifyEmailChangeService = async (code) => {
   const response = await axios.post(`${userUrl}/verify-change-email`, code);
-  return response.data;
-};
-
-export const searchDefaultService = async (user) => {
-  const response = await axios.post(`${userUrl}/search-default`, user);
   return response.data;
 };
 

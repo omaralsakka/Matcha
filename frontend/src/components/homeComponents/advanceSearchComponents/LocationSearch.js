@@ -23,7 +23,7 @@ const LocationSearch = ({ user }) => {
   };
 
   return (
-    <Form.Group className="mb-3">
+    <Form.Group className="mb-4">
       <Form.Label>Location</Form.Label>
       <Form.Select
         onChange={handleCountry}

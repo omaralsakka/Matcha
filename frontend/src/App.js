@@ -14,8 +14,6 @@ import About from "./components/footer/About";
 import useJWT from "./utils/decryptToken";
 import Settings from "./components/settings/Settings";
 import Profile from "./components/Profile";
-import Search from "./components/Search";
-import { fetchUserSearch } from "./reducers/searchReducer";
 
 // This is needed for generating random users, DONT UNCOMMENT
 // import { getRandomUsers } from "./services/usersServices";
@@ -60,11 +58,7 @@ const App = () => {
   useEffect(() => {
     if (loggedUser) {
       if (loggedUser.id) {
-        dispatch(tokenLoginCall(decodedToken, token)).then((resp) => {
-          if (resp.loggedUser.user_id) {
-            dispatch(fetchUserSearch(resp.loggedUser.user_id));
-          }
-        });
+        dispatch(tokenLoginCall(decodedToken, token));
       }
     }
   }, [loggedUser, decodedToken, token]);
@@ -116,7 +110,6 @@ const App = () => {
               element={loggedUser.infoFilled ? <Home /> : <UserInfoForms />}
             />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/search" element={<Search />} />
             <Route
               path="/settings"
               element={<Settings setLoggedUser={setLoggedUser} />}
