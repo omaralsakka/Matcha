@@ -77,13 +77,15 @@ const AdvanceSearch = ({ setUsers }) => {
     <>
       <Button onClick={handleShow}>Advanced search</Button>
       <Offcanvas show={show} onHide={handleClose} placement="end">
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Advanced Search</Offcanvas.Title>
-        </Offcanvas.Header>
+        <div className="mb-3 bg-light border-bottom">
+          <Offcanvas.Header closeButton={"light"}>
+            <Offcanvas.Title>Advanced Search</Offcanvas.Title>
+          </Offcanvas.Header>
+        </div>
         <Offcanvas.Body>
           <LocationSearch user={user} />
           <hr />
-          <Container fluid>
+          <Container className="p-3" fluid>
             <TagsInput tags={tags} setTags={setTags} />
 
             <Form.Group className="mb-5">

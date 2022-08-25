@@ -8,7 +8,6 @@ import LoadingScreen from "./LoadingScreen";
 import { getUsersProfileImage } from "../services/usersServices";
 import { useStoreUser, useStoreUsers } from "../utils/getStoreStates";
 import sortUsers from "../utils/sortUsers";
-import { filterBlocked, filterBlockedBy } from "../utils/filters";
 
 const Home = () => {
   const dispatch = useDispatch();

@@ -39,7 +39,7 @@ const Profile = () => {
                   <strong>{user.fullname}</strong>
                   <span className="mx-3 fs-3 text-muted">{user.age}</span>
                 </Card.Title>
-                <Card.Text className="text-muted fs-4 d-flex mb-4">
+                <Card.Text className="text-muted fs-5 d-flex mb-4">
                   <span className="opacity-75 cards-icons me-2">
                     <Image src={locationIcon} fluid></Image>
                   </span>
