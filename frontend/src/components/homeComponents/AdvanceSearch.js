@@ -1,32 +1,20 @@
 import { useEffect, useState } from "react";
-import { Button, Offcanvas, Form } from "react-bootstrap";
-import allCountries from "../../utils/allCountries";
+import { Button, Offcanvas, Form, Spinner } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { getUsersByCountry } from "../../reducers/usersReducer";
 import { useStoreUser } from "../../utils/getStoreStates";
+import LocationSearch from "./advanceSearchComponents/LocationSearch";
+import TagsInput from "../userInfoForms/TagsInput";
 
 const AdvanceSearch = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const { user } = useStoreUser();
+  const [tags, setTags] = useState([]);
 
-  const [country, setCountry] = useState(false);
-  const countries = allCountries();
-  const dispatch = useDispatch();
-
-  const handleCountry = (e) => {
-    setCountry(e.target.value);
-  };
-
-  useEffect(() => {
-    if (country) {
-      if (user) {
-        dispatch(getUsersByCountry(country, user));
-      }
-    }
-  }, [country]);
-
+  if (!user) {
+    return <Spinner />;
+  }
   return (
     <>
       <Button onClick={handleShow}>Advanced search</Button>
@@ -35,21 +23,8 @@ const AdvanceSearch = () => {
           <Offcanvas.Title>Advance Search</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Form.Group>
-            <Form.Label>Location</Form.Label>
-            <Form.Select
-              onChange={handleCountry}
-              size="sm"
-              aria-label="Select country"
-            >
-              <option>Select country</option>
-              {countries.map((country) => (
-                <option value={country} key={countries.indexOf(country)}>
-                  {country}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
+          <LocationSearch user={user} />
+          <TagsInput tags={tags} setTags={setTags} />
         </Offcanvas.Body>
       </Offcanvas>
     </>

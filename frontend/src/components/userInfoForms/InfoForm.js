@@ -1,10 +1,11 @@
 import { Form, Button, Container, Alert } from "react-bootstrap";
 import UseField from "../UseField";
-import { InputTags } from "react-bootstrap-tagsinput";
+// import { InputTags } from "react-bootstrap-tagsinput";
 import "react-bootstrap-tagsinput/dist/index.css";
 import { useState } from "react";
 import { infoFormService } from "../../services/userServices";
 import useLocation from "../../utils/locationTool";
+import TagsInput from "./TagsInput";
 
 const InfoForm = ({ setVisibleForm }) => {
   const gender = UseField("text", "");
@@ -13,9 +14,9 @@ const InfoForm = ({ setVisibleForm }) => {
   const [tags, setTags] = useState([]);
   /* const location = useLocation(); */ // dont use this unless forced and make sure there is no infinite render
   const location = {
-	  location : "",
-	  coords : [0.0, 0.0]
-	};
+    location: "",
+    coords: [0.0, 0.0],
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -25,7 +26,7 @@ const InfoForm = ({ setVisibleForm }) => {
       bio: bio.value,
       tags: tags,
       location: location.location,
-	  coords: location.coords
+      coords: location.coords,
     };
     infoFormService(userInfo).then(() => setVisibleForm(2));
   };
@@ -81,16 +82,17 @@ const InfoForm = ({ setVisibleForm }) => {
             <Form.Control as="textarea" {...bio} maxLength={300}></Form.Control>
             <Form.Text muted>max length 300 characters</Form.Text>
           </Form.Group>
-
-          <Form.Group className="mb-3">
+          <TagsInput tags={tags} setTags={setTags} />
+          {/* check that tags are working */}
+          {/* <Form.Group className="mb-3">
             <Form.Label>Tags</Form.Label>
             <InputTags
               maxLength={50}
               values={tags}
               onTags={(value) => setTags(value.values)}
             />
-            <Form.Text muted>max length 50 characters</Form.Text>
-          </Form.Group>
+            <Form.Text muted>max length 20 characters</Form.Text>
+          </Form.Group> */}
           <Button
             variant="dark"
             className="landing-signup-Button"
