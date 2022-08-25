@@ -9,6 +9,7 @@ import { getUsersProfileImage } from "../services/usersServices";
 import { useStoreUser } from "../utils/getStoreStates";
 import sortUsers from "../utils/sortUsers";
 import { filterBlocked, filterBlockedBy, ageGap, fameGap, tagsFilter } from "../utils/filters";
+
 /* import { SEARCH_FETCH_SUCCESS } from "../actions/types"; */
 
 const Home = () => {
@@ -20,7 +21,6 @@ const Home = () => {
   const [sort, setSort] = useState(false);
   const [order, setOrder] = useState("ascending");
   let advancedFilter; //  this can be a state but maybe not necessary
-
   const getUsers = (user, country) => {
 	dispatch(fetchUsers(user, country)).then((resp) => {
 		const filtered = filterBlockedBy(user, filterBlocked(user, resp));
@@ -29,12 +29,12 @@ const Home = () => {
   }
 
   useEffect(() => {
-	if(user) {
-		getUsers(user, user.country);
-		getUsersProfileImage().then((resp) => {
-		  setProfilePictures(resp);
-		});
-	}
+	  if(user && search.user_id === "") {
+		  getUsers(user, user.country);
+		  getUsersProfileImage().then((resp) => {
+			setProfilePictures(resp);
+		  });
+	  }
   }, [dispatch, user]);
 
   useEffect(() => {
@@ -42,9 +42,11 @@ const Home = () => {
 		dispatch(fetchUsers(user, search.country)).then((resp) => {
 			advancedFilter = filterBlockedBy(user, filterBlocked(user, resp));
 		}).then(() =>{
-			advancedFilter = ageGap(search.age_range.min, search.age_range.max, advancedFilter)
+			if(search.age_range.min.length)
+				advancedFilter = ageGap(search.age_range.min, search.age_range.max, advancedFilter)
 		}).then(() => {
-			advancedFilter = fameGap(search.fame_range.min, search.fame_range.max, advancedFilter)
+			if(search.fame_range.min.length)
+				advancedFilter = fameGap(search.fame_range.min, search.fame_range.max, advancedFilter)
 		}).then(() => {
 			if(search.tags.length)
 				advancedFilter = tagsFilter(search, advancedFilter);
@@ -62,7 +64,10 @@ const Home = () => {
 
   if (!users.length || !profilePictures.length || !user) {
     return <LoadingScreen />;
-  } else {
+  } else if (users === 'no users found' && profilePictures === 'no pictures'){
+	  return (<><h1>no users found</h1></>)
+  } 
+  else {
     return (
       <>
         <Container>
@@ -76,6 +81,8 @@ const Home = () => {
                       user={userToDisplay}
                       profilePictures={profilePictures}
                       loggedUserId={user.user_id}
+					  loggedUsername={user.username}
+					  loggedUserCoords={user.coordinates}
                     />
                   </Row>
                 </div>

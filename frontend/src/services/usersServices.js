@@ -58,3 +58,12 @@ export const getRandomUsers = async () => {
   }
   return response.data;
 };
+
+export const getDistanceService = async (start, end) => {
+	const coords = {
+		start: start,
+		end: end
+	}
+	const response = await axios.post(`${usersUrl}/distance`, coords);
+	return response.data;
+}

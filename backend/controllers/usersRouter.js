@@ -4,17 +4,12 @@ const usersQueries = require("../queries/userInfo");
 const userQueries = require("../queries/createUser");
 const Mailer = require("../utils/mailer");
 const mailsFormat = require("../utils/mailsFormat");
+const distanceTool = require("../utils/distanceTool");
 
 usersRouter.post("/all", async (request, response) => {
   const body = request.body;
   const queryResponse = await queryTools.selectAllWithFilter(body);
-  if (queryResponse.length) {
-    response.status(200).send(queryResponse);
-  } else {
-    response.status(401).json({
-      error: "fetching users query error",
-    });
-  }
+  response.status(200).send(queryResponse); // have to this because if nothing is found in db it throws a bunch of errors
 });
 
 usersRouter.get("/profileimage", async (request, response) => {
@@ -240,5 +235,17 @@ usersRouter.post("/random-users", async (request, response) => {
     }
   }
 });
+
+usersRouter.post("/distance", async (request, response) => {
+	const body = request.body;
+	const distanceResponse = distanceTool(body);
+	if (distanceResponse.length) {
+	  response.status(200).send(distanceResponse);
+	} else {
+	  response.status(404).json({
+		error: "distance not possible to calculate",
+	  });
+	}
+  });
 
 module.exports = usersRouter;

@@ -37,9 +37,9 @@ const Settings = ({ setLoggedUser }) => {
 	let changeEmail = 0;
 	const dispatch = useDispatch();
 	const countries = allCountries();
-	/* let relocatedPosition = useLocation(); */
-	let relocatedPosition = "";
-
+	let relocatedPosition = useLocation();
+	/* let relocatedPosition = ""; */
+	
 	useEffect(() => {
 		getCredentials({ type: 'username' }).then((res) => {
 			let obj = res.find((o) => o.username === username.value);
@@ -76,6 +76,8 @@ const Settings = ({ setLoggedUser }) => {
 	const useHandleRelocation = (e) => {
 		e.preventDefault();
 		setRelocate(1);
+		e.target.value = '';
+		country.onChange(e);
 	};
 
 	const setCountry = async (country, settingsInfo, e, credentialsObj) => {

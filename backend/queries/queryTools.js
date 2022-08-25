@@ -32,17 +32,17 @@ const selectAllWithFilter = async (user) => {
 			if(user.sexuality === "straight") {
 				queryResponse = await pool.query(`SELECT * FROM users WHERE gender = 'female' AND sexuality = 'straight' AND country = '${user.country}'`);
 			} else if(user.sexuality === "gay") {
-				queryResponse = await pool.query(`SELECT * FROM users WHERE gender = 'male' AND sexuality = 'gay' OR sexuality = 'bi' AND country = '${user.country}'`);
+				queryResponse = await pool.query(`SELECT * FROM users WHERE gender = 'male' AND (sexuality = 'gay' OR sexuality = 'bi') AND country = '${user.country}'`);
 			} else if(user.sexuality === "bi") {
-				queryResponse = await pool.query(`SELECT * FROM users WHERE gender = 'female' AND sexuality = 'straight' OR sexuality = 'bi' OR gender = 'male' AND sexuality = 'gay' OR sexuality = 'bi' AND country = '${user.country}'`);
+				queryResponse = await pool.query(`SELECT * FROM users WHERE gender = 'female' AND (sexuality = 'straight' OR sexuality = 'bi') OR gender = 'male' AND (sexuality = 'gay' OR sexuality = 'bi') AND country = '${user.country}'`);
 			}
 		} else if (user.gender === "female") {
 			if(user.sexuality === "straight") {
 				queryResponse = await pool.query(`SELECT * FROM users WHERE gender = 'male' AND sexuality = 'straight' AND country = '${user.country}'`);
 			} else if(user.sexuality === "gay") {
-				queryResponse = await pool.query(`SELECT * FROM users WHERE gender = 'female' AND sexuality = 'gay' OR sexuality = 'bi' AND country = '${user.country}'`);
+				queryResponse = await pool.query(`SELECT * FROM users WHERE gender = 'female' AND (sexuality = 'gay' OR sexuality = 'bi') AND country = '${user.country}'`);
 			} else if(user.sexuality === "bi") {
-				queryResponse = await pool.query(`SELECT * FROM users WHERE gender = 'male' AND sexuality = 'straight' OR sexuality = 'bi' OR gender = 'female' AND sexuality = 'gay' OR sexuality = 'bi' AND country = '${user.country}'`);
+				queryResponse = await pool.query(`SELECT * FROM users WHERE gender = 'male' AND (sexuality = 'straight' OR sexuality = 'bi') OR gender = 'female' AND (sexuality = 'gay' OR sexuality = 'bi') AND country = '${user.country}'`);
 			}
 		}
 		return queryResponse.rows;

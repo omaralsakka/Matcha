@@ -3,17 +3,22 @@ const bcrypt = require("bcrypt");
 const locator = require("../utils/ipLocator");
 const queryTools = require("./queryTools");
 const checkPassword = require("../utils/cryptPassword");
+const getCoords = require("../utils/getCoords");
 
 const insertUserInfo = async (
   { gender, sexualPreference, bio, tags, location, coords },
   user_id,
   ip
 ) => {
-	console.log(coords);
   if (location.length === 0) {
     location = await locator(ip);
   }
+
   const locationArr = location.split(", ");
+
+  if(coords[0] === 0 && coords[1] === 0)
+	coords = await getCoords(locationArr[0]);
+
   try {
     const queryResponse = await pool.query(
       "UPDATE users SET gender = $1, sexuality = $2, bio = $3, tags = $4, city = $5, country = $6, coordinates = $7 WHERE user_id = $8",
@@ -140,6 +145,10 @@ const insertSettings = async ({username, fullname, newPW, user_id, location, coo
 		newPW = await bcrypt.hash(newPW, 10);
 	}
 	const locationArr = location.split(", ");
+
+	if(coords[0] === 0 && coords[1] === 0)
+		coords = await getCoords(locationArr[0]);
+
 	try {
 	const queryResponse = await pool.query(
 		"UPDATE users SET username = $1, fullname = $2, password = $3, city = $4, country = $5, coordinates = $6 WHERE user_id = $7",

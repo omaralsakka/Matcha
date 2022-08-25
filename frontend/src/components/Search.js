@@ -69,10 +69,11 @@ const Search = () => {
   const setDefault = (e) => {
 	e.preventDefault();
 	searchDefaultService(user);
+
 	setAlert(true);
-	  setTimeout(() => {
-		setAlert(false);
-	  }, 5000);
+	setTimeout(() => {
+	  setAlert(false);
+	}, 5000);
   }
 
   if (!user || !search) {
@@ -138,7 +139,7 @@ const Search = () => {
             <Form.Text muted>max length 50 characters</Form.Text>
           </Form.Group>
           <div className="d-flex" style={{ gap: "10px" }}>
-            <Button type="submit">Save</Button>
+            <Button type="submit" >Save</Button>
 			<Button onClick={setDefault}>Set all to default</Button>
           </div>
         </Form>
