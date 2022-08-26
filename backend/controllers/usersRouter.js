@@ -51,14 +51,20 @@ usersRouter.post("/likeuser", async (request, response) => {
     likedById
   );
 
-  if (queryResponseLiked.length) {
+  if(queryResponseLiked.length) {
     const queryResponseLikedBy = await usersQueries.updateArrayQuery(
       "users",
       "liked_by",
       likedById,
       likedUserId
     );
-    if (queryResponseLikedBy.length) {
+	if(queryResponseLikedBy.length) {
+		const queryResponseConnected = await usersQueries.updateConnectedQuery(
+			likedById,
+    		likedUserId
+		);
+	}
+    if(queryResponseLikedBy.length) {
       response.status(200).send(queryResponseLikedBy);
     }
   } else {

@@ -2,6 +2,7 @@ import Pusher from "pusher-js";
 import { useEffect, useState } from "react";
 import ChatList from "./ChatList";
 import ChatInput from "./ChatInput";
+import "./chat.css";
 import { useStoreUser } from "../../utils/getStoreStates";
 
 const ChatScreen = () => {
@@ -30,7 +31,6 @@ const ChatScreen = () => {
 	  return (
 		<div className="wrapper">
 		  <div className="container">
-			<div className="userProfile">Hello, {user.username}</div>
 			<ChatList chats={chats} username={user.username} />
 			<ChatInput channelName={"message"} username={user.username} />
 		  </div>

@@ -10,6 +10,10 @@ const insertUser = async ({ username, email, fullname, password, age }) => {
       "INSERT INTO users(username, email, fullname, password, age) VALUES($1, $2, $3, $4, $5) RETURNING *",
       [username, email, fullname, password, age]
     );
+	const insertIntoConnected = await pool.query(
+		"INSERT INTO connected(user_id, username) VALUES($1, $2)",
+		[queryResponse.rows[0].user_id, username]
+	);
     return queryResponse;
   } catch (error) {
     console.error(error.message);
