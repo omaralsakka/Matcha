@@ -22,8 +22,6 @@ import { getUsersImages } from "../../services/usersServices";
 const maleImages = require.context("../../media/male", true);
 const femaleImages = require.context("../../media/female", true);
 
-// const test = require("../../media/female/f1.jpg");
-
 const UsersCards = ({ user, loggedUserId }) => {
   console.log(femaleImages);
   const [open, setOpen] = useState(false);

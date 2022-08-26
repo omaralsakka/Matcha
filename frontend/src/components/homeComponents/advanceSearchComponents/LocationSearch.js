@@ -6,7 +6,7 @@ import { getUsersByCountry } from "../../../reducers/usersReducer";
 
 const LocationSearch = ({ user }) => {
   const [country, setCountry] = useState(false);
-
+  const [selected, setSelected] = useState(false);
   const countries = allCountries();
   const dispatch = useDispatch();
 
@@ -14,6 +14,7 @@ const LocationSearch = ({ user }) => {
     if (country) {
       if (user) {
         dispatch(getUsersByCountry(country, user));
+        // setSelected(country);
       }
     }
   }, [country]);
@@ -30,7 +31,9 @@ const LocationSearch = ({ user }) => {
         size="sm"
         aria-label="Select country"
       >
-        <option>Select country</option>
+        <option>
+          {country ? `selected country: ${country}` : "Select country"}
+        </option>
         {countries.map((country) => (
           <option value={country} key={countries.indexOf(country)}>
             {country}

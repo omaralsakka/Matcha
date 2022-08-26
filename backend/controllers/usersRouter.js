@@ -233,6 +233,7 @@ usersRouter.post("/random-users", async (request, response) => {
     let male = 1;
     let female = 1;
     let img;
+    let img2;
     for (let index = 0; index < results.length; index++) {
       if (i > 2) {
         i = 0;
@@ -249,10 +250,12 @@ usersRouter.post("/random-users", async (request, response) => {
       switch (results[index].gender) {
         case "male":
           img = `./m${male}.jpg`;
+          img2 = `./m${male}-2.jpg`;
           male++;
           break;
         case "female":
           img = `./f${female}.jpg`;
+          img2 = `./f${female}-2.jpg`;
           female++;
           break;
       }
@@ -283,6 +286,10 @@ usersRouter.post("/random-users", async (request, response) => {
       );
       const picturesQueryResponse = await usersQueries.insertUserPictures(
         img,
+        queryResponse.rows[0].user_id
+      );
+      const picturesQueryResponse2 = await usersQueries.insertUserPictures(
+        img2,
         queryResponse.rows[0].user_id
       );
       i++;
