@@ -14,7 +14,7 @@ const Home = () => {
   const { user } = useStoreUser();
   const usersInStore = useStoreUsers();
   const [users, setUsers] = useState([]);
-  const [profilePictures, setProfilePictures] = useState([]);
+  // const [profilePictures, setProfilePictures] = useState([]);
   const [sort, setSort] = useState(false);
   const [order, setOrder] = useState("ascending");
 
@@ -22,9 +22,6 @@ const Home = () => {
     if (user) {
       dispatch(getUsersByCountry(user.country, user)).then((resp) => {
         setUsers(resp);
-      });
-      getUsersProfileImage().then((resp) => {
-        setProfilePictures(resp);
       });
     }
   }, [dispatch, user]);
@@ -45,7 +42,7 @@ const Home = () => {
     }
   }, [usersInStore.users]);
 
-  if (!users || !profilePictures.length || !user) {
+  if (!users || !user) {
     return <LoadingScreen />;
   } else {
     return (
@@ -65,7 +62,6 @@ const Home = () => {
                     <Row className="mb-5">
                       <UsersCards
                         user={userToDisplay}
-                        profilePictures={profilePictures}
                         loggedUserId={user.user_id}
                       />
                     </Row>

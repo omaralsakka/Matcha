@@ -9,22 +9,27 @@ import {
   Container,
   Fade,
 } from "react-bootstrap";
-
-import pic from "../../media/cp2.jpg";
+// import pic from "../../media/cp2.jpg";
 
 import locationIcon from "../../media/location-icon.png";
 import { Spinner } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { viewUserService } from "../../services/usersServices";
 import BlockButton from "./BlockButton";
 import LikeButton from "./LikeButton";
 import ReportAccount from "./ReportAccount";
+import { getUsersImages } from "../../services/usersServices";
+const maleImages = require.context("../../media/male", true);
+const femaleImages = require.context("../../media/female", true);
 
-const UsersCards = ({ user, profilePictures, loggedUserId }) => {
+// const test = require("../../media/female/f1.jpg");
+
+const UsersCards = ({ user, loggedUserId }) => {
+  console.log(femaleImages);
   const [open, setOpen] = useState(false);
   const [hide, setHide] = useState(true);
+  const [userImages, setUserImages] = useState([]);
   const [fameRate, setFameRate] = useState(0);
-
   const displayUserInfo = () => {
     if (!open) {
       const userIds = { viewedUser: user.user_id, loggedUser: loggedUserId };
@@ -34,7 +39,11 @@ const UsersCards = ({ user, profilePictures, loggedUserId }) => {
     setHide(!hide);
   };
 
-  if (!user) {
+  useEffect(() => {
+    getUsersImages(user.user_id).then((resp) => setUserImages(resp));
+  }, []);
+
+  if (!userImages.length) {
     return <Spinner animation="grow" />;
   } else {
     return (
@@ -47,7 +56,37 @@ const UsersCards = ({ user, profilePictures, loggedUserId }) => {
                 pause="hover"
                 className="carousel-cards"
               >
-                <Carousel.Item>
+                {userImages.map((image) => {
+                  let img;
+                  if (image.picture.includes("./")) {
+                    switch (user.gender) {
+                      case "female":
+                        img = femaleImages(image.picture);
+                        break;
+                      case "male":
+                        img = maleImages(image.picture);
+                        break;
+                      default:
+                    }
+                  } else {
+                    img = image.picture;
+                  }
+                  return (
+                    <Carousel.Item key={image.id}>
+                      <Card.Img src={img} />
+                      <Fade in={hide}>
+                        <Card.ImgOverlay>
+                          <Container className="card-overlay-text p-1 rounded">
+                            <Card.Title className="text-white fs-1">
+                              {user.fullname}
+                            </Card.Title>
+                          </Container>
+                        </Card.ImgOverlay>
+                      </Fade>
+                    </Carousel.Item>
+                  );
+                })}
+                {/* <Carousel.Item>
                   <Card.Img src={pic} />
                   <Fade in={hide}>
                     <Card.ImgOverlay>
@@ -58,7 +97,7 @@ const UsersCards = ({ user, profilePictures, loggedUserId }) => {
                       </Container>
                     </Card.ImgOverlay>
                   </Fade>
-                </Carousel.Item>
+                </Carousel.Item> */}
               </Carousel>
               <Button
                 onClick={displayUserInfo}

@@ -248,11 +248,11 @@ usersRouter.post("/random-users", async (request, response) => {
       }
       switch (results[index].gender) {
         case "male":
-          img = `../../media/male/m${male}.jpg`;
+          img = `./m${male}.jpg`;
           male++;
           break;
         case "female":
-          img = `../../media/female/f${female}.jpg`;
+          img = `./f${female}.jpg`;
           female++;
           break;
       }
