@@ -14,24 +14,43 @@ import {
 import locationIcon from "../../media/location-icon.png";
 import { Spinner } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import { viewUserService } from "../../services/usersServices";
+import ProfileImagesCarousel from "../profileComponents/ProfileImagesCarousel";
+
+import {
+  viewUserService,
+  getDistanceService,
+} from "../../services/usersServices";
+import { sendNotificationService } from "../../services/notificationServices";
 import BlockButton from "./BlockButton";
 import LikeButton from "./LikeButton";
 import ReportAccount from "./ReportAccount";
 import { getUsersImages } from "../../services/usersServices";
+
 const maleImages = require.context("../../media/male", true);
 const femaleImages = require.context("../../media/female", true);
 
-const UsersCards = ({ user, loggedUserId }) => {
-  console.log(femaleImages);
+// ------ FIX HERE --------------
+
+const UsersCards = ({
+  user,
+  loggedUserId,
+  loggedUsername,
+  loggedUserCoords,
+}) => {
   const [open, setOpen] = useState(false);
   const [hide, setHide] = useState(true);
   const [userImages, setUserImages] = useState([]);
   const [fameRate, setFameRate] = useState(0);
+  const [distance, setDistance] = useState("");
+
   const displayUserInfo = () => {
     if (!open) {
       const userIds = { viewedUser: user.user_id, loggedUser: loggedUserId };
       viewUserService(userIds);
+      sendNotificationService(user.email, loggedUsername, 2);
+      getDistanceService(loggedUserCoords, user.coordinates).then((resp) => {
+        setDistance(resp);
+      });
     }
     setOpen(!open);
     setHide(!hide);
@@ -44,9 +63,108 @@ const UsersCards = ({ user, loggedUserId }) => {
   if (!userImages.length) {
     return <Spinner animation="grow" />;
   } else {
+    // WORKING ON THIS
     return (
       <Col className="g-3">
-        <Card className="w-auto">
+        <Card className="mb-3 mx-auto w-100">
+          <Row className="no-gutters mb-3">
+            <Col md={4}>
+              <Carousel
+                controls={false}
+                pause="hover"
+                className="carousel-cards"
+              >
+                {userImages.map((image) => {
+                  let img;
+                  if (image.picture.includes("./")) {
+                    switch (user.gender) {
+                      case "female":
+                        img = femaleImages(image.picture);
+                        break;
+                      case "male":
+                        img = maleImages(image.picture);
+                        break;
+                      default:
+                    }
+                  } else {
+                    img = image.picture;
+                  }
+                  return (
+                    <Carousel.Item key={image.id}>
+                      <Card.Img src={img} />
+                      <Fade in={hide}>
+                        <Card.ImgOverlay>
+                          <Container className="card-overlay-text p-1 rounded">
+                            <Card.Title className="text-white fs-1">
+                              {user.fullname}
+                            </Card.Title>
+                          </Container>
+                        </Card.ImgOverlay>
+                      </Fade>
+                    </Carousel.Item>
+                  );
+                })}
+              </Carousel>
+            </Col>
+            <Col md={8}>
+              <Card.Body>
+                <Card.Title className="fs-1">
+                  <strong>{user.fullname}</strong>
+                  <span className="mx-3 fs-3 text-muted">{user.age}</span>
+                </Card.Title>
+                <Card.Text className="text-muted fs-5 d-flex mb-4">
+                  <span className="opacity-75 cards-icons me-2">
+                    <Image src={locationIcon} fluid></Image>
+                  </span>
+                  Lives in {user.city}
+                </Card.Text>
+
+                <Card.Title className="fs-3">
+                  <strong>About me</strong>
+                </Card.Title>
+                <Card.Text className="mb-3 fs-6 text-muted">
+                  {user.bio}
+                </Card.Text>
+                <Card.Text className="mb-3 text-muted">
+                  @{user.username}
+                </Card.Text>
+                <hr />
+                <Card.Title className="fs-3 mb-3">
+                  <strong>Interests</strong>
+                </Card.Title>
+                <Card.Text className="mb-4">
+                  <span className="d-flex">
+                    {user.tags.map((tag) => (
+                      <span key={tag} className="cards-tags text-muted">
+                        {tag}
+                      </span>
+                    ))}
+                  </span>
+                </Card.Text>
+                <hr />
+                <Card.Title className="fs-3 mb-3">
+                  <strong>Fame rate</strong>
+                </Card.Title>
+                <Card.Text className="text-muted fs-4">
+                  {user.liked_by ? user.liked_by.length : 0}
+                </Card.Text>
+
+                <Container className="w-100 d-flex justify-content-center gap-5">
+                  <BlockButton loggedUserId={loggedUserId} user={user} />
+
+                  <LikeButton
+                    loggedUserId={loggedUserId}
+                    user={user}
+                    fameRate={fameRate}
+                    setFameRate={setFameRate}
+                    loggedUsername={loggedUsername}
+                  />
+                </Container>
+              </Card.Body>
+            </Col>
+          </Row>
+        </Card>
+        {/* <Card className="w-auto">
           <Row>
             <Col key={user.user_id * 3}>
               <Carousel
@@ -84,18 +202,6 @@ const UsersCards = ({ user, loggedUserId }) => {
                     </Carousel.Item>
                   );
                 })}
-                {/* <Carousel.Item>
-                  <Card.Img src={pic} />
-                  <Fade in={hide}>
-                    <Card.ImgOverlay>
-                      <Container className="card-overlay-text p-1 rounded">
-                        <Card.Title className="text-white fs-1">
-                          {user.fullname}
-                        </Card.Title>
-                      </Container>
-                    </Card.ImgOverlay>
-                  </Fade>
-                </Carousel.Item> */}
               </Carousel>
               <Button
                 onClick={displayUserInfo}
@@ -122,6 +228,9 @@ const UsersCards = ({ user, loggedUserId }) => {
                       </div>
                       <Card.Text className="text-muted fs-4">
                         Lives in {user.city}
+                      </Card.Text>
+                      <Card.Text className="text-muted fs-4">
+                        Distance {distance} km away from you.
                       </Card.Text>
                     </div>
                     <Card.Text className="mb-4">
@@ -170,6 +279,7 @@ const UsersCards = ({ user, loggedUserId }) => {
                       user={user}
                       fameRate={fameRate}
                       setFameRate={setFameRate}
+                      loggedUsername={loggedUsername}
                     />
                   </div>
 
@@ -178,7 +288,7 @@ const UsersCards = ({ user, loggedUserId }) => {
               </Col>
             </Collapse>
           </Row>
-        </Card>
+        </Card> */}
       </Col>
     );
   }

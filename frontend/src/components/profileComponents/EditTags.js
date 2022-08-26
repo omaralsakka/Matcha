@@ -13,7 +13,6 @@ const EditTags = ({ userTags }) => {
   const handleSave = () => {
     const newInfo = { infoType: "tags", tags: tags };
     dispatch(editUserData(newInfo));
-    console.log(tags);
   };
 
   const handleDelete = (e) => {

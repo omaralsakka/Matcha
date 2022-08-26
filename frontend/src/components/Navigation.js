@@ -1,4 +1,5 @@
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
+import Notifications from "./Notifications";
 import { useDispatch } from "react-redux";
 import { useNavigate, Outlet, Link } from "react-router-dom";
 import { logoutUser } from "../reducers/loginReducer";
@@ -32,6 +33,7 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
               Settings
             </Link>
           </Nav>
+		 {/*  <Notifications /> */} {/* turned off for now, makes the app slower */}
           <Navbar.Collapse className="justify-content-end">
             <Nav.Item className="mx-3">
               <Navbar.Text className="fs-5">{loggedUser.username}</Navbar.Text>

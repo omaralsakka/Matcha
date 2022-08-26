@@ -86,7 +86,11 @@ const PicturesForm = ({ defaultValue }) => {
                 >
                   Click or Drop here
                 </Button>
-                <p className="text-muted mt-2">maximum five pictures</p>
+                <p className="text-muted mt-2">
+                  maximum five pictures
+                  <br />
+                  maximum size 3MB
+                </p>
               </div>
             </div>
           )}

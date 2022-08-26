@@ -9,6 +9,7 @@ import { getUsersProfileImage } from "../services/usersServices";
 import { useStoreUser, useStoreUsers } from "../utils/getStoreStates";
 import sortUsers from "../utils/sortUsers";
 
+// ------ FIX HERE --------------
 const Home = () => {
   const dispatch = useDispatch();
   const { user } = useStoreUser();
@@ -44,6 +45,14 @@ const Home = () => {
 
   if (!users || !user) {
     return <LoadingScreen />;
+  } else if (
+    users === "no users found" /* && profilePictures === 'no pictures' */
+  ) {
+    return (
+      <>
+        <h1>no users found</h1>
+      </>
+    );
   } else {
     return (
       <>
@@ -55,24 +64,21 @@ const Home = () => {
             users={users}
           />
           <Container className="d-flex">
-            {users.length ? (
-              <Container className="users-cards-wrapper">
-                {users.map((userToDisplay) => (
-                  <div key={userToDisplay.user_id}>
-                    <Row className="mb-5">
-                      <UsersCards
-                        user={userToDisplay}
-                        loggedUserId={user.user_id}
-                      />
-                    </Row>
-                  </div>
-                ))}
-              </Container>
-            ) : (
-              <Container className="text-center mt-5">
-                <strong className="fs-1">Users not found</strong>
-              </Container>
-            )}
+            <Container className="users-cards-wrapper">
+              {users.map((userToDisplay) => (
+                <div key={userToDisplay.user_id}>
+                  <Row className="mb-5">
+                    {/* this to be fixed to just pass logged user fetched from store */}
+                    <UsersCards
+                      user={userToDisplay}
+                      loggedUserId={user.user_id}
+                      loggedUsername={user.username}
+                      loggedUserCoords={user.coordinates}
+                    />
+                  </Row>
+                </div>
+              ))}
+            </Container>
           </Container>
         </Container>
       </>

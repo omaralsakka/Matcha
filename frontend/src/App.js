@@ -16,7 +16,8 @@ import Settings from "./components/settings/Settings";
 import Profile from "./components/Profile";
 
 // This is needed for generating random users, DONT UNCOMMENT
-// import { getRandomUsers } from "./services/usersServices";
+import { getRandomUsers } from "./services/usersServices";
+import ChatScreen from "./components/chat/ChatScreen";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -117,6 +118,7 @@ const App = () => {
           </Route>
           <Route path="/terms" element={<Terms />} />
           <Route path="/about" element={<About />} />
+          <Route path="/chat-screen" element={<ChatScreen />} />
         </Routes>
         <AppFooter />
       </div>

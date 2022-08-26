@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const locator = require("../utils/ipLocator");
 const queryTools = require("./queryTools");
 const checkPassword = require("../utils/cryptPassword");
+const getCoords = require("../utils/getCoords");
 
 const insertUserInfo = async (
   { gender, sexualPreference, bio, tags, location, coords },
@@ -12,7 +13,12 @@ const insertUserInfo = async (
   if (location.length === 0) {
     location = await locator(ip);
   }
+
   const locationArr = location.split(", ");
+
+  if (coords[0] === 0 && coords[1] === 0)
+    coords = await getCoords(locationArr[0]);
+
   try {
     const queryResponse = await pool.query(
       `UPDATE users SET gender = $1, sexuality = $2, bio = $3, tags = $4, city = $5, country = $6, coordinates = $7 WHERE user_id = $8`,
@@ -82,6 +88,35 @@ const disLikeUserQuery = async (disLikedUserId, disLikedById) => {
       "UPDATE users SET liked_by = array_remove(liked_by, $1) WHERE user_id = $2 RETURNING *",
       [disLikedById, disLikedUserId]
     );
+    const test = await pool.query(
+      "UPDATE users SET liked = array_remove(liked, $1) WHERE user_id = $2 RETURNING *",
+      [disLikedUserId, disLikedById]
+    );
+    const deleteConnection = await pool.query(
+      "SELECT connections FROM connected WHERE user_id = $1",
+      [disLikedById]
+    );
+    console.log(
+      "this is deleteConnection: ",
+      deleteConnection.rows[0].connections
+    );
+    if (deleteConnection.rows[0].connections) {
+      if (deleteConnection.rows[0].connections.length) {
+        const bool =
+          deleteConnection.rows[0].connections.includes(disLikedUserId);
+        if (bool === true) {
+          const dislikedDisconnect = await pool.query(
+            "UPDATE connected SET connections = array_remove(connections, $1) WHERE user_id = $2",
+            [disLikedUserId, disLikedById]
+          );
+          const dislikerDisconnect = await pool.query(
+            "UPDATE connected SET connections = array_remove(connections, $1) WHERE user_id = $2",
+            [disLikedById, disLikedUserId]
+          );
+        }
+      }
+    }
+
     return queryResponse;
   } catch (error) {
     console.error(error.message);
@@ -135,6 +170,7 @@ const insertSettings = async ({
   newPW,
   user_id,
   location,
+  coords,
 }) => {
   if (newPW.length === 0) {
     const queryResponse = await pool.query(
@@ -146,6 +182,10 @@ const insertSettings = async ({
     newPW = await bcrypt.hash(newPW, 10);
   }
   const locationArr = location.split(", ");
+
+  if (coords[0] === 0 && coords[1] === 0)
+    coords = await getCoords(locationArr[0]);
+
   try {
     const queryResponse = await pool.query(
       "UPDATE users SET username = $1, fullname = $2, password = $3, city = $4, country = $5, coordinates = $6 WHERE user_id = $7",
@@ -224,6 +264,32 @@ const updateUsersOneQualifier = async (col, colToUp, newData, qualifier) => {
   }
 };
 
+const updateConnectedQuery = async (likedById, likedUserId) => {
+  try {
+    const checkLikes = await pool.query(
+      "SELECT liked FROM users WHERE user_id = $1",
+      [likedUserId]
+    );
+    if (checkLikes.rows[0].liked.length) {
+      const bool = checkLikes.rows[0].liked.includes(likedById);
+      if (bool === true) {
+        updateLiker = await pool.query(
+          "UPDATE connected SET connections = array_append(connections, $1) WHERE user_id = $2",
+          [likedUserId, likedById]
+        );
+        updateLiked = await pool.query(
+          "UPDATE connected SET connections = array_append(connections, $1) WHERE user_id = $2",
+          [likedById, likedUserId]
+        );
+      }
+    }
+    return checkLikes.rows;
+  } catch (error) {
+    console.error(error.message);
+    return error.message;
+  }
+};
+
 module.exports = {
   insertUserInfo,
   insertUserPictures,
@@ -236,4 +302,5 @@ module.exports = {
   checkColArrayValue,
   updateArrayQuery,
   updateUsersOneQualifier,
+  updateConnectedQuery,
 };
