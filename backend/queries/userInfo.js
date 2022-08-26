@@ -97,8 +97,8 @@ const disLikeUserQuery = async (disLikedUserId, disLikedById) => {
 		"SELECT connections FROM connected WHERE user_id = $1",
 		[disLikedById]
 	);
-	
-	if(deleteConnection.rows[0].connections.length) {
+
+	if(deleteConnection.rows[0].connections !== null) { // gives error in console on null value
 		const bool = deleteConnection.rows[0].connections.includes(disLikedUserId)
 		if(bool === true) {
 			const dislikedDisconnect = await pool.query(
@@ -250,7 +250,7 @@ const updateConnectedQuery = async (likedById, likedUserId) => {
 			"SELECT liked FROM users WHERE user_id = $1",
 			[likedUserId]
 		);
-		if(checkLikes.rows[0].liked.length) {
+		if(checkLikes.rows[0].liked !== null) { // gives error in console on null value
 			const bool = checkLikes.rows[0].liked.includes(likedById)
 			if(bool === true) {
 				updateLiker = await pool.query(
