@@ -1,16 +1,19 @@
 require("dotenv").config();
-const NodeGeocoder = require('node-geocoder');
+const axios = require('axios');
 
 const getCoords = async (city) => {
 
-	const options = {
-		provider: 'google',
-		apiKey: process.env.GEOAPI,
-		formatter: null
-	};
-	const geocoder = NodeGeocoder(options);
-	const res = await geocoder.geocode(city);
-	const coords = [res[0].latitude, res[0].longitude];
+	const params = {
+	access_key: process.env.GEOAPI,
+	query: city
+	}
+
+	const coords = await axios.get('http://api.positionstack.com/v1/forward', {params})
+	.then(response => {
+		return [response.data.data[0].latitude, response.data.data[0].longitude]
+	}).catch(error => {
+		console.log(error);
+	});
 	return coords;
 }
 

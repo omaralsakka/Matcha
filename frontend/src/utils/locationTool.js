@@ -1,18 +1,22 @@
-import Geocode from "react-geocode";
+import axios from "axios";
 import { useState, useEffect } from "react";
 
 const GEOAPI = process.env.REACT_APP_GEOAPI;
 
-const reverseGeocoder = async (setResults, setCoords) => {
-  navigator.geolocation.getCurrentPosition(async (position) => {
+const reverseGeocoder = (setResults, setCoords) => {
+  navigator.geolocation.getCurrentPosition((position) => {
     const lat = position.coords.latitude;
     const long = position.coords.longitude;
 	const coords = [lat, long];
 	setCoords(coords);
-    Geocode.setApiKey(GEOAPI);
-    Geocode.fromLatLng(lat, long).then((response) => {
-      setResults(response.results[6].formatted_address);
-    });
+	const params = {
+		access_key: GEOAPI,
+		query: lat + ", " + long
+	}
+	axios.get('http://api.positionstack.com/v1/reverse', {params}).then((response) => {
+		const formattedLocation = response.data.data[0].county + ", " + response.data.data[0].country;
+		setResults(formattedLocation);
+	})
   });
 };
 
