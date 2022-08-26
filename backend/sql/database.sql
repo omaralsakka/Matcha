@@ -72,8 +72,9 @@ CREATE TABLE location (
 ##
 CREATE TABLE connected (
     id SERIAL PRIMARY KEY,
-    users_id INT NOT NULL,
-    chat_jsonb NOT NULL
+	user_id INT NOT NULL,
+    username VARCHAR (150),
+	connections INT []
 );
 
 ##

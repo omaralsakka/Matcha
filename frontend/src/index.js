@@ -5,6 +5,7 @@ import store from "./store";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import "react-input-range/lib/css/index.css";
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <BrowserRouter>

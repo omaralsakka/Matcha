@@ -5,8 +5,9 @@ import heartInline from "../../media/heart-inline.png";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { disLikeUser, likeUser } from "../../reducers/usersReducer";
+import { sendNotificationService } from "../../services/notificationServices";
 
-const LikeButton = ({ loggedUserId, user, fameRate, setFameRate }) => {
+const LikeButton = ({ loggedUserId, user, fameRate, setFameRate, loggedUsername }) => {
   const [heart, setHeart] = useState(heartOutline);
   const [liked, setLiked] = useState(false);
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const LikeButton = ({ loggedUserId, user, fameRate, setFameRate }) => {
       setLiked(false);
     } else {
       dispatch(likeUser(user.user_id, loggedUserId));
+	  sendNotificationService(user.email, loggedUsername, 1);
       setHeart(heartInline);
       setFameRate(fameRate + 1);
       setLiked(true);

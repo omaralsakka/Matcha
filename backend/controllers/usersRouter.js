@@ -6,17 +6,12 @@ const Mailer = require("../utils/mailer");
 const mailsFormat = require("../utils/mailsFormat");
 const filterUsers = require("../utils/FilterUsers");
 const passwordTools = require("../utils/cryptPassword");
+const distanceTool = require("../utils/distanceTool");
 
 usersRouter.post("/all", async (request, response) => {
   const body = request.body;
   const queryResponse = await queryTools.selectAllWithFilter(body);
-  if (queryResponse.length) {
-    response.status(200).send(queryResponse);
-  } else {
-    response.status(401).json({
-      error: "fetching users query error",
-    });
-  }
+  response.status(200).send(queryResponse); // have to this because if nothing is found in db it throws a bunch of errors
 });
 
 usersRouter.post("/country", async (request, response) => {
@@ -72,14 +67,20 @@ usersRouter.post("/likeuser", async (request, response) => {
     likedById
   );
 
-  if (queryResponseLiked.length) {
+  if(queryResponseLiked.length) {
     const queryResponseLikedBy = await usersQueries.updateArrayQuery(
       "users",
       "liked_by",
       likedById,
       likedUserId
     );
-    if (queryResponseLikedBy.length) {
+	if(queryResponseLikedBy.length) {
+		const queryResponseConnected = await usersQueries.updateConnectedQuery(
+			likedById,
+    		likedUserId
+		);
+	}
+    if(queryResponseLikedBy.length) {
       response.status(200).send(queryResponseLikedBy);
     }
   } else {
@@ -290,5 +291,17 @@ usersRouter.post("/random-users", async (request, response) => {
     }
   }
 });
+
+usersRouter.post("/distance", async (request, response) => {
+	const body = request.body;
+	const distanceResponse = distanceTool(body);
+	if (distanceResponse.length) {
+	  response.status(200).send(distanceResponse);
+	} else {
+	  response.status(404).json({
+		error: "distance not possible to calculate",
+	  });
+	}
+  });
 
 module.exports = usersRouter;

@@ -44,7 +44,10 @@ const Home = () => {
 
   if (!users || !user) {
     return <LoadingScreen />;
-  } else {
+  } else if (users === 'no users found' /* && profilePictures === 'no pictures' */){
+	  return (<><h1>no users found</h1></>)
+  } 
+  else {
     return (
       <>
         <Container>
@@ -55,24 +58,21 @@ const Home = () => {
             users={users}
           />
           <Container className="d-flex">
-            {users.length ? (
-              <Container className="users-cards-wrapper">
-                {users.map((userToDisplay) => (
-                  <div key={userToDisplay.user_id}>
-                    <Row className="mb-5">
-                      <UsersCards
-                        user={userToDisplay}
-                        loggedUserId={user.user_id}
-                      />
-                    </Row>
-                  </div>
-                ))}
-              </Container>
-            ) : (
-              <Container className="text-center mt-5">
-                <strong className="fs-1">Users not found</strong>
-              </Container>
-            )}
+            <Container className="users-cards-wrapper">
+              {users.map((userToDisplay) => (
+                <div key={userToDisplay.user_id}>
+                  <Row className="mb-5">
+                    <UsersCards
+                      user={userToDisplay}
+/*                    profilePictures={profilePictures} */
+                      loggedUserId={user.user_id}
+					  loggedUsername={user.username}
+					  loggedUserCoords={user.coordinates}
+                    />
+                  </Row>
+                </div>
+              ))}
+            </Container>
           </Container>
         </Container>
       </>

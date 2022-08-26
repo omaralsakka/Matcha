@@ -14,7 +14,9 @@ import {
 import locationIcon from "../../media/location-icon.png";
 import { Spinner } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import { viewUserService } from "../../services/usersServices";
+
+import { viewUserService, getDistanceService } from "../../services/usersServices";
+import { sendNotificationService } from "../../services/notificationServices";
 import BlockButton from "./BlockButton";
 import LikeButton from "./LikeButton";
 import ReportAccount from "./ReportAccount";
@@ -24,16 +26,21 @@ const femaleImages = require.context("../../media/female", true);
 
 // const test = require("../../media/female/f1.jpg");
 
-const UsersCards = ({ user, loggedUserId }) => {
-  console.log(femaleImages);
+const UsersCards = ({ user, /* profilePictures,  */ loggedUserId, loggedUsername, loggedUserCoords }) => {
   const [open, setOpen] = useState(false);
   const [hide, setHide] = useState(true);
   const [userImages, setUserImages] = useState([]);
   const [fameRate, setFameRate] = useState(0);
+  const [distance, setDistance] = useState("")
+
   const displayUserInfo = () => {
-    if (!open) {
-      const userIds = { viewedUser: user.user_id, loggedUser: loggedUserId };
-      viewUserService(userIds);
+	  if (!open) {
+		  const userIds = { viewedUser: user.user_id, loggedUser: loggedUserId };
+		  viewUserService(userIds);
+		  sendNotificationService(user.email, loggedUsername, 2);
+		  getDistanceService(loggedUserCoords, user.coordinates).then((resp) => {
+			setDistance(resp);
+		  })
     }
     setOpen(!open);
     setHide(!hide);
@@ -125,6 +132,9 @@ const UsersCards = ({ user, loggedUserId }) => {
                       <Card.Text className="text-muted fs-4">
                         Lives in {user.city}
                       </Card.Text>
+					  <Card.Text className="text-muted fs-4">
+                        Distance {distance} km away from you.
+                      </Card.Text>
                     </div>
                     <Card.Text className="mb-4">
                       <strong className="fs-3">About me</strong>
@@ -172,6 +182,7 @@ const UsersCards = ({ user, loggedUserId }) => {
                       user={user}
                       fameRate={fameRate}
                       setFameRate={setFameRate}
+					  loggedUsername={loggedUsername}
                     />
                   </div>
 
