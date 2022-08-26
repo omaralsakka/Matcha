@@ -9,14 +9,13 @@ const insertUserInfo = async (
   user_id,
   ip
 ) => {
-  console.log(coords);
   if (location.length === 0) {
     location = await locator(ip);
   }
   const locationArr = location.split(", ");
   try {
     const queryResponse = await pool.query(
-      "UPDATE users SET gender = $1, sexuality = $2, bio = $3, tags = $4, city = $5, country = $6, coordinates = $7 WHERE user_id = $8",
+      `UPDATE users SET gender = $1, sexuality = $2, bio = $3, tags = $4, city = $5, country = $6, coordinates = $7 WHERE user_id = $8`,
       [
         gender,
         sexualPreference,

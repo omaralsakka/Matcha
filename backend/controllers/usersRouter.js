@@ -5,6 +5,7 @@ const userQueries = require("../queries/createUser");
 const Mailer = require("../utils/mailer");
 const mailsFormat = require("../utils/mailsFormat");
 const filterUsers = require("../utils/FilterUsers");
+const passwordTools = require("../utils/cryptPassword");
 
 usersRouter.post("/all", async (request, response) => {
   const body = request.body;
@@ -215,31 +216,65 @@ usersRouter.post("/report-user", async (request, response) => {
 usersRouter.post("/random-users", async (request, response) => {
   const { results } = request.body;
   const sexPref = ["straight", "gay", "bi"];
+  const cryptedPass = await passwordTools.cryptPassword("Omarluke@4");
   const tags = [
     ["vegan", "happy"],
     ["cool", "smart", "coding"],
     ["funny", "hungry", "chill", "love"],
+    ["movies", "cats"],
+    ["dogs", "traveling", "party"],
+    ["coffee", "winter", "friends"],
+    ["spanish", "spicey", "lovable"],
+    ["arab", "funny", "honest", "love"],
   ];
   if (results.length) {
     let i = 0;
+    let x = 0;
+    let male = 1;
+    let female = 1;
+    let img;
     for (let index = 0; index < results.length; index++) {
       if (i > 2) {
         i = 0;
+      }
+      if (x > 7) {
+        x = 0;
+      }
+      if (male > 12) {
+        male = 1;
+      }
+      if (female > 12) {
+        female = 1;
+      }
+      switch (results[index].gender) {
+        case "male":
+          img = `../../media/male/m${male}.jpg`;
+          male++;
+          break;
+        case "female":
+          img = `../../media/female/f${female}.jpg`;
+          female++;
+          break;
       }
       const userInfo = {
         username: results[index].login.username,
         email: results[index].email,
         fullname: `${results[index].name.first} ${results[index].name.last}`,
-        password: results[index].login.password,
+        password: cryptedPass,
         age: results[index].dob.age,
       };
       const queryResponse = await userQueries.insertUser(userInfo);
+      const coords = [
+        parseFloat(results[index].location.coordinates.latitude),
+        parseFloat(results[index].location.coordinates.longitude),
+      ];
       const userData = {
         gender: results[index].gender,
         sexualPreference: sexPref[i],
-        bio: "life is good all the time",
-        tags: tags[i],
+        bio: "I am a testing user. And I am here to share the love with everyone and make sure that I am the best company anyone can have and will be loveable in best and worst. I am imperfect because I am human being",
+        tags: tags[x],
         location: `${results[index].location.city}, ${results[index].location.country}`,
+        coords,
       };
       const dataQueryResponse = await usersQueries.insertUserInfo(
         userData,
@@ -247,10 +282,11 @@ usersRouter.post("/random-users", async (request, response) => {
         "192.166.125.62"
       );
       const picturesQueryResponse = await usersQueries.insertUserPictures(
-        results[index].picture.large,
+        img,
         queryResponse.rows[0].user_id
       );
       i++;
+      x++;
     }
   }
 });

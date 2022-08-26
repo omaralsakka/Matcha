@@ -53,7 +53,7 @@ export const reportUserService = async (usersId) => {
 };
 
 export const getRandomUsers = async () => {
-  const response = await axios.get("https://randomuser.me/api/?results=11");
+  const response = await axios.get("https://randomuser.me/api/?results=25");
   if (response.data) {
     const savedinDbResponse = await axios.post(
       `${usersUrl}/random-users`,
