@@ -1,13 +1,14 @@
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Image } from "react-bootstrap";
 import UsersCards from "./homeComponents/UsersCards";
 import HomeNavBar from "./homeComponents/homeNavBar";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { fetchUsers, getUsersByCountry } from "../reducers/usersReducer";
+import { getUsersByCountry } from "../reducers/usersReducer";
 import LoadingScreen from "./LoadingScreen";
 import { getUsersProfileImage } from "../services/usersServices";
 import { useStoreUser, useStoreUsers } from "../utils/getStoreStates";
 import sortUsers from "../utils/sortUsers";
+import searchIcon from "../media/search-empty.png";
 
 // ------ FIX HERE --------------
 const Home = () => {
@@ -45,14 +46,6 @@ const Home = () => {
 
   if (!users || !user) {
     return <LoadingScreen />;
-  } else if (
-    users === "no users found" /* && profilePictures === 'no pictures' */
-  ) {
-    return (
-      <>
-        <h1>no users found</h1>
-      </>
-    );
   } else {
     return (
       <>
@@ -63,23 +56,27 @@ const Home = () => {
             setUsers={setUsers}
             users={users}
           />
-          <Container className="d-flex">
-            <Container className="users-cards-wrapper">
+          {users.length ? (
+            <Container>
               {users.map((userToDisplay) => (
-                <div key={userToDisplay.user_id}>
-                  <Row className="mb-5">
-                    {/* this to be fixed to just pass logged user fetched from store */}
-                    <UsersCards
-                      user={userToDisplay}
-                      loggedUserId={user.user_id}
-                      loggedUsername={user.username}
-                      loggedUserCoords={user.coordinates}
-                    />
-                  </Row>
-                </div>
+                <Row key={userToDisplay.user_id} className="mb-5">
+                  <UsersCards
+                    user={userToDisplay}
+                    loggedUserId={user.user_id}
+                    loggedUsername={user.username}
+                    loggedUserCoords={user.coordinates}
+                  />
+                </Row>
               ))}
             </Container>
-          </Container>
+          ) : (
+            <Container className="text-center mt-5">
+              <Container className="w-25">
+                <Image src={searchIcon} fluid />
+              </Container>
+              <strong className="fs-1">No users found</strong>
+            </Container>
+          )}
         </Container>
       </>
     );

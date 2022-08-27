@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import ModalPopUp from "./ModalPopUp";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -35,11 +35,11 @@ const ReportAccount = ({ loggedUserId, user }) => {
   }, [confirm]);
 
   return (
-    <>
+    <Container className="d-flex justify-center mt-3 w-100">
       <Button
         onClick={handleShowModal}
         variant="danger"
-        className="w-25 mx-auto border-0 bg-transparent text-danger rounded"
+        className="w-75 mx-auto border-0 bg-transparent text-danger rounded"
       >
         Report account
       </Button>
@@ -49,7 +49,7 @@ const ReportAccount = ({ loggedUserId, user }) => {
         setConfirm={setConfirm}
         modalText={modalText}
       />
-    </>
+    </Container>
   );
 };
 

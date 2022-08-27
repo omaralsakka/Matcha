@@ -244,6 +244,15 @@ body {
   max-height: 40vh;
   object-fit: cover;
 }
+.carousel-cards {
+  max-width: 600px;
+}
+.card-img-users {
+  width: 100%;
+  min-height: 560px;
+  max-height: 40vh;
+  object-fit: cover;
+}
 
 .location-alert {
   font-size: calc(5px + 1vw);
@@ -288,10 +297,15 @@ body {
   flex-direction: column;
 }
 
+.carousel-col {
+  max-width: 400px;
+}
+
 .users-cards-btn {
   position: absolute;
   left: 0;
   bottom: 0;
+  margin: 10px;
 }
 
 .settings-container {
@@ -307,7 +321,8 @@ body {
 }
 
 .cards-icons {
-  width: 1.3vw;
+  min-width: 20px;
+  width: 1.5vw;
 }
 
 .cards-tags {
@@ -321,10 +336,6 @@ body {
   display: flex;
   justify-content: center;
   gap: 3vw;
-}
-
-.carousel-cards {
-  max-width: 27vw;
 }
 
 .action-btns > img {

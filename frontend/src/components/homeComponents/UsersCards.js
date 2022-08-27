@@ -2,20 +2,18 @@ import {
   Card,
   Col,
   Row,
-  Image,
-  Carousel,
   Button,
   Collapse,
   Container,
   Fade,
+  Image,
 } from "react-bootstrap";
-// import pic from "../../media/cp2.jpg";
-
 import locationIcon from "../../media/location-icon.png";
+
 import { Spinner } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import ProfileImagesCarousel from "../profileComponents/ProfileImagesCarousel";
-
+import UsersImagesCarousel from "./UsersImagesCarousel";
+import FadeIn from "react-fade-in";
 import {
   viewUserService,
   getDistanceService,
@@ -25,9 +23,7 @@ import BlockButton from "./BlockButton";
 import LikeButton from "./LikeButton";
 import ReportAccount from "./ReportAccount";
 import { getUsersImages } from "../../services/usersServices";
-
-const maleImages = require.context("../../media/male", true);
-const femaleImages = require.context("../../media/female", true);
+import UserCardInfo from "./UserCardInfo";
 
 // ------ FIX HERE --------------
 
@@ -42,6 +38,14 @@ const UsersCards = ({
   const [userImages, setUserImages] = useState([]);
   const [fameRate, setFameRate] = useState(0);
   const [distance, setDistance] = useState("");
+  const [fadeBody, setFadeBody] = useState({ visible: "" });
+
+  const [displayEffect, setDisplayEffect] = useState({
+    picCol: 12,
+    bodyDisplay: "d-none",
+    cardClass: "w-50 overflow-hidden",
+    bottomRow: "mb-5 mt-3",
+  });
 
   const displayUserInfo = () => {
     if (!open) {
@@ -51,7 +55,25 @@ const UsersCards = ({
       getDistanceService(loggedUserCoords, user.coordinates).then((resp) => {
         setDistance(resp);
       });
+      setDisplayEffect({
+        picCol: 4,
+        bodyDisplay: "",
+        cardClass: "w-100 overflow-hidden",
+        bottomRow: "d-none",
+      });
+      setFadeBody({ transitionDuration: "2000" });
+    } else {
+      setFadeBody({ visible: "" });
+      setTimeout(() => {
+        setDisplayEffect({
+          picCol: 12,
+          bodyDisplay: "d-none",
+          cardClass: "w-50 overflow-hidden",
+          bottomRow: "mb-5 mt-3",
+        });
+      }, [450]);
     }
+
     setOpen(!open);
     setHide(!hide);
   };
@@ -63,232 +85,74 @@ const UsersCards = ({
   if (!userImages.length) {
     return <Spinner animation="grow" />;
   } else {
-    // WORKING ON THIS
+    console.log(displayEffect.bodyDisplay);
+    console.log(displayEffect.picCol);
+
     return (
-      <Col className="g-3">
-        <Card className="mb-3 mx-auto w-100">
-          <Row className="no-gutters mb-3">
-            <Col md={4}>
-              <Carousel
-                controls={false}
-                pause="hover"
-                className="carousel-cards"
-              >
-                {userImages.map((image) => {
-                  let img;
-                  if (image.picture.includes("./")) {
-                    switch (user.gender) {
-                      case "female":
-                        img = femaleImages(image.picture);
-                        break;
-                      case "male":
-                        img = maleImages(image.picture);
-                        break;
-                      default:
-                    }
-                  } else {
-                    img = image.picture;
-                  }
-                  return (
-                    <Carousel.Item key={image.id}>
-                      <Card.Img src={img} />
-                      <Fade in={hide}>
-                        <Card.ImgOverlay>
-                          <Container className="card-overlay-text p-1 rounded">
-                            <Card.Title className="text-white fs-1">
-                              {user.fullname}
-                            </Card.Title>
-                          </Container>
-                        </Card.ImgOverlay>
-                      </Fade>
-                    </Carousel.Item>
-                  );
-                })}
-              </Carousel>
+      <Col className="g-3 d-flex justify-content-center">
+        <Card className={displayEffect.cardClass} style={{ minWidth: "23rem" }}>
+          <Row className="no-gutters w-auto">
+            <Col md={displayEffect.picCol}>
+              <UsersImagesCarousel
+                userImages={userImages}
+                userGender={user.gender}
+              />
             </Col>
-            <Col md={8}>
-              <Card.Body>
-                <Card.Title className="fs-1">
-                  <strong>{user.fullname}</strong>
-                  <span className="mx-3 fs-3 text-muted">{user.age}</span>
-                </Card.Title>
-                <Card.Text className="text-muted fs-5 d-flex mb-4">
-                  <span className="opacity-75 cards-icons me-2">
-                    <Image src={locationIcon} fluid></Image>
-                  </span>
-                  Lives in {user.city}
-                </Card.Text>
-
-                <Card.Title className="fs-3">
-                  <strong>About me</strong>
-                </Card.Title>
-                <Card.Text className="mb-3 fs-6 text-muted">
-                  {user.bio}
-                </Card.Text>
-                <Card.Text className="mb-3 text-muted">
-                  @{user.username}
-                </Card.Text>
-                <hr />
-                <Card.Title className="fs-3 mb-3">
-                  <strong>Interests</strong>
-                </Card.Title>
-                <Card.Text className="mb-4">
-                  <span className="d-flex">
-                    {user.tags.map((tag) => (
-                      <span key={tag} className="cards-tags text-muted">
-                        {tag}
-                      </span>
-                    ))}
-                  </span>
-                </Card.Text>
-                <hr />
-                <Card.Title className="fs-3 mb-3">
-                  <strong>Fame rate</strong>
-                </Card.Title>
-                <Card.Text className="text-muted fs-4">
-                  {user.liked_by ? user.liked_by.length : 0}
-                </Card.Text>
-
-                <Container className="w-100 d-flex justify-content-center gap-5">
-                  <BlockButton loggedUserId={loggedUserId} user={user} />
-
-                  <LikeButton
-                    loggedUserId={loggedUserId}
-                    user={user}
-                    fameRate={fameRate}
-                    setFameRate={setFameRate}
-                    loggedUsername={loggedUsername}
-                  />
-                </Container>
-              </Card.Body>
-            </Col>
-          </Row>
-        </Card>
-        {/* <Card className="w-auto">
-          <Row>
-            <Col key={user.user_id * 3}>
-              <Carousel
-                controls={false}
-                pause="hover"
-                className="carousel-cards"
-              >
-                {userImages.map((image) => {
-                  let img;
-                  if (image.picture.includes("./")) {
-                    switch (user.gender) {
-                      case "female":
-                        img = femaleImages(image.picture);
-                        break;
-                      case "male":
-                        img = maleImages(image.picture);
-                        break;
-                      default:
-                    }
-                  } else {
-                    img = image.picture;
-                  }
-                  return (
-                    <Carousel.Item key={image.id}>
-                      <Card.Img src={img} />
-                      <Fade in={hide}>
-                        <Card.ImgOverlay>
-                          <Container className="card-overlay-text p-1 rounded">
-                            <Card.Title className="text-white fs-1">
-                              {user.fullname}
-                            </Card.Title>
-                          </Container>
-                        </Card.ImgOverlay>
-                      </Fade>
-                    </Carousel.Item>
-                  );
-                })}
-              </Carousel>
-              <Button
-                onClick={displayUserInfo}
-                aria-controls="example-collapse-text"
-                className="users-cards-btn"
-              >
-                Check me out
-              </Button>
-            </Col>
-            <Collapse in={open} dimension="width">
-              <Col key={user.user_id * 4} md={7} id="example-collapse-text">
-                <Card.Body className="cards-body h-100">
-                  <div>
-                    <Card.Title className="mb-3">
-                      <strong className="fs-1">{user.fullname}</strong>
-                      <span className="text-muted fs-3 m-3">{user.age}</span>
-                    </Card.Title>
-                    <div className="d-flex align-items-center mb-3">
-                      <div
-                        className="opacity-75 cards-icons"
-                        style={{ marginRight: "10px" }}
-                      >
-                        <Image src={locationIcon} fluid></Image>
-                      </div>
-                      <Card.Text className="text-muted fs-4">
-                        Lives in {user.city}
-                      </Card.Text>
-                      <Card.Text className="text-muted fs-4">
-                        Distance {distance} km away from you.
-                      </Card.Text>
-                    </div>
-                    <Card.Text className="mb-4">
-                      <strong className="fs-3">About me</strong>
-                      <br />
-                      <span className="fs-6 text-muted">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud
-                        exercitation ullamco laboris nisi ut aliquip ex ea
-                        commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu
-                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                        non proident, sunt in culpa qui officia deserunt mollit
-                        anim id est laborum.
-                        <br />
-                        <span className="fs-6">@{user.username}</span>
-                      </span>
-                    </Card.Text>
-                    <hr />
-                    <Card.Text>
-                      <strong className="fs-3">Interests</strong>
-                    </Card.Text>
-                    <Card.Text className="mb-4">
-                      <span className="d-flex">
-                        {user.tags.map((tag) => (
-                          <span key={tag} className="cards-tags text-muted">
-                            {tag}
-                          </span>
-                        ))}
-                      </span>
-                    </Card.Text>
-                    <hr />
-                    <Card.Text>
-                      <strong className="fs-3">Fame Rate</strong>
-                      <br />
-                      <span className="text-muted fs-4">{fameRate}</span>
-                    </Card.Text>
-                  </div>
-
-                  <div className="cards-buttons w-100">
-                    <BlockButton loggedUserId={loggedUserId} user={user} />
-
-                    <LikeButton
-                      loggedUserId={loggedUserId}
-                      user={user}
-                      fameRate={fameRate}
-                      setFameRate={setFameRate}
-                      loggedUsername={loggedUsername}
-                    />
-                  </div>
-
-                  <ReportAccount loggedUserId={loggedUserId} user={user} />
+            <Collapse in={open} dimension="height">
+              <Col md={8} className={displayEffect.bodyDisplay}>
+                <Card.Body>
+                  <FadeIn {...fadeBody}>
+                    <UserCardInfo user={user} distance={distance} />
+                    <Container className="d-flex justify-content-center gap-5 mt-5">
+                      <BlockButton loggedUserId={loggedUserId} user={user} />
+                      <LikeButton
+                        loggedUserId={loggedUserId}
+                        user={user}
+                        fameRate={fameRate}
+                        setFameRate={setFameRate}
+                        loggedUsername={loggedUsername}
+                      />
+                    </Container>
+                    <ReportAccount loggedUserId={loggedUserId} user={user} />
+                  </FadeIn>
                 </Card.Body>
               </Col>
             </Collapse>
           </Row>
-        </Card> */}
+
+          <Row>
+            <Col className="p-3 mx-3">
+              <Container className={displayEffect.bottomRow}>
+                <Fade in={hide}>
+                  <Card.Title className="fs-1">
+                    <strong>{user.fullname}</strong>
+                    <span className="mx-3 fs-3 text-muted">{user.age}</span>
+                  </Card.Title>
+                </Fade>
+                <Fade in={hide}>
+                  <Container className="d-flex align-items-center gap-2 px-0">
+                    <span className="opacity-75 cards-icons">
+                      <Image src={locationIcon} fluid />
+                    </span>
+                    <Card.Text className="text-muted fs-5">
+                      Lives in {user.city}
+                    </Card.Text>
+                  </Container>
+                </Fade>
+              </Container>
+              <Container>
+                <Button
+                  variant="outline-dark"
+                  onClick={displayUserInfo}
+                  // aria-controls="collapse-col"
+                  aria-expanded={open}
+                >
+                  Check me out
+                </Button>
+              </Container>
+            </Col>
+          </Row>
+        </Card>
       </Col>
     );
   }
