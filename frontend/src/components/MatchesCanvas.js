@@ -1,9 +1,15 @@
 import { Offcanvas, Container, Button, Spinner } from "react-bootstrap";
 import { useStoreConnections } from "../utils/getStoreStates";
+import { useNavigate } from "react-router-dom";
 
 const MatchesCanvas = ({ showCanvas, setShowCanvas }) => {
   const users = useStoreConnections();
   const handleCloseCanvas = () => setShowCanvas(false);
+  const navigate = useNavigate();
+
+  const handleChat = (id, username) => {
+	navigate("/chat");
+  }
 
   if (!users) {
     return <Spinner />;
@@ -25,7 +31,7 @@ const MatchesCanvas = ({ showCanvas, setShowCanvas }) => {
                 >
                   <Container>{user.fullname}</Container>
                   <Container className="d-flex gap-3">
-                    <Button variant="outline-dark" size="sm">
+                    <Button onClick={() => handleChat(user.user_id, user.username)} variant="outline-dark" size="sm">
                       chat
                     </Button>
                     <Button variant="outline-danger" size="sm">
