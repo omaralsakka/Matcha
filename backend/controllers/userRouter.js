@@ -298,7 +298,6 @@ userRouter.post("/edit-user-data", async (request, response) => {
       error: "token error",
     });
   }
-  console.log("decoded token id: ", decodedToken.id);
   switch (body.infoType) {
     case "bio":
       queryResponse = await queryTools.updateOneQualifier(
