@@ -38,3 +38,18 @@ export const useStoreConnections = () => {
   });
   return users;
 };
+
+export const useStoreMatch = (id) => {
+  const user = useSelector((state) => {
+    if (state.connections.users) {
+      if (state.connections.users.length) {
+        return state.connections.users.filter((user) => user.user_id === id);
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  });
+  return user;
+};
