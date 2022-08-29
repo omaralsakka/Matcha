@@ -85,7 +85,6 @@ const UsersCards = ({
   if (!userImages.length) {
     return <Spinner animation="grow" />;
   } else {
-
     return (
       <Col className="g-3 d-flex justify-content-center">
         <Card className={displayEffect.cardClass} style={{ minWidth: "23rem" }}>

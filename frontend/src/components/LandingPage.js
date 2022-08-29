@@ -1,4 +1,4 @@
-import { Button, Container } from "react-bootstrap";
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import img1 from "../media/cp1.jpg";
 import img2 from "../media/cp2.jpg";
 import img3 from "../media/cp3.jpg";
@@ -23,7 +23,7 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div className="landing-page">
+    <Container className="landing-page d-flex flex-column" fluid>
       <Container className="landing-page-content">
         <div className="image-container mx-5">
           <div className="image-div">
@@ -34,14 +34,21 @@ const LandingPage = () => {
           <div className="logo-div">
             <img alt="" src={logo} className="logo-Img"></img>
           </div>
-          <Link to="/signup">
-            <Button variant="dark" className="landing-signup-Button">
-              Create Account
-            </Button>
-          </Link>
+          <Container className="d-flex gap-3 justify-content-center">
+            <Link to="/signup">
+              <Button variant="dark" className="landing-signup-Button">
+                Signup
+              </Button>
+            </Link>
+            <Link to="/login">
+              <Button variant="dark" className="landing-signup-Button">
+                Login
+              </Button>
+            </Link>
+          </Container>
         </div>
       </Container>
-    </div>
+    </Container>
   );
 };
 
