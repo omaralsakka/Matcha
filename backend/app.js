@@ -30,13 +30,29 @@ const pusher = new Pusher({ // chat
 	useTLS: true,
 });
 
-app.post("/message", (req, res) => { // chat
+app.post("/pusher/user-auth", (req, res) => { // chat
+	const socketId = req.body.socket_id;
+	const channelName = req.body.channelName;
+	const username = req.body.username;
+	const userId = req.body.user_id;
+	// Replace this with code to retrieve the actual user id and info
+	const user = {
+	  id: userId,
+	  user_info: {
+		name: username,
+	  }
+	};
+	const authResponse = pusher.authenticateUser(socketId, channelName, user);
+	res.send(authResponse);
+});
+
+/* app.post("/message", (req, res) => { // chat
 	console.log(req.body)
 	const payload = req.body;
 	console.log(req.query.channel)
 	pusher.trigger(req.query.channel, "message", payload);
 	res.send(payload);
-});
+}); */
 
 app.use("/api/user", userRouter);
 app.use("/api/users", usersRouter);

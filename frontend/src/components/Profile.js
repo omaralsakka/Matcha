@@ -9,16 +9,21 @@ import locationIcon from "../media/location-icon.png";
 import EditBio from "./profileComponents/EditBio";
 import EditTogglable from "./profileComponents/EditTogglable";
 import ProfileImagesCarousel from "./profileComponents/ProfileImagesCarousel";
+import { getConnections } from "../services/usersServices";
 
 const Profile = () => {
   const { user } = useStoreUser();
   const [userPictures, setUserPictures] = useState([]);
+  const [connections, setConnections] = useState([]);
 
   useEffect(() => {
     if (user) {
       getUsersImages(user.user_id).then((resp) => {
         setUserPictures(resp);
       });
+	  getConnections(user).then((resp) => {
+		  setConnections(resp);
+	  })
     }
   }, [user]);
   if (!user || !userPictures.length) {
@@ -88,6 +93,9 @@ const Profile = () => {
             </Col>
           </Row>
         </Card>
+		<div className="chattest mb-5 mt-5">
+				<a href="http://localhost:3000/chat-screen">{connections.fullname}</a>
+		</div>
       </Container>
     );
   }
