@@ -106,6 +106,14 @@ export const userNewDataService = async (newData) => {
   return response.data;
 };
 
+export const fetchConnections = async () => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await axios.get(`${userUrl}/user-connections`, config);
+  return response.data;
+};
+
 /* export const getUserService = async (userData) => {
 	const response = await axios.post(`${userUrl}/user-info`, userData);
 	return response.data;

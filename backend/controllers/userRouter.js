@@ -6,6 +6,7 @@ const Mailer = require("../utils/mailer");
 const mailsFormat = require("../utils/mailsFormat");
 const jwt = require("jsonwebtoken");
 const tokenTools = require("../utils/tokenTools");
+const getConnections = require("../utils/getConnections");
 
 userRouter.post("/", async (request, response) => {
   const body = request.body;
@@ -343,6 +344,42 @@ userRouter.post("/edit-user-data", async (request, response) => {
   }
 });
 
+userRouter.get("/user-connections", async (request, response) => {
+  const decodedToken = tokenTools.verifyToken(request);
+  if (!decodedToken) {
+    response.status(401).json({
+      error: "token error",
+    });
+  }
+  const queryResponse = await queryTools.selectColOneQualifier(
+    "connected",
+    "connections",
+    "user_id",
+    decodedToken.id
+  );
+
+  if (queryResponse.length) {
+    const users = await getConnections(queryResponse[0].connections);
+
+    if (users.length) {
+      response.status(200).send(users);
+    } else {
+      response.status(401).json({
+        error: "users id error in fetching connections",
+      });
+    }
+  } else {
+    if (queryResponse.length === 0) {
+      response.status(200).json({
+        message: "no connections found",
+      });
+    } else {
+      response.status(401).json({
+        error: "connections query error",
+      });
+    }
+  }
+});
 /* userRouter.post("/user-info", async (request, response) => {
 	const body = request.body;
 	const user_id = body.user_id;

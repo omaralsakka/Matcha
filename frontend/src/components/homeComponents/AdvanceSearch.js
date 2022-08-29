@@ -77,11 +77,11 @@ const AdvanceSearch = ({ setUsers }) => {
     <>
       <Button onClick={handleShow}>Advanced search</Button>
       <Offcanvas show={show} onHide={handleClose} placement="end">
-        <div className="mb-3 bg-light border-bottom">
+        <Container className="mb-3 bg-light border-bottom px-0">
           <Offcanvas.Header closeButton={"light"}>
             <Offcanvas.Title>Advanced Search</Offcanvas.Title>
           </Offcanvas.Header>
-        </div>
+        </Container>
         <Offcanvas.Body>
           <LocationSearch user={user} />
           <hr />

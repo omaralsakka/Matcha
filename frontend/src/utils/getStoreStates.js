@@ -27,3 +27,14 @@ export const useStoreUsers = () => {
   });
   return user;
 };
+
+export const useStoreConnections = () => {
+  const users = useSelector((state) => {
+    if (state.connections.users) {
+      return state.connections.users;
+    } else {
+      return false;
+    }
+  });
+  return users;
+};

@@ -24,6 +24,18 @@ const selectOneQualifier = async (table, column, qualifier) => {
   }
 };
 
+const selectColOneQualifier = async (table, selectedCol, col, qualifier) => {
+  try {
+    const queryResponse = await pool.query(
+      `SELECT ${selectedCol} FROM ${table} WHERE ${col} = ${qualifier}`
+    );
+    return queryResponse.rows;
+  } catch (error) {
+    console.error(error.message);
+    return false;
+  }
+};
+
 const selectAllWithFilter = async (user) => {
   let queryResponse;
   try {
@@ -228,4 +240,5 @@ module.exports = {
   changeEmail,
   setSearchDefault,
   updateOneQualifier,
+  selectColOneQualifier,
 };

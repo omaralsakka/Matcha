@@ -9,6 +9,7 @@ import { getUsersProfileImage } from "../services/usersServices";
 import { useStoreUser, useStoreUsers } from "../utils/getStoreStates";
 import sortUsers from "../utils/sortUsers";
 import searchIcon from "../media/search-empty.png";
+import { getConnections } from "../reducers/connectionsReducer";
 
 // ------ FIX HERE --------------
 const Home = () => {
@@ -25,6 +26,7 @@ const Home = () => {
       dispatch(getUsersByCountry(user.country, user)).then((resp) => {
         setUsers(resp);
       });
+      dispatch(getConnections());
     }
   }, [dispatch, user]);
 
