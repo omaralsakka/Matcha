@@ -311,4 +311,17 @@ usersRouter.post("/distance", async (request, response) => {
   }
 });
 
+usersRouter.post("/connections", async (request, response) => {
+	const body = request.body;
+	const connectedUsers = await queryTools.selectOneQualifier("connected", "user_id", body.user_id);
+	if(connectedUsers) {
+		const connectedUsernames = await queryTools.selectOneQualifier("users", "user_id", connectedUsers.rows[0].connections[0]);
+		response.status(200).send(connectedUsernames.rows[0]);
+	} else {
+		response.status(200).json({ // check that is this okay >:D if there is no connections made we dont want to send an error about that hehe
+			error: "there are no connections made yet",
+	});
+	}
+});
+
 module.exports = usersRouter;

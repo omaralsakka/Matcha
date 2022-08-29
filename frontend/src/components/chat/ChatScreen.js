@@ -11,22 +11,30 @@ const ChatScreen = () => {
   const { user } = useStoreUser();
 
   useEffect(() => {
+
+	// can the auth happen here ?
+
     const pusher = new Pusher(process.env.REACT_APP_KEY, {
       cluster: process.env.REACT_APP_CLUSTER,
       encrypted: true,
     });
+
     const channel = pusher.subscribe("message");
+
     channel.bind("message", (data) => {
       setMsg(data);
     });
+
     return () => {
       pusher.unsubscribe("message");
     };
+	
   }, []);
 
   useEffect(() => {
     if (msg) setChats([...chats, msg]);
   }, [msg]);
+  
   if(user) {
 	  return (
 		<div className="wrapperChat">
