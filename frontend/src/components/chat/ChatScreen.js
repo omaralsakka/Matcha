@@ -29,8 +29,8 @@ const ChatScreen = () => {
   }, [msg]);
   if(user) {
 	  return (
-		<div className="wrapper">
-		  <div className="container">
+		<div className="wrapperChat">
+		  <div className="containerChat">
 			<ChatList chats={chats} username={user.username} />
 			<ChatInput channelName={"message"} username={user.username} />
 		  </div>

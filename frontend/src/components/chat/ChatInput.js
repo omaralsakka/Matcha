@@ -22,7 +22,7 @@ const ChatInput = ({ channelName, username }) => {
   };
 
   return (
-    <form className="inputContainer" onSubmit={(e) => sendMessage(e)}>
+    <form className="inputContainerChat" onSubmit={(e) => sendMessage(e)}>
       <input
         type="text"
         className="inputElement"

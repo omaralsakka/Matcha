@@ -85,8 +85,6 @@ const UsersCards = ({
   if (!userImages.length) {
     return <Spinner animation="grow" />;
   } else {
-    console.log(displayEffect.bodyDisplay);
-    console.log(displayEffect.picCol);
 
     return (
       <Col className="g-3 d-flex justify-content-center">
