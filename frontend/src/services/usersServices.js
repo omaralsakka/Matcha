@@ -66,8 +66,3 @@ export const getDistanceService = async (start, end) => {
   const response = await axios.post(`${usersUrl}/distance`, coords);
   return response.data;
 };
-
-export const getConnections = async (user) => {
-	const response = await axios.post(`${usersUrl}/connections`, user);
-	return response.data;
-}
