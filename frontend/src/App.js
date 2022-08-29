@@ -17,7 +17,11 @@ import Profile from "./components/Profile";
 
 // This is needed for generating random users, DONT UNCOMMENT
 import { getRandomUsers } from "./services/usersServices";
-import ChatScreen from "./components/chat/ChatScreen";
+import Chat from "./components/chat/Chat";
+
+/* import io from "socket.io-client";
+
+const socket = io.connect("http://localhost:5000");  */// connecting to backend
 
 const App = () => {
   const dispatch = useDispatch();
@@ -115,10 +119,10 @@ const App = () => {
               path="/settings"
               element={<Settings setLoggedUser={setLoggedUser} />}
             />
+          <Route path="/chat" element={<Chat />} />
           </Route>
           <Route path="/terms" element={<Terms />} />
           <Route path="/about" element={<About />} />
-          <Route path="/chat-screen" element={<ChatScreen />} />
         </Routes>
         <AppFooter />
       </div>

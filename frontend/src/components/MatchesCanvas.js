@@ -4,12 +4,18 @@ import { useStoreConnections, useStoreUser } from "../utils/getStoreStates";
 import { unMatchUser } from "../reducers/connectionsReducer";
 import ModalPopUp from "./homeComponents/ModalPopUp";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const MatchesCanvas = ({ showCanvas, setShowCanvas }) => {
   const users = useStoreConnections();
   const handleCloseCanvas = () => setShowCanvas(false);
   const dispatch = useDispatch();
   const { user } = useStoreUser();
+  const navigate = useNavigate();
+
+  const handleChat = (id) => {
+	navigate("/chat");
+  }
 
   const [showModal, setShowModal] = useState(false);
   const [confirm, setConfirm] = useState(false);
@@ -52,7 +58,7 @@ const MatchesCanvas = ({ showCanvas, setShowCanvas }) => {
                     >
                       <Container>{user.fullname}</Container>
                       <Container className="d-flex gap-3">
-                        <Button variant="outline-dark" size="sm">
+                        <Button onClick={() => handleChat(user.user_id, user.username)} variant="outline-dark" size="sm">
                           chat
                         </Button>
                         <Button
