@@ -1,8 +1,10 @@
 import {
   FETCH_CONNECTIONS_SUCCESS,
   CONNECTIONS_REDUCER_ERROR,
+  UNMATCH_CONNECTIONS_SUCCESS,
 } from "../actions/types";
 import { fetchConnections } from "../services/userServices";
+import { dislikeUserService } from "../services/usersServices";
 
 const initialState = {
   users: [],
@@ -17,6 +19,12 @@ const connectionsReducer = (state = initialState, action) => {
       return {
         ...state,
         users: payload,
+        error: null,
+      };
+    case UNMATCH_CONNECTIONS_SUCCESS:
+      return {
+        ...state,
+        users: state.users.filter((user) => user.user_id !== payload),
         error: null,
       };
     case CONNECTIONS_REDUCER_ERROR:
@@ -37,6 +45,13 @@ const fetchConnectionSuccess = (users) => {
   };
 };
 
+const unMatchSuccess = (id) => {
+  return {
+    type: UNMATCH_CONNECTIONS_SUCCESS,
+    payload: id,
+  };
+};
+
 const fetchConnectionError = (error) => {
   return {
     type: CONNECTIONS_REDUCER_ERROR,
@@ -50,6 +65,24 @@ export const getConnections = () => {
       const response = await fetchConnections();
       dispatch(fetchConnectionSuccess(response));
       return response;
+    } catch (error) {
+      console.error(error.message);
+      dispatch(fetchConnectionError(error.messaage));
+      return false;
+    }
+  };
+};
+
+export const unMatchUser = (unMatchedUserId, loggedUserId) => {
+  return async (dispatch) => {
+    try {
+      const usersIds = {
+        likedUserId: unMatchedUserId,
+        likedById: loggedUserId,
+      };
+      const updatedUser = await dislikeUserService(usersIds);
+      dispatch(unMatchSuccess(unMatchedUserId));
+      return updatedUser;
     } catch (error) {
       console.error(error.message);
       dispatch(fetchConnectionError(error.messaage));

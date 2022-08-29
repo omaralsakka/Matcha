@@ -357,28 +357,41 @@ userRouter.get("/user-connections", async (request, response) => {
     "user_id",
     decodedToken.id
   );
-
   if (queryResponse.length) {
-    const users = await getConnections(queryResponse[0].connections);
-
-    if (users.length) {
-      response.status(200).send(users);
+    if (queryResponse[0].connections.length) {
+      const users = await getConnections(queryResponse[0].connections);
+      if (users.length) {
+        response.status(200).send(users);
+      } else {
+        response.status(401).json({
+          error: "users id error in fetching connections",
+        });
+      }
     } else {
-      response.status(401).json({
-        error: "users id error in fetching connections",
-      });
+      if (queryResponse[0].connections.length === 0) {
+        response.status(200).send([]);
+      } else {
+        response.status(401).json({
+          error: "connections query error",
+        });
+      }
     }
   } else {
-    if (queryResponse.length === 0) {
-      response.status(200).json({
-        message: "no connections found",
-      });
-    } else {
-      response.status(401).json({
-        error: "connections query error",
-      });
-    }
+    response.status(401).json({
+      error: "connections query error",
+    });
   }
+});
+
+userRouter.delete("/unmatch-user/:id", async (request, response) => {
+  const unMatchedId = request.params.id;
+  const decodedToken = tokenTools.verifyToken(request);
+  if (!decodedToken) {
+    response.status(401).json({
+      error: "token error",
+    });
+  }
+  // const queryResponse = await queryTools.
 });
 /* userRouter.post("/user-info", async (request, response) => {
 	const body = request.body;
