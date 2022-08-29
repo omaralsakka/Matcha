@@ -2,6 +2,8 @@ import { Offcanvas, Container, Button, Spinner } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useStoreConnections, useStoreUser } from "../utils/getStoreStates";
 import { unMatchUser } from "../reducers/connectionsReducer";
+import ModalPopUp from "./homeComponents/ModalPopUp";
+import { useEffect, useState } from "react";
 
 const MatchesCanvas = ({ showCanvas, setShowCanvas }) => {
   const users = useStoreConnections();
@@ -9,54 +11,79 @@ const MatchesCanvas = ({ showCanvas, setShowCanvas }) => {
   const dispatch = useDispatch();
   const { user } = useStoreUser();
 
-  const handleUnmatch = (id) => {
-    dispatch(unMatchUser(id, user.user_id)).then((resp) => console.log(resp));
+  const [showModal, setShowModal] = useState(false);
+  const [confirm, setConfirm] = useState(false);
+  const [unMatchedId, setUnMatchedId] = useState("");
+  const [modalText, setModalText] = useState({});
+  const handleShowModal = (id, fullname) => {
+    setModalText({
+      title: `Unmatch user`,
+      body: `Do you wish to unmatch ${fullname}? `,
+      confirm: "User unmatched successfully",
+    });
+    setShowModal(true);
+    setUnMatchedId(id);
   };
 
+  useEffect(() => {
+    if (confirm) {
+      dispatch(unMatchUser(unMatchedId, user.user_id));
+    }
+  }, [confirm]);
   if (!users) {
     return <Spinner />;
   } else {
     return (
-      <Offcanvas show={showCanvas} onHide={handleCloseCanvas}>
-        <Container className="mb-3 bg-light border-bottom px-0">
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title>Matches</Offcanvas.Title>
-          </Offcanvas.Header>
-        </Container>
-        <Offcanvas.Body>
-          {users.length ? (
-            users.map((user) => {
-              return (
-                <Container className="px-0" key={user.user_id}>
-                  <Container
-                    className="d-flex px-0 align-items-center mb-3"
-                    fluid
-                  >
-                    <Container>{user.fullname}</Container>
-                    <Container className="d-flex gap-3">
-                      <Button variant="outline-dark" size="sm">
-                        chat
-                      </Button>
-                      <Button
-                        onClick={() => handleUnmatch(user.user_id)}
-                        variant="outline-danger"
-                        size="sm"
-                      >
-                        unmatch
-                      </Button>
+      <>
+        <Offcanvas show={showCanvas} onHide={handleCloseCanvas}>
+          <Container className="mb-3 bg-light border-bottom px-0">
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title>Matches</Offcanvas.Title>
+            </Offcanvas.Header>
+          </Container>
+          <Offcanvas.Body>
+            {users.length ? (
+              users.map((user) => {
+                return (
+                  <Container className="px-0" key={user.user_id}>
+                    <Container
+                      className="d-flex px-0 align-items-center mb-3"
+                      fluid
+                    >
+                      <Container>{user.fullname}</Container>
+                      <Container className="d-flex gap-3">
+                        <Button variant="outline-dark" size="sm">
+                          chat
+                        </Button>
+                        <Button
+                          onClick={() =>
+                            handleShowModal(user.user_id, user.fullname)
+                          }
+                          variant="outline-danger"
+                          size="sm"
+                        >
+                          unmatch
+                        </Button>
+                      </Container>
                     </Container>
+                    <hr />
                   </Container>
-                  <hr />
-                </Container>
-              );
-            })
-          ) : (
-            <Container className="fs-4 text-center mt-5">
-              No matches found yet!
-            </Container>
-          )}
-        </Offcanvas.Body>
-      </Offcanvas>
+                );
+              })
+            ) : (
+              <Container className="fs-4 text-center mt-5">
+                No matches found yet!
+              </Container>
+            )}
+          </Offcanvas.Body>
+        </Offcanvas>
+        <ModalPopUp
+          show={showModal}
+          setShow={setShowModal}
+          setConfirm={setConfirm}
+          modalText={modalText}
+        />
+      </>
     );
   }
 };
