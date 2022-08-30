@@ -17,7 +17,7 @@ import Profile from "./components/Profile";
 
 // This is needed for generating random users, DONT UNCOMMENT
 // import { getRandomUsers } from "./services/usersServices";
-import ChatScreen from "./components/chat/ChatScreen";
+import Chat from "./components/chat/Chat";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -27,21 +27,6 @@ const App = () => {
 
   // This function to add random users, BECAREFUL this will add plenty of users
   // getRandomUsers();
-
-  // useEffect(() => {
-  //   if (navigator.onLine) {
-  //     console.log("online");
-  //   } else {
-  //     console.log("offline");
-  //   }
-  //   // window.addEventListener('offline', e => {
-  //   //   console.log('offline')
-  //   // })
-
-  //   // window.addEventListener('online', e => {
-  //   //   console.log('online')
-  //   // })
-  // }, []);
 
   useEffect(() => {
     const loggedUserJson = window.localStorage.getItem("LoggedMatchaUser");
@@ -130,10 +115,10 @@ const App = () => {
               path="/settings"
               element={<Settings setLoggedUser={setLoggedUser} />}
             />
+            <Route path="/chat" element={<Chat />} />
           </Route>
           <Route path="/terms" element={<Terms />} />
           <Route path="/about" element={<About />} />
-          <Route path="/chat-screen" element={<ChatScreen />} />
         </Routes>
         <AppFooter />
       </div>
