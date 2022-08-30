@@ -3,6 +3,7 @@ import {
   USER_LIKE_SUCCESS,
   USER_DISLIKE_SUCCESS,
   USER_REPORT_SUCCESS,
+  USERS_STATUS_UPDATED,
   DELETE_REPORTED_USER,
   USERS_REDUCER_ERROR,
 } from "../actions/types";
@@ -13,6 +14,7 @@ import {
   dislikeUserService,
   reportUserService,
   getUsersByCountryService,
+  getUserById,
 } from "../services/usersServices";
 
 const initialState = {
@@ -73,6 +75,22 @@ const usersReducer = (state = initialState, action) => {
         users: state.users.filter((user) => user.user_id !== payload),
         error: null,
       };
+
+    case USERS_STATUS_UPDATED:
+      return {
+        ...state,
+        users: state.users.map((user) => {
+          if (user.user_id === payload[0].user_id) {
+            return {
+              ...user,
+              status: payload[0].status,
+              last_logged_time: payload[0].last_logged_time,
+            };
+          }
+          return user;
+        }),
+        error: null,
+      };
     case USERS_REDUCER_ERROR:
       return {
         ...state,
@@ -91,23 +109,9 @@ const usersFetchSuccess = (users) => {
   };
 };
 
-const likeUserSuccess = (updatedUser) => {
+const updateStoreUser = (updatedUser, type) => {
   return {
-    type: USER_LIKE_SUCCESS,
-    payload: updatedUser,
-  };
-};
-
-const disLikeUserSuccess = (updatedUser) => {
-  return {
-    type: USER_DISLIKE_SUCCESS,
-    payload: updatedUser,
-  };
-};
-
-const reportUserSuccess = (updatedUser) => {
-  return {
-    type: USER_REPORT_SUCCESS,
+    type,
     payload: updatedUser,
   };
 };
@@ -164,8 +168,7 @@ export const likeUser = (likedUserId, likedById) => {
       const usersIds = { likedUserId, likedById };
       const updatedUser = await likeUserService(usersIds);
 
-      dispatch(likeUserSuccess(updatedUser));
-
+      dispatch(updateStoreUser(updatedUser, USER_LIKE_SUCCESS));
       return updatedUser;
     } catch (error) {
       dispatch(usersReducerError(error.message));
@@ -180,7 +183,7 @@ export const disLikeUser = (likedUserId, likedById) => {
     try {
       const usersIds = { likedUserId, likedById };
       const updatedUser = await dislikeUserService(usersIds);
-      dispatch(disLikeUserSuccess(updatedUser));
+      dispatch(updateStoreUser(updatedUser, USER_DISLIKE_SUCCESS));
 
       return updatedUser;
     } catch (error) {
@@ -198,11 +201,30 @@ export const reportUser = (loggedUserId, reportedUser) => {
       const serviceResponse = await reportUserService(usersId);
 
       if (serviceResponse.length) {
-        dispatch(reportUserSuccess(serviceResponse));
+        dispatch(updateStoreUser(serviceResponse, USER_REPORT_SUCCESS));
       } else {
         dispatch(deleteReportedUser(reportedUser));
       }
 
+      return true;
+    } catch (error) {
+      console.error(error.message);
+      dispatch(usersReducerError(error.message));
+      return false;
+    }
+  };
+};
+
+// workin on this
+export const updateUsersStatus = (users) => {
+  return async (dispatch) => {
+    try {
+      for (let index = 0; index < users.length; index++) {
+        const updatedUser = await getUserById(users[index].user_id);
+        if (updatedUser) {
+          dispatch(updateStoreUser(updatedUser, USERS_STATUS_UPDATED));
+        }
+      }
       return true;
     } catch (error) {
       console.error(error.message);

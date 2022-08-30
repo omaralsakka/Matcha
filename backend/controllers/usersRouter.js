@@ -311,4 +311,20 @@ usersRouter.post("/distance", async (request, response) => {
   }
 });
 
+usersRouter.get("/user-id/:id", async (request, response) => {
+  const id = parseInt(request.params.id);
+  const queryResponse = await queryTools.selectOneQualifier(
+    "users",
+    "user_id",
+    id
+  );
+  if (queryResponse.rows) {
+    response.status(200).send(queryResponse.rows);
+  } else {
+    response.status(404).json({
+      error: "user not found",
+    });
+  }
+});
+
 module.exports = usersRouter;
