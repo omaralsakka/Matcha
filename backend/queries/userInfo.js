@@ -88,29 +88,30 @@ const disLikeUserQuery = async (disLikedUserId, disLikedById) => {
       "UPDATE users SET liked_by = array_remove(liked_by, $1) WHERE user_id = $2 RETURNING *",
       [disLikedById, disLikedUserId]
     );
-	const test = await pool.query(
-		"UPDATE users SET liked = array_remove(liked, $1) WHERE user_id = $2 RETURNING *",
-		[disLikedUserId, disLikedById]
-	);
+    const test = await pool.query(
+      "UPDATE users SET liked = array_remove(liked, $1) WHERE user_id = $2 RETURNING *",
+      [disLikedUserId, disLikedById]
+    );
 
-	const deleteConnection = await pool.query(
-		"SELECT connections FROM connected WHERE user_id = $1",
-		[disLikedById]
-	);
+    const deleteConnection = await pool.query(
+      "SELECT connections FROM connected WHERE user_id = $1",
+      [disLikedById]
+    );
 
-	if(deleteConnection.rows[0].connections !== null) {
-		const bool = deleteConnection.rows[0].connections.includes(disLikedUserId)
-		if(bool === true) {
-			const dislikedDisconnect = await pool.query(
-				"UPDATE connected SET connections = array_remove(connections, $1) WHERE user_id = $2",
-				[disLikedUserId, disLikedById]
-			);
-			const dislikerDisconnect = await pool.query(
-				"UPDATE connected SET connections = array_remove(connections, $1) WHERE user_id = $2",
-				[disLikedById, disLikedUserId]
-			);
-		}
-	}
+    if (deleteConnection.rows[0].connections !== null) {
+      const bool =
+        deleteConnection.rows[0].connections.includes(disLikedUserId);
+      if (bool === true) {
+        const dislikedDisconnect = await pool.query(
+          "UPDATE connected SET connections = array_remove(connections, $1) WHERE user_id = $2",
+          [disLikedUserId, disLikedById]
+        );
+        const dislikerDisconnect = await pool.query(
+          "UPDATE connected SET connections = array_remove(connections, $1) WHERE user_id = $2",
+          [disLikedById, disLikedUserId]
+        );
+      }
+    }
 
     return queryResponse;
   } catch (error) {
@@ -260,29 +261,41 @@ const updateUsersOneQualifier = async (col, colToUp, newData, qualifier) => {
 };
 
 const updateConnectedQuery = async (likedById, likedUserId) => {
-	try {
-		const checkLikes = await pool.query(
-			"SELECT liked FROM users WHERE user_id = $1",
-			[likedUserId]
-		);
-		if(checkLikes.rows[0].liked !== null) {
-			const bool = checkLikes.rows[0].liked.includes(likedById)
-			if(bool === true) {
-				updateLiker = await pool.query(
-					"UPDATE connected SET connections = array_append(connections, $1) WHERE user_id = $2",
-					[likedUserId, likedById]
-				);
-				updateLiked = await pool.query(
-					"UPDATE connected SET connections = array_append(connections, $1) WHERE user_id = $2",
-					[likedById, likedUserId]
-				);
-			}
-		}
-		return checkLikes.rows;
-	  } catch (error) {
-		console.error(error.message);
-		return error.message;
-	  }
+  try {
+    const checkLikes = await pool.query(
+      "SELECT liked FROM users WHERE user_id = $1",
+      [likedUserId]
+    );
+    if (checkLikes.rows[0].liked !== null) {
+      const bool = checkLikes.rows[0].liked.includes(likedById);
+      if (bool === true) {
+        updateLiker = await pool.query(
+          "UPDATE connected SET connections = array_append(connections, $1) WHERE user_id = $2",
+          [likedUserId, likedById]
+        );
+        updateLiked = await pool.query(
+          "UPDATE connected SET connections = array_append(connections, $1) WHERE user_id = $2",
+          [likedById, likedUserId]
+        );
+      }
+    }
+    return checkLikes.rows;
+  } catch (error) {
+    console.error(error.message);
+    return error.message;
+  }
+};
+
+const setUserOffline = async (userId) => {
+  try {
+    const queryResponse = await pool.query(
+      `UPDATE users SET last_logged_time = now(), status = 'offline' WHERE user_id = ${userId} RETURNING *`
+    );
+    return queryResponse.rows;
+  } catch (error) {
+    console.error(error.message);
+    return error.message;
+  }
 };
 
 module.exports = {
@@ -298,4 +311,5 @@ module.exports = {
   updateArrayQuery,
   updateUsersOneQualifier,
   updateConnectedQuery,
+  setUserOffline,
 };

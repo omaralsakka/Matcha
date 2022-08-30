@@ -24,7 +24,8 @@ import LikeButton from "./LikeButton";
 import ReportAccount from "./ReportAccount";
 import { getUsersImages } from "../../services/usersServices";
 import UserCardInfo from "./UserCardInfo";
-
+import onlineIcon from "../../media/online.png";
+import offlineIcon from "../../media/offline1.png";
 // ------ FIX HERE --------------
 
 const UsersCards = ({
@@ -45,8 +46,10 @@ const UsersCards = ({
     bodyDisplay: "d-none",
     cardClass: "w-50 overflow-hidden",
     bottomRow: "mb-5 mt-3",
+    status: "d-none",
   });
-
+  const last_logged_time = user.last_logged_time.split("T");
+  const time = last_logged_time[1].split(".");
   const displayUserInfo = () => {
     if (!open) {
       const userIds = { viewedUser: user.user_id, loggedUser: loggedUserId };
@@ -60,6 +63,7 @@ const UsersCards = ({
         bodyDisplay: "",
         cardClass: "w-100 overflow-hidden",
         bottomRow: "d-none",
+        status: "d-flex align-items-center gap-2 mt-3",
       });
       setFadeBody({ transitionDuration: "2000" });
     } else {
@@ -70,6 +74,7 @@ const UsersCards = ({
           bodyDisplay: "d-none",
           cardClass: "w-50 overflow-hidden",
           bottomRow: "mb-5 mt-3",
+          status: "d-none",
         });
       }, [450]);
     }
@@ -94,6 +99,22 @@ const UsersCards = ({
                 userImages={userImages}
                 userGender={user.gender}
               />
+              <Container className={displayEffect.status}>
+                {user.status === "online" ? (
+                  <>
+                    <Container className="px-0 mx-0 cards-icons">
+                      <Image src={onlineIcon} fluid />
+                    </Container>
+                    <span className="fs-6 text-muted">Online</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="fs-7 text-muted">
+                      Last login time: {last_logged_time[0]} {time[0]}
+                    </span>
+                  </>
+                )}
+              </Container>
             </Col>
             <Collapse in={open} dimension="height">
               <Col md={8} className={displayEffect.bodyDisplay}>

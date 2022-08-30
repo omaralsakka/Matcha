@@ -112,6 +112,7 @@ const updateOneQualifier = async (table, setCol, newData, col, qualifier) => {
   }
 };
 
+
 const insertForgottenPassword = async (email) => {
   try {
     const users = await pool.query(

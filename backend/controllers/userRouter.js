@@ -383,16 +383,6 @@ userRouter.get("/user-connections", async (request, response) => {
   }
 });
 
-userRouter.delete("/unmatch-user/:id", async (request, response) => {
-  const unMatchedId = request.params.id;
-  const decodedToken = tokenTools.verifyToken(request);
-  if (!decodedToken) {
-    response.status(401).json({
-      error: "token error",
-    });
-  }
-  // const queryResponse = await queryTools.
-});
 /* userRouter.post("/user-info", async (request, response) => {
 	const body = request.body;
 	const user_id = body.user_id;
@@ -405,5 +395,54 @@ userRouter.delete("/unmatch-user/:id", async (request, response) => {
 		});
 	}
 }); */
+
+userRouter.post("/user-status", async (request, response) => {
+  const body = request.body;
+
+  if (body) {
+    const obj = JSON.parse(body);
+    let queryResponse;
+    if (obj.userId) {
+      const userStatus = await queryTools.selectColOneQualifier(
+        "users",
+        "status",
+        "user_id",
+        obj.userId
+      );
+      switch (obj.status) {
+        case "online":
+          if (userStatus.status !== "online") {
+            queryResponse = await queryTools.updateOneQualifier(
+              "users",
+              "status",
+              "online",
+              "user_id",
+              obj.userId
+            );
+          }
+          response.status(200).json({
+            message: `${obj.status}`,
+          });
+          break;
+        case "offline":
+          if (userStatus.status !== "offline") {
+            queryResponse = await infoQueries.setUserOffline(obj.userId);
+          }
+          response.status(200).json({
+            message: `${obj.status}`,
+          });
+          break;
+      }
+    } else {
+      response.status(200).json({
+        message: "user unknown",
+      });
+    }
+  } else {
+    response.status(200).json({
+      message: "user status unknown",
+    });
+  }
+});
 
 module.exports = userRouter;

@@ -23,7 +23,10 @@ CREATE TABLE users(
     liked_by INT [],
     views INT [],
     pictures INT DEFAULT 0,
-    reports_by INT []
+    reports_by INT [],
+
+    status VARCHAR (150),
+    last_login TIMESTAMP
 );
 
 CREATE TABLE user_verify(

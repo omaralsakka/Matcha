@@ -1,11 +1,13 @@
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
+import React, { useEffect } from "react";
 import Notifications from "./Notifications";
 import { useDispatch } from "react-redux";
 import { useNavigate, Outlet, Link } from "react-router-dom";
 import { logoutUser } from "../reducers/loginReducer";
 import { useState } from "react";
-
 import MatchesCanvas from "./MatchesCanvas";
+
+import getDate from "../utils/getDate";
 
 const Navigation = ({ loggedUser, setLoggedUser }) => {
   const dispatch = useDispatch();
@@ -13,8 +15,56 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
   const [showCanvas, setShowCanvas] = useState(false);
   const handleShowCanvas = () => setShowCanvas(true);
 
+  // to check if user left the browser, will be set as offline
+  const time = getDate();
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+      const status = JSON.stringify({
+        status: "online",
+        userId: loggedUser.id,
+      });
+      navigator.sendBeacon(
+        "http://localhost:5000/api/user/user-status",
+        status
+      );
+    } else {
+      const status = JSON.stringify({
+        status: "offline",
+        userId: loggedUser.id,
+        time,
+      });
+      navigator.sendBeacon(
+        "http://localhost:5000/api/user/user-status",
+        status
+      );
+    }
+  });
+
+  // once user opens the browser, will be set as active
+  useEffect(() => {
+    if (loggedUser) {
+      const status = JSON.stringify({
+        status: "online",
+        userId: loggedUser.id,
+      });
+      navigator.sendBeacon(
+        "http://localhost:5000/api/user/user-status",
+        status
+      );
+    }
+  }, [loggedUser]);
+
   const handleLogOut = () => {
     try {
+      const status = JSON.stringify({
+        status: "offline",
+        userId: loggedUser.id,
+        time,
+      });
+      navigator.sendBeacon(
+        "http://localhost:5000/api/user/user-status",
+        status
+      );
       dispatch(logoutUser());
       setLoggedUser(false);
       navigate("/login");

@@ -16,34 +16,36 @@ app.use(
 );
 app.use(cors());
 
-
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json({ limit: "10mb" }));
+app.use(bodyParser.text());
 
-app.use(bodyParser.urlencoded({ extended: false })); // chat 
+app.use(bodyParser.urlencoded({ extended: false })); // chat
 app.use(bodyParser.json()); // chat
-const pusher = new Pusher({ // chat
-	appId: process.env.appId,
-	key: process.env.key,
-	secret: process.env.secret,
-	cluster: process.env.cluster,
-	useTLS: true,
+const pusher = new Pusher({
+  // chat
+  appId: process.env.appId,
+  key: process.env.key,
+  secret: process.env.secret,
+  cluster: process.env.cluster,
+  useTLS: true,
 });
 
-app.post("/pusher/user-auth", (req, res) => { // chat
-	const socketId = req.body.socket_id;
-	const channelName = req.body.channelName;
-	const username = req.body.username;
-	const userId = req.body.user_id;
-	// Replace this with code to retrieve the actual user id and info
-	const user = {
-	  id: userId,
-	  user_info: {
-		name: username,
-	  }
-	};
-	const authResponse = pusher.authenticateUser(socketId, channelName, user);
-	res.send(authResponse);
+app.post("/pusher/user-auth", (req, res) => {
+  // chat
+  const socketId = req.body.socket_id;
+  const channelName = req.body.channelName;
+  const username = req.body.username;
+  const userId = req.body.user_id;
+  // Replace this with code to retrieve the actual user id and info
+  const user = {
+    id: userId,
+    user_info: {
+      name: username,
+    },
+  };
+  const authResponse = pusher.authenticateUser(socketId, channelName, user);
+  res.send(authResponse);
 });
 
 /* app.post("/message", (req, res) => { // chat
