@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const AppFooter = () => {
   return (
     <Container
-      className="d-flex w-100 main-footer justify-content-sm-between flex-column flex-sm-row align-items-center"
+      className="bg-dark text-white d-flex w-100 justify-content-sm-between flex-column flex-sm-row align-items-center"
       fluid
     >
       <Container className="d-flex p-0 mt-3 justify-content-center justify-content-sm-start">

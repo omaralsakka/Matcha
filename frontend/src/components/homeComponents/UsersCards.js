@@ -25,7 +25,6 @@ import ReportAccount from "./ReportAccount";
 import { getUsersImages } from "../../services/usersServices";
 import UserCardInfo from "./UserCardInfo";
 import onlineIcon from "../../media/online.png";
-import offlineIcon from "../../media/offline1.png";
 // ------ FIX HERE --------------
 
 const UsersCards = ({

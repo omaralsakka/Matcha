@@ -58,6 +58,8 @@ const Home = () => {
             setUsers={setUsers}
             originalUsers={originalUsers}
           />
+        </Container>
+        <Container>
           {users.length ? (
             <Container>
               {users.map((userToDisplay) => (

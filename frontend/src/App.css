@@ -10,10 +10,6 @@ body {
   background-attachment: fixed;
 }
 
-/* .App {
-  height: 100vh;
-} */
-
 .landing-page {
   display: flex;
   justify-content: center;
@@ -127,19 +123,15 @@ body {
   }
 }
 
-.main-footer {
+/* .main-footer {
   position: sticky;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center; */
-  /* width: 100%; */
   left: 0;
   height: auto;
   top: 100%;
   bottom: 0;
   background-color: #1b1c1e;
   color: white;
-}
+} */
 
 .terms-logo-container {
   width: 10vw;

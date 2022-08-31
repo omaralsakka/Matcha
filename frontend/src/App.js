@@ -67,18 +67,20 @@ const App = () => {
 
   if (!loggedUser) {
     return (
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route
-            path="/*"
-            element={<Credentials setLoggedUser={setLoggedUser} />}
-          />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
+      <>
+        <Container className=" min-vh-100" fluid>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route
+              path="/*"
+              element={<Credentials setLoggedUser={setLoggedUser} />}
+            />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </Container>
         <AppFooter />
-      </div>
+      </>
     );
   } else {
     return (
