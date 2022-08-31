@@ -6,7 +6,7 @@ import { getUsersByCountry } from "../../../reducers/usersReducer";
 
 const LocationSearch = ({ user }) => {
   const [country, setCountry] = useState(false);
-  const [selected, setSelected] = useState(false);
+  // const [selected, setSelected] = useState(false);
   const countries = allCountries();
   const dispatch = useDispatch();
 

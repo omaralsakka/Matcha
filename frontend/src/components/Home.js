@@ -17,7 +17,7 @@ const Home = () => {
   const { user } = useStoreUser();
   const usersInStore = useStoreUsers();
   const [users, setUsers] = useState([]);
-  // const [profilePictures, setProfilePictures] = useState([]);
+  const [currentCountry, setCurrentCountry] = useState("");
   const [sort, setSort] = useState(false);
   const [order, setOrder] = useState("ascending");
 
@@ -25,6 +25,7 @@ const Home = () => {
     if (user) {
       dispatch(getUsersByCountry(user.country, user)).then((resp) => {
         setUsers(resp);
+        setCurrentCountry(user.country);
       });
       dispatch(getConnections());
     }
@@ -34,12 +35,14 @@ const Home = () => {
     if (sort) {
       setUsers(sortUsers(users, sort, order));
     }
-  }, [sort, order]);
-
+  }, [sort, order, users]);
   useEffect(() => {
     if (usersInStore.users) {
       if (usersInStore.users.length) {
-        setUsers(usersInStore.users);
+        if (usersInStore.users[0].country !== currentCountry) {
+          setUsers(usersInStore.users);
+          setCurrentCountry(usersInStore.users[0].country);
+        }
       } else {
         setUsers([]);
       }

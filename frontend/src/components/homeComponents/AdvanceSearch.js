@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Offcanvas, Form, Spinner, Container } from "react-bootstrap";
 import { useStoreUser, useStoreUsers } from "../../utils/getStoreStates";
+
 import LocationSearch from "./advanceSearchComponents/LocationSearch";
 import TagsInput from "../userInfoForms/TagsInput";
 import InputRange from "react-input-range";
 
 const AdvanceSearch = ({ setUsers }) => {
   const [show, setShow] = useState(false);
+  const [searchOn, setSearchOn] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const { user } = useStoreUser();
@@ -24,9 +26,9 @@ const AdvanceSearch = ({ setUsers }) => {
     },
   });
 
-  if (!user || !usersInStore) {
-    return <Spinner />;
-  }
+  useEffect(() => {
+    setSearchOn(false);
+  }, []);
 
   const handleSearch = () => {
     let filteredUsers = usersInStore.users;
@@ -53,7 +55,6 @@ const AdvanceSearch = ({ setUsers }) => {
         });
       }
     }
-
     setUsers(filteredUsers);
   };
 
@@ -73,6 +74,22 @@ const AdvanceSearch = ({ setUsers }) => {
     setRanges(defaultRanges);
   };
 
+  const submitSearch = () => {
+    setSearchOn(true);
+    handleSearch();
+  };
+
+  useEffect(() => {
+    if (usersInStore.users) {
+      if (searchOn) {
+        handleSearch();
+      }
+    }
+  }, [usersInStore.users]);
+
+  if (!user || !usersInStore) {
+    return <Spinner />;
+  }
   return (
     <>
       <Button onClick={handleShow}>Advanced search</Button>
@@ -120,7 +137,7 @@ const AdvanceSearch = ({ setUsers }) => {
 
             <div className="d-flex gap-3 mt-5">
               <Button
-                onClick={handleSearch}
+                onClick={submitSearch}
                 size="sm"
                 variant="outline-primary"
               >

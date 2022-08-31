@@ -1,5 +1,4 @@
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
-import React, { useEffect } from "react";
 import Notifications from "./Notifications";
 import { useDispatch } from "react-redux";
 import { useNavigate, Outlet, Link } from "react-router-dom";
