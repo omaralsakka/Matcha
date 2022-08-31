@@ -107,11 +107,13 @@ export const userNewDataService = async (newData) => {
 };
 
 export const fetchConnections = async () => {
-  const config = {
-    headers: { Authorization: token },
-  };
-  const response = await axios.get(`${userUrl}/user-connections`, config);
-  return response.data;
+  if (token) {
+    const config = {
+      headers: { Authorization: token },
+    };
+    const response = await axios.get(`${userUrl}/user-connections`, config);
+    return response.data;
+  }
 };
 
 /* export const getUserService = async (userData) => {

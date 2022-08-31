@@ -21,10 +21,30 @@ const sortUsers = (users, sort, order) => {
       sortedUsers.sort((a, b) => b.tags.length - a.tags.length);
       break;
     case "liked_by ascending":
-      sortedUsers.sort((a, b) => a.liked_by.length - b.liked_by.length);
+      sortedUsers.sort((a, b) => {
+        if (a.liked_by && !b.liked_by) {
+          return a.liked_by.length;
+        } else if (!a.liked_by && b.liked_by) {
+          return b.liked_by;
+        } else if (!a.liked_by && !b.liked_by) {
+          return 0;
+        } else {
+          return a.liked_by.length - b.liked_by.length;
+        }
+      });
       break;
     case "liked_by descending":
-      sortedUsers.sort((a, b) => b.liked_by.length - a.liked_by.length);
+      sortedUsers.sort((a, b) => {
+        if (a.liked_by && !b.liked_by) {
+          return a.liked_by.length;
+        } else if (!a.liked_by && b.liked_by) {
+          return b.liked_by;
+        } else if (!a.liked_by && !b.liked_by) {
+          return 0;
+        } else {
+          return b.liked_by.length - a.liked_by.length;
+        }
+      });
       break;
     default:
       return sortedUsers;

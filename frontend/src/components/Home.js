@@ -5,19 +5,15 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { getUsersByCountry } from "../reducers/usersReducer";
 import LoadingScreen from "./LoadingScreen";
-import { getUsersProfileImage } from "../services/usersServices";
 import { useStoreUser, useStoreUsers } from "../utils/getStoreStates";
 import sortUsers from "../utils/sortUsers";
 import searchIcon from "../media/search-empty.png";
-import { getConnections } from "../reducers/connectionsReducer";
 
-// ------ FIX HERE --------------
 const Home = () => {
   const dispatch = useDispatch();
   const { user } = useStoreUser();
   const usersInStore = useStoreUsers();
   const [users, setUsers] = useState([]);
-  const [currentCountry, setCurrentCountry] = useState("");
   const [sort, setSort] = useState(false);
   const [order, setOrder] = useState("ascending");
 
@@ -25,30 +21,30 @@ const Home = () => {
     if (user) {
       dispatch(getUsersByCountry(user.country, user)).then((resp) => {
         setUsers(resp);
-        setCurrentCountry(user.country);
       });
-      dispatch(getConnections());
     }
   }, [dispatch, user]);
 
   useEffect(() => {
-    if (sort) {
-      setUsers(sortUsers(users, sort, order));
-    }
-  }, [sort, order, users]);
-  useEffect(() => {
     if (usersInStore.users) {
       if (usersInStore.users.length) {
-        if (usersInStore.users[0].country !== currentCountry) {
-          setUsers(usersInStore.users);
-          setCurrentCountry(usersInStore.users[0].country);
-        }
+        setUsers(usersInStore.users);
       } else {
         setUsers([]);
       }
     }
   }, [usersInStore.users]);
 
+  useEffect(() => {
+    if (sort) {
+      console.log(sort, order);
+      if (usersInStore.users) {
+        if (usersInStore.users.length) {
+          setUsers(sortUsers(usersInStore.users, sort, order));
+        }
+      }
+    }
+  }, [sort, order, usersInStore.users]);
   if (!users || !user) {
     return <LoadingScreen />;
   } else {

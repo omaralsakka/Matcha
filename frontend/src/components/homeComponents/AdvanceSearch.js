@@ -5,6 +5,9 @@ import { useStoreUser, useStoreUsers } from "../../utils/getStoreStates";
 import LocationSearch from "./advanceSearchComponents/LocationSearch";
 import TagsInput from "../userInfoForms/TagsInput";
 import InputRange from "react-input-range";
+import { updateStoreUser } from "../../reducers/usersReducer";
+import { USERS_FETCHED_SUCCESS } from "../../actions/types";
+import { useDispatch } from "react-redux";
 
 const AdvanceSearch = ({ setUsers }) => {
   const [show, setShow] = useState(false);
@@ -13,6 +16,7 @@ const AdvanceSearch = ({ setUsers }) => {
   const handleShow = () => setShow(true);
   const { user } = useStoreUser();
   const usersInStore = useStoreUsers();
+  const dispatch = useDispatch();
 
   const [tags, setTags] = useState([]);
   const [ranges, setRanges] = useState({
@@ -55,7 +59,8 @@ const AdvanceSearch = ({ setUsers }) => {
         });
       }
     }
-    setUsers(filteredUsers);
+    dispatch(updateStoreUser(filteredUsers, USERS_FETCHED_SUCCESS));
+    // setUsers(filteredUsers);
   };
 
   const handleReset = () => {
@@ -79,13 +84,13 @@ const AdvanceSearch = ({ setUsers }) => {
     handleSearch();
   };
 
-  useEffect(() => {
-    if (usersInStore.users) {
-      if (searchOn) {
-        handleSearch();
-      }
-    }
-  }, [usersInStore.users]);
+  // useEffect(() => {
+  //   if (usersInStore.users) {
+  //     if (searchOn) {
+  //       handleSearch();
+  //     }
+  //   }
+  // }, [usersInStore.users]);
 
   if (!user || !usersInStore) {
     return <Spinner />;

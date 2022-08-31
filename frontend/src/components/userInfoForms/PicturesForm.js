@@ -1,11 +1,12 @@
 import ImageUploading from "react-images-uploading";
-import { Button, Card } from "react-bootstrap";
+import { Button, Card, Spinner } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import useImage from "../../utils/useImage";
 import {
   pictureFormService,
   InfoFilledTokenService,
 } from "../../services/userServices";
+import { useState } from "react";
 
 const UserImageCard = ({ index, src, onImageUpdate, onImageRemove }) => {
   return (
@@ -37,7 +38,10 @@ const UserImageCard = ({ index, src, onImageUpdate, onImageRemove }) => {
 
 const PicturesForm = ({ defaultValue }) => {
   const images = useImage(defaultValue);
+  const [spinner, setSpinner] = useState(false);
+
   const saveImages = async () => {
+    setSpinner(true);
     const picFormResponse = await pictureFormService(images.value);
     const infoFilledResponse = await InfoFilledTokenService();
     if (infoFilledResponse) {
@@ -49,6 +53,7 @@ const PicturesForm = ({ defaultValue }) => {
       window.location.reload();
     }
   };
+
   return (
     <>
       <Container className="signup-container mb-3 mt-3 w-75 mb-5">
@@ -95,14 +100,18 @@ const PicturesForm = ({ defaultValue }) => {
             </div>
           )}
         </ImageUploading>
-        <Button
-          disabled={images.value.length ? false : true}
-          onClick={saveImages}
-          className="landing-signup-Button"
-          variant="dark"
-        >
-          Save
-        </Button>
+        <Container className="d-flex align-items-center gap-3">
+          <Button
+            disabled={images.value.length ? false : true}
+            onClick={saveImages}
+            className="landing-signup-Button"
+            variant="dark"
+          >
+            Save
+          </Button>
+
+          {spinner && <Spinner animation="grow" />}
+        </Container>
       </Container>
     </>
   );

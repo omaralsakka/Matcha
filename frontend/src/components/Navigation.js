@@ -3,17 +3,27 @@ import Notifications from "./Notifications";
 import { useDispatch } from "react-redux";
 import { useNavigate, Outlet, Link } from "react-router-dom";
 import { logoutUser } from "../reducers/loginReducer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MatchesCanvas from "./MatchesCanvas";
 import UpdateStatus from "../utils/updateUserStatus";
+import { getConnections } from "../reducers/connectionsReducer";
+import { useStoreUser } from "../utils/getStoreStates";
 
 const Navigation = ({ loggedUser, setLoggedUser }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user } = useStoreUser();
+
   const [showCanvas, setShowCanvas] = useState(false);
   const handleShowCanvas = () => setShowCanvas(true);
 
   UpdateStatus(loggedUser);
+
+  useEffect(() => {
+    if (user) {
+      dispatch(getConnections());
+    }
+  }, [user]);
 
   const handleLogOut = () => {
     try {

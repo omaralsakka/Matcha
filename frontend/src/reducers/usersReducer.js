@@ -109,7 +109,7 @@ const usersFetchSuccess = (users) => {
   };
 };
 
-const updateStoreUser = (updatedUser, type) => {
+export const updateStoreUser = (updatedUser, type) => {
   return {
     type,
     payload: updatedUser,
