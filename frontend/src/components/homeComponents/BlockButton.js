@@ -3,32 +3,23 @@ import ModalPopUp from "./ModalPopUp";
 import { useEffect, useState } from "react";
 import { Button, Image } from "react-bootstrap";
 import blockIcon from "../../media/x-icon.png";
-import { blockUserService } from "../../services/usersServices";
+import { blockUser } from "../../reducers/usersReducer";
+import { useDispatch } from "react-redux";
 
 const BlockButton = ({ loggedUserId, user }) => {
   const [showModal, setShowModal] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const dispatch = useDispatch();
   const handleShowModal = () => setShowModal(true);
-  const usersIds = { loggedUser: loggedUserId, blockedUser: user.user_id };
   const modalText = {
     title: "Block user",
     body: "Do you wish to block this user from seeing your account? ",
     confirm: "User has been blocked successfully",
   };
 
-  const blockUser = async () => {
-    const response = await blockUserService(usersIds);
-    if (response) {
-      // setShowModal(false);
-      setTimeout(() => {
-        window.location.assign("/home");
-      }, 3000);
-    }
-  };
-
   useEffect(() => {
     if (confirm) {
-      blockUser();
+      dispatch(blockUser(loggedUserId, user.user_id));
     }
   }, [confirm]);
 

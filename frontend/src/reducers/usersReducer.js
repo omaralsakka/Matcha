@@ -5,6 +5,7 @@ import {
   USER_REPORT_SUCCESS,
   USERS_STATUS_UPDATED,
   DELETE_REPORTED_USER,
+  USER_BLOCK_SUCCESS,
   USERS_REDUCER_ERROR,
 } from "../actions/types";
 
@@ -15,6 +16,7 @@ import {
   reportUserService,
   getUsersByCountryService,
   getUserById,
+  blockUserService,
 } from "../services/usersServices";
 
 const initialState = {
@@ -91,6 +93,14 @@ const usersReducer = (state = initialState, action) => {
         }),
         error: null,
       };
+
+    case USER_BLOCK_SUCCESS:
+      return {
+        ...state,
+        users: state.users.filter((user) => user.user_id !== payload),
+        error: null,
+      };
+
     case USERS_REDUCER_ERROR:
       return {
         ...state,
@@ -224,6 +234,23 @@ export const updateUsersStatus = (users) => {
         if (updatedUser) {
           dispatch(updateStoreUser(updatedUser, USERS_STATUS_UPDATED));
         }
+      }
+      return true;
+    } catch (error) {
+      console.error(error.message);
+      dispatch(usersReducerError(error.message));
+      return false;
+    }
+  };
+};
+
+export const blockUser = (loggedUser, blockedUser) => {
+  return async (dispatch) => {
+    try {
+      const usersIds = { loggedUser, blockedUser };
+      const response = await blockUserService(usersIds);
+      if (response) {
+        dispatch(updateStoreUser(usersIds.blockedUser, USER_BLOCK_SUCCESS));
       }
       return true;
     } catch (error) {
