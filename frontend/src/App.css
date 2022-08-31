@@ -10,9 +10,9 @@ body {
   background-attachment: fixed;
 }
 
-.App {
+/* .App {
   height: 100vh;
-}
+} */
 
 .landing-page {
   display: flex;
@@ -129,27 +129,16 @@ body {
 
 .main-footer {
   position: sticky;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  justify-content: center;
-  width: 100%;
+  justify-content: center; */
+  /* width: 100%; */
   left: 0;
   height: auto;
   top: 100%;
   bottom: 0;
   background-color: #1b1c1e;
   color: white;
-}
-
-.info-footer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.rights-text {
-  margin-left: auto;
-  margin-right: 10px;
 }
 
 .terms-logo-container {
@@ -161,18 +150,9 @@ body {
   width: 100%;
 }
 
-.footer-links {
-  display: flex;
-  flex-direction: row;
-}
-
 .terms-link {
   text-decoration: none;
   color: white;
-}
-
-.footer-text {
-  font-size: calc(5px + 0.6vw);
 }
 
 .team-img-container {

@@ -45,34 +45,38 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
 
   return (
     <>
-      <Navbar bg="transparent" variant="light">
+      <Navbar bg="transparent" variant="light" expand="sm">
         <Container fluid>
           <Navbar.Brand href="#home">Matcha</Navbar.Brand>
-          <Nav className="me-auto">
-            <Link to="/home" className="nav-link">
-              Home
-            </Link>
-            <Link to="/profile" className="nav-link">
-              Profile
-            </Link>
-            <Link to="/settings" className="nav-link">
-              Settings
-            </Link>
-            <Nav.Link onClick={handleShowCanvas}>Matches</Nav.Link>
-          </Nav>
-          {/*  <Notifications /> */}{" "}
-          {/* turned off for now, makes the app slower */}
-          <Navbar.Collapse className="justify-content-end">
-            <Nav.Item className="mx-3">
-              <Navbar.Text className="fs-5">{loggedUser.username}</Navbar.Text>
-            </Nav.Item>
-            <Button
-              onClick={handleLogOut}
-              className="landing-signup-Button"
-              variant="dark"
-            >
-              Log out
-            </Button>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto d-flex align-items-center w-100">
+              <Link to="/home" className="nav-link">
+                Home
+              </Link>
+              <Link to="/profile" className="nav-link">
+                Profile
+              </Link>
+              <Link to="/settings" className="nav-link">
+                Settings
+              </Link>
+              <Nav.Link onClick={handleShowCanvas}>Matches</Nav.Link>
+              {/*  <Notifications /> */}{" "}
+              {/* turned off for now, makes the app slower */}
+              <Nav.Item className="mx-3 ms-md-auto d-none d-md-block">
+                <Navbar.Text className="fs-5">
+                  {loggedUser.username}
+                </Navbar.Text>
+              </Nav.Item>
+              <Button
+                onClick={handleLogOut}
+                className="landing-signup-Button "
+                size="sm"
+                variant="dark"
+              >
+                Log out
+              </Button>
+            </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>

@@ -1,23 +1,23 @@
+import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 const AppFooter = () => {
   return (
-    <div className="main-footer">
-      <div className="info-footer">
-        <div className="footer-links mt-3">
-          <Link to="/terms" className="terms-link mx-1">
-            <p className="footer-text">Terms</p>
-          </Link>
-          <Link to="/about" className="terms-link mx-1">
-            <p className="footer-text">About us</p>
-          </Link>
-        </div>
-        <div className="rights-text mt-3">
-          <p className="footer-text">
-            &copy; 2022 Matcha App - All Rights Reserved
-          </p>
-        </div>
-      </div>
-    </div>
+    <Container
+      className="d-flex w-100 main-footer justify-content-sm-between flex-column flex-sm-row align-items-center"
+      fluid
+    >
+      <Container className="d-flex p-0 mt-3 justify-content-center justify-content-sm-start">
+        <Link to="/terms" className="terms-link mx-1">
+          <p className="fs-6">Terms</p>
+        </Link>
+        <Link to="/about" className="terms-link mx-1">
+          <p className="fs-6">About us</p>
+        </Link>
+      </Container>
+      <Container className="d-flex mt-sm-3 justify-content-sm-end justify-content-center">
+        <p className="fs-6">&copy; 2022 Matcha App - All Rights Reserved</p>
+      </Container>
+    </Container>
   );
 };
 

@@ -18,6 +18,7 @@ import Profile from "./components/Profile";
 // This is needed for generating random users, DONT UNCOMMENT
 // import { getRandomUsers } from "./services/usersServices";
 import Chat from "./components/chat/Chat";
+import { Container } from "react-bootstrap";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -81,47 +82,49 @@ const App = () => {
     );
   } else {
     return (
-      <div className="App">
-        <Routes>
-          <Route
-            path="/"
-            element={loggedUser ? <Navigate to="/home" /> : <LandingPage />}
-          />
-          <Route
-            path="/*"
-            element={
-              loggedUser ? (
-                <Navigate to="/home" />
-              ) : (
-                <Credentials setLoggedUser={setLoggedUser} />
-              )
-            }
-          />
-          <Route
-            path="/"
-            element={
-              <Navigation
-                loggedUser={loggedUser}
-                setLoggedUser={setLoggedUser}
+      <>
+        <Container className="App" fluid>
+          <Routes>
+            <Route
+              path="/"
+              element={loggedUser ? <Navigate to="/home" /> : <LandingPage />}
+            />
+            <Route
+              path="/*"
+              element={
+                loggedUser ? (
+                  <Navigate to="/home" />
+                ) : (
+                  <Credentials setLoggedUser={setLoggedUser} />
+                )
+              }
+            />
+            <Route
+              path="/"
+              element={
+                <Navigation
+                  loggedUser={loggedUser}
+                  setLoggedUser={setLoggedUser}
+                />
+              }
+            >
+              <Route
+                path="/home"
+                element={loggedUser.infoFilled ? <Home /> : <UserInfoForms />}
               />
-            }
-          >
-            <Route
-              path="/home"
-              element={loggedUser.infoFilled ? <Home /> : <UserInfoForms />}
-            />
-            <Route path="/profile" element={<Profile />} />
-            <Route
-              path="/settings"
-              element={<Settings setLoggedUser={setLoggedUser} />}
-            />
-            <Route path="/chat" element={<Chat />} />
-          </Route>
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
+              <Route path="/profile" element={<Profile />} />
+              <Route
+                path="/settings"
+                element={<Settings setLoggedUser={setLoggedUser} />}
+              />
+              <Route path="/chat" element={<Chat />} />
+            </Route>
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </Container>
         <AppFooter />
-      </div>
+      </>
     );
   }
 };
