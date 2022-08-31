@@ -41,7 +41,7 @@ const UpdateStatus = (loggedUser) => {
     if (storeUsers.users.length) {
       const refreshStatus = setTimeout(
         () => dispatch(updateUsersStatus(storeUsers.users)),
-        5000
+        15000
       );
       return () => clearTimeout(refreshStatus);
     }
