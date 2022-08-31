@@ -1,9 +1,12 @@
+require("dotenv").config();
 const pool = require("../utils/db");
 const bcrypt = require("bcrypt");
 const locator = require("../utils/ipLocator");
 const queryTools = require("./queryTools");
 const checkPassword = require("../utils/cryptPassword");
 const getCoords = require("../utils/getCoords");
+const notificationRouter = require("express").Router();
+const axios = require('axios');
 
 const insertUserInfo = async (
   { gender, sexualPreference, bio, tags, location, coords },
@@ -82,8 +85,9 @@ const getProfilePictures = async () => {
   }
 };
 
-const disLikeUserQuery = async (disLikedUserId, disLikedById) => {
+const disLikeUserQuery = async (disLikedUserId, disLikedById, from, to) => {
   try {
+
     const queryResponse = await pool.query(
       "UPDATE users SET liked_by = array_remove(liked_by, $1) WHERE user_id = $2 RETURNING *",
       [disLikedById, disLikedUserId]
@@ -102,16 +106,16 @@ const disLikeUserQuery = async (disLikedUserId, disLikedById) => {
 		const bool = deleteConnection.rows[0].connections.includes(disLikedUserId)
 		if(bool === true) {
 			const dislikedDisconnect = await pool.query(
-				"UPDATE connected SET connections = array_remove(connections, $1) WHERE user_id = $2",
+				"UPDATE connected SET connections = array_remove(connections, $1) WHERE user_id = $2 RETURNING *",
 				[disLikedUserId, disLikedById]
 			);
 			const dislikerDisconnect = await pool.query(
-				"UPDATE connected SET connections = array_remove(connections, $1) WHERE user_id = $2",
+				"UPDATE connected SET connections = array_remove(connections, $1) WHERE user_id = $2 RETURNING *",
 				[disLikedById, disLikedUserId]
 			);
+			return dislikedDisconnect
 		}
 	}
-
     return queryResponse;
   } catch (error) {
     console.error(error.message);
@@ -276,9 +280,10 @@ const updateConnectedQuery = async (likedById, likedUserId) => {
 					"UPDATE connected SET connections = array_append(connections, $1) WHERE user_id = $2",
 					[likedById, likedUserId]
 				);
+				return "connection made";
 			}
 		}
-		return checkLikes.rows;
+		return "liked";
 	  } catch (error) {
 		console.error(error.message);
 		return error.message;

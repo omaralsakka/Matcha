@@ -7,6 +7,8 @@ const mailsFormat = require("../utils/mailsFormat");
 const filterUsers = require("../utils/FilterUsers");
 const passwordTools = require("../utils/cryptPassword");
 const distanceTool = require("../utils/distanceTool");
+const tokenTools = require("../utils/tokenTools");
+
 
 usersRouter.post("/all", async (request, response) => {
   const body = request.body;
@@ -59,7 +61,7 @@ usersRouter.get("/user-pictures/:id", async (request, response) => {
 });
 
 usersRouter.post("/likeuser", async (request, response) => {
-  const { likedUserId, likedById } = request.body;
+  const { likedUserId, likedById, userEmail, loggedUsername } = request.body;
   const queryResponseLiked = await usersQueries.updateArrayQuery(
     "users",
     "liked",
@@ -79,6 +81,9 @@ usersRouter.post("/likeuser", async (request, response) => {
         likedById,
         likedUserId
       );
+	  if(queryResponseConnected === "connection made" || queryResponseConnected === "liked") { // change luke made for notificaiton might affect dispatch(likeSuccess) in reducer
+		return response.status(200).send(queryResponseConnected); // could add that if "liked" send that aswell and then in the service check if liked and send notification for like so then we dont get 2 notifiacations if liked and connected
+	  }
     }
     if (queryResponseLikedBy.length) {
       response.status(200).send(queryResponseLikedBy);
@@ -91,11 +96,13 @@ usersRouter.post("/likeuser", async (request, response) => {
 });
 
 usersRouter.post("/dislikeuser", async (request, response) => {
-  const { likedUserId, likedById } = request.body;
+  const { likedUserId, likedById, email, loggedUsername} = request.body;
 
   const queryResponse = await usersQueries.disLikeUserQuery(
     likedUserId,
-    likedById
+    likedById,
+	email,
+	loggedUsername
   );
 
   if (queryResponse.rows.length) {
@@ -309,6 +316,26 @@ usersRouter.post("/distance", async (request, response) => {
       error: "distance not possible to calculate",
     });
   }
+});
+
+usersRouter.post("/chatrooms", async (request, response) => {
+	const body = request.body;
+	  // do what you were supposed to do so check if a room exists if not create one 
+	  const params1 = [body.username, body.match_username]
+	  const params2 = [body.match_username, body.username]
+	  const queryResponse = await queryTools.selectChats(params1, params2);
+	  if(queryResponse.length === 0) {
+		const insertResponse = await queryTools.insertChat(params1);
+		if(insertResponse.length) {
+		  response.status(200).send(insertResponse);
+		} else {
+		  response.status(404).json({
+			  error: "was not able to insert new chatroom",
+		  });
+		}
+	  } else {
+		response.status(200).send(queryResponse);
+	}
 });
 
 module.exports = usersRouter;

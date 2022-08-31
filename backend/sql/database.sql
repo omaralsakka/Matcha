@@ -83,3 +83,10 @@ CREATE TABLE pictures (
     picture VARCHAR,
     user_id INT NOT NULL
 );
+
+##
+CREATE TABLE chats (
+	id SERIAL PRIMARY KEY UNIQUE,
+	users VARCHAR [],
+	room_name VARCHAR (150)
+);

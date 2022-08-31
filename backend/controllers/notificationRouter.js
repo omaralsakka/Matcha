@@ -14,7 +14,7 @@ notificationRouter.post("/", async (request, response) => {
 	} else if(body.type === 4) {
 		notifString = "liked your profile back! You are now connected.";
 	} else if(body.type === 5) {
-		notifString = "unliked your profile... You are now unconnected.";
+		notifString = "unliked your profile... You are now disconnected.";
 	}
 	const notifResponse = await axios.post(
 		'https://api.engagespot.co/v3/notifications',
