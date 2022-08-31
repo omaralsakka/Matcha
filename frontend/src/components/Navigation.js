@@ -6,60 +6,15 @@ import { useNavigate, Outlet, Link } from "react-router-dom";
 import { logoutUser } from "../reducers/loginReducer";
 import { useState } from "react";
 import MatchesCanvas from "./MatchesCanvas";
-import { updateUsersStatus } from "../reducers/usersReducer";
-import { useStoreUsers } from "../utils/getStoreStates";
+import UpdateStatus from "../utils/updateUserStatus";
 
 const Navigation = ({ loggedUser, setLoggedUser }) => {
-  const storeUsers = useStoreUsers();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showCanvas, setShowCanvas] = useState(false);
   const handleShowCanvas = () => setShowCanvas(true);
-  // to check if user left the browser, will be set as offline
-  document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") {
-      const status = JSON.stringify({
-        status: "online",
-        userId: loggedUser.id,
-      });
-      navigator.sendBeacon(
-        "http://localhost:5000/api/user/user-status",
-        status
-      );
-    } else {
-      const status = JSON.stringify({
-        status: "offline",
-        userId: loggedUser.id,
-      });
-      navigator.sendBeacon(
-        "http://localhost:5000/api/user/user-status",
-        status
-      );
-    }
-  });
-  // once user opens the browser, will be set as active
-  useEffect(() => {
-    if (loggedUser) {
-      const status = JSON.stringify({
-        status: "online",
-        userId: loggedUser.id,
-      });
-      navigator.sendBeacon(
-        "http://localhost:5000/api/user/user-status",
-        status
-      );
-    }
-  }, [loggedUser]);
 
-  useEffect(() => {
-    if (storeUsers.users.length) {
-      const refreshStatus = setTimeout(
-        () => dispatch(updateUsersStatus(storeUsers.users)),
-        15000
-      );
-      return () => clearTimeout(refreshStatus);
-    }
-  }, [storeUsers.users]);
+  UpdateStatus(loggedUser);
 
   const handleLogOut = () => {
     try {
