@@ -4,16 +4,18 @@ import UseField from "../UseField";
 import { useEffect } from "react";
 import { useStoreUsers } from "../../utils/getStoreStates";
 
-const HomeNavBar = ({ setSort, setOrder, users, setUsers }) => {
+const HomeNavBar = ({ setSort, setOrder, setUsers, originalUsers }) => {
   const usersInStore = useStoreUsers();
 
   const searchName = UseField("text", "");
   useEffect(() => {
     if (searchName.value.length) {
-      const searchedUsers = users.filter((user) =>
-        user.username.includes(searchName.value)
-      );
-      setUsers(searchedUsers);
+      if (usersInStore.users.length) {
+        const searchedUsers = usersInStore.users.filter((user) =>
+          user.username.includes(searchName.value)
+        );
+        setUsers(searchedUsers);
+      }
     } else {
       if (usersInStore.users.length) {
         setUsers(usersInStore.users);
@@ -61,7 +63,7 @@ const HomeNavBar = ({ setSort, setOrder, users, setUsers }) => {
             aria-label="Search"
           />
         </Form>
-        <AdvanceSearch setUsers={setUsers} />
+        <AdvanceSearch originalUsers={originalUsers} />
       </Container>
     </Navbar>
   );

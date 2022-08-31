@@ -102,14 +102,14 @@ const usersReducer = (state = initialState, action) => {
   }
 };
 
-const usersFetchSuccess = (users) => {
+export const usersFetchSuccess = (users) => {
   return {
     type: USERS_FETCHED_SUCCESS,
     payload: users,
   };
 };
 
-export const updateStoreUser = (updatedUser, type) => {
+const updateStoreUser = (updatedUser, type) => {
   return {
     type,
     payload: updatedUser,

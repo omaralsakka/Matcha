@@ -16,11 +16,12 @@ const Home = () => {
   const [users, setUsers] = useState([]);
   const [sort, setSort] = useState(false);
   const [order, setOrder] = useState("ascending");
-
+  const [originalUsers, setOriginalUsers] = useState([]);
   useEffect(() => {
     if (user) {
       dispatch(getUsersByCountry(user.country, user)).then((resp) => {
         setUsers(resp);
+        setOriginalUsers(resp);
       });
     }
   }, [dispatch, user]);
@@ -55,7 +56,7 @@ const Home = () => {
             setSort={setSort}
             setOrder={setOrder}
             setUsers={setUsers}
-            users={users}
+            originalUsers={originalUsers}
           />
           {users.length ? (
             <Container>

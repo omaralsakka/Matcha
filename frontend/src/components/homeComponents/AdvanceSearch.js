@@ -1,17 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Offcanvas, Form, Spinner, Container } from "react-bootstrap";
 import { useStoreUser, useStoreUsers } from "../../utils/getStoreStates";
 
 import LocationSearch from "./advanceSearchComponents/LocationSearch";
 import TagsInput from "../userInfoForms/TagsInput";
 import InputRange from "react-input-range";
-import { updateStoreUser } from "../../reducers/usersReducer";
-import { USERS_FETCHED_SUCCESS } from "../../actions/types";
+import { usersFetchSuccess } from "../../reducers/usersReducer";
 import { useDispatch } from "react-redux";
 
-const AdvanceSearch = ({ setUsers }) => {
+const AdvanceSearch = ({ originalUsers }) => {
   const [show, setShow] = useState(false);
-  const [searchOn, setSearchOn] = useState(false);
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const { user } = useStoreUser();
@@ -29,10 +28,6 @@ const AdvanceSearch = ({ setUsers }) => {
       max: 60,
     },
   });
-
-  useEffect(() => {
-    setSearchOn(false);
-  }, []);
 
   const handleSearch = () => {
     let filteredUsers = usersInStore.users;
@@ -59,13 +54,12 @@ const AdvanceSearch = ({ setUsers }) => {
         });
       }
     }
-    dispatch(updateStoreUser(filteredUsers, USERS_FETCHED_SUCCESS));
-    // setUsers(filteredUsers);
+    dispatch(usersFetchSuccess(filteredUsers));
   };
 
   const handleReset = () => {
     setTags([]);
-    setUsers(usersInStore.users);
+    dispatch(usersFetchSuccess(originalUsers));
     const defaultRanges = {
       ageValues: {
         min: 21,
@@ -79,21 +73,9 @@ const AdvanceSearch = ({ setUsers }) => {
     setRanges(defaultRanges);
   };
 
-  const submitSearch = () => {
-    setSearchOn(true);
-    handleSearch();
-  };
-
-  // useEffect(() => {
-  //   if (usersInStore.users) {
-  //     if (searchOn) {
-  //       handleSearch();
-  //     }
-  //   }
-  // }, [usersInStore.users]);
-
   if (!user || !usersInStore) {
     return <Spinner />;
+  } else {
   }
   return (
     <>
@@ -142,7 +124,7 @@ const AdvanceSearch = ({ setUsers }) => {
 
             <div className="d-flex gap-3 mt-5">
               <Button
-                onClick={submitSearch}
+                onClick={handleSearch}
                 size="sm"
                 variant="outline-primary"
               >
