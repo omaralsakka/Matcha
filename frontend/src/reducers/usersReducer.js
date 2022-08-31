@@ -158,14 +158,12 @@ export const getUsersByCountry = (country, user) => {
   };
 };
 
-export const likeUser = (likedUserId, likedById) => {
+export const likeUser = (likedUserId, likedById, userEmail, loggedUsername) => {
   return async (dispatch) => {
     try {
-      const usersIds = { likedUserId, likedById };
-      const updatedUser = await likeUserService(usersIds);
-
+      const usersIds = { likedUserId, likedById, userEmail, loggedUsername};
+      const updatedUser = await likeUserService(usersIds); // change luke made for notification (sometimes might return string instead of actual updated user) might affect dispatch(likeUserSuccess) in reducer
       dispatch(likeUserSuccess(updatedUser));
-
       return updatedUser;
     } catch (error) {
       dispatch(usersReducerError(error.message));
@@ -175,13 +173,12 @@ export const likeUser = (likedUserId, likedById) => {
   };
 };
 
-export const disLikeUser = (likedUserId, likedById) => {
+export const disLikeUser = (likedUserId, likedById, userEmail, loggedUsername) => {
   return async (dispatch) => {
     try {
-      const usersIds = { likedUserId, likedById };
+      const usersIds = { likedUserId, likedById, userEmail, loggedUsername};
       const updatedUser = await dislikeUserService(usersIds);
       dispatch(disLikeUserSuccess(updatedUser));
-
       return updatedUser;
     } catch (error) {
       console.error(error.message);

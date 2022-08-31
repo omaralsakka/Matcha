@@ -20,13 +20,12 @@ const LikeButton = ({
 
   const likePerson = () => {
     if (liked) {
-      dispatch(disLikeUser(user.user_id, loggedUserId));
+      dispatch(disLikeUser(user.user_id, loggedUserId, user.email, loggedUsername));
       setHeart(heartOutline);
       setFameRate(fameRate - 1);
       setLiked(false);
     } else {
-      dispatch(likeUser(user.user_id, loggedUserId));
-      sendNotificationService(user.email, loggedUsername, 1);
+      dispatch(likeUser(user.user_id, loggedUserId,  user.email, loggedUsername));
       setHeart(heartInline);
       setFameRate(fameRate + 1);
       setLiked(true);

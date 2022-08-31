@@ -10,3 +10,5 @@ export const sendNotificationService = async (to, from, type) => {
 	const response = await axios.post(notifUrl, recipents); 
 	return response.data;
 };
+
+export default sendNotificationService;

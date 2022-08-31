@@ -119,7 +119,7 @@ const App = () => {
               path="/settings"
               element={<Settings setLoggedUser={setLoggedUser} />}
             />
-          <Route path="/chat" element={<Chat />} />
+          <Route path="/chat/:id" element={<Chat />} />
           </Route>
           <Route path="/terms" element={<Terms />} />
           <Route path="/about" element={<About />} />

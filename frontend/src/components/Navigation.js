@@ -40,7 +40,7 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
             </Link>
             <Nav.Link onClick={handleShowCanvas}>Matches</Nav.Link>
           </Nav>
-          {/*  <Notifications /> */}{" "}
+           <Notifications />{" "}
           {/* turned off for now, makes the app slower */}
           <Navbar.Collapse className="justify-content-end">
             <Nav.Item className="mx-3">
