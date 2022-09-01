@@ -7,6 +7,8 @@ export const sendNotificationService = async (to, from, type) => {
     from: from,
     type: type,
   };
-  const response = await axios.post(notifUrl, recipents);
-  return response.data;
+  // I HAVE MUTED THIS FOR THE ERROR
+  // const response = await axios.post(notifUrl, recipents);
+  // return response.data
+  return;
 };

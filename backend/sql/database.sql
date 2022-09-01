@@ -26,7 +26,7 @@ CREATE TABLE users(
     reports_by INT [],
 
     status VARCHAR (150),
-    last_logged_time TIMESTAMP WITHOUT TIME ZONE
+    last_logged_time TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()
 );
 
 CREATE TABLE user_verify(
