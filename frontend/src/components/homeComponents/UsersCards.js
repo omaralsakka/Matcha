@@ -53,7 +53,9 @@ const UsersCards = ({
     if (!open) {
       const userIds = { viewedUser: user.user_id, loggedUser: loggedUserId };
       viewUserService(userIds);
-      sendNotificationService(user.email, loggedUsername, 2);
+
+      // ----- muted the sendNotification as its causing error at the moment -----
+      // sendNotificationService(user.email, loggedUsername, 2);
       getDistanceService(loggedUserCoords, user.coordinates).then((resp) => {
         setDistance(resp);
       });

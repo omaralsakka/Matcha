@@ -132,6 +132,8 @@ usersRouter.post("/viewedUser", async (request, response) => {
         error: "inserting view error",
       });
     }
+  } else {
+    response.status(200).send({ message: "user viewed" });
   }
 });
 
