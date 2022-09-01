@@ -358,23 +358,27 @@ userRouter.get("/user-connections", async (request, response) => {
     decodedToken.id
   );
   if (queryResponse.length) {
-    if (queryResponse[0].connections.length) {
-      const users = await getConnections(queryResponse[0].connections);
-      if (users.length) {
-        response.status(200).send(users);
+    if (queryResponse[0].connections) {
+      if (queryResponse[0].connections.length) {
+        const users = await getConnections(queryResponse[0].connections);
+        if (users.length) {
+          response.status(200).send(users);
+        } else {
+          response.status(401).json({
+            error: "users id error in fetching connections",
+          });
+        }
       } else {
-        response.status(401).json({
-          error: "users id error in fetching connections",
-        });
+        if (queryResponse[0].connections.length === 0) {
+          response.status(200).send([]);
+        } else {
+          response.status(401).json({
+            error: "connections query error",
+          });
+        }
       }
     } else {
-      if (queryResponse[0].connections.length === 0) {
-        response.status(200).send([]);
-      } else {
-        response.status(401).json({
-          error: "connections query error",
-        });
-      }
+      response.status(200).send([]);
     }
   } else {
     response.status(401).json({
@@ -420,7 +424,7 @@ userRouter.post("/user-status", async (request, response) => {
               obj.userId
             );
           }
-          response.status(200).json({
+          response.status(200).send({
             message: `${obj.status}`,
           });
           break;
@@ -428,20 +432,16 @@ userRouter.post("/user-status", async (request, response) => {
           if (userStatus.status !== "offline") {
             queryResponse = await infoQueries.setUserOffline(obj.userId);
           }
-          response.status(200).json({
+          response.status(200).send({
             message: `${obj.status}`,
           });
           break;
       }
     } else {
-      response.status(200).json({
-        message: "user unknown",
-      });
+      response.status(200).send({ message: "user status unknown" });
     }
   } else {
-    response.status(200).json({
-      message: "user status unknown",
-    });
+    response.status(200).send({ message: "user status unknown" });
   }
 });
 
