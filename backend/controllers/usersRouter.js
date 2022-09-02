@@ -329,4 +329,24 @@ usersRouter.get("/user-id/:id", async (request, response) => {
   }
 });
 
+usersRouter.post("/chatrooms", async (request, response) => {
+	const body = request.body;
+	  // do what you were supposed to do so check if a room exists if not create one 
+	  const params1 = [body.username, body.match_username]
+	  const params2 = [body.match_username, body.username]
+	  const queryResponse = await queryTools.selectChats(params1, params2);
+	  if(queryResponse.length === 0) {
+		const insertResponse = await queryTools.insertChat(params1);
+		if(insertResponse.length) {
+		  response.status(200).send(insertResponse[0]);
+		} else {
+		  response.status(404).json({
+			  error: "was not able to insert new chatroom",
+		  });
+		}
+	  } else {
+		response.status(200).send(queryResponse[0]);
+	}
+});
+
 module.exports = usersRouter;

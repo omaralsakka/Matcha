@@ -228,6 +228,33 @@ const setSearchDefault = async (user_id) => {
   }
 };
 
+const selectChats = async (params1, params2) => {
+	try {
+	  const queryResponse = await pool.query(
+		  "SELECT * FROM chats WHERE users = $1 OR users = $2", // maybe like here
+		  [params1, params2]
+	    );
+	  return queryResponse.rows;
+	} catch (error) {
+	  console.error(error.message);
+	  return error.message;
+	}
+}
+
+const insertChat = async (params) => {
+	const roomName = `${params[0]}-${params[1]}`
+	try {
+		const queryResponse = await pool.query(
+			"INSERT INTO chats(users, room_name) VALUES($1, $2) RETURNING *",
+			[params, roomName]
+		  );
+		return queryResponse.rows;
+	  } catch (error) {
+		console.error(error.message);
+		return error.message;
+	  }
+}
+
 module.exports = {
   selectAllTable,
   selectOneQualifier,
@@ -241,4 +268,6 @@ module.exports = {
   setSearchDefault,
   updateOneQualifier,
   selectColOneQualifier,
+  selectChats,
+  insertChat,
 };

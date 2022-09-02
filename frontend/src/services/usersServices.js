@@ -71,3 +71,9 @@ export const getUserById = async (userId) => {
   const response = await axios.get(`${usersUrl}/user-id/${userId}`);
   return response.data;
 };
+
+export const chatService = async (matchedObj) => {
+	const response = await axios.post(`${usersUrl}/chatrooms`, matchedObj);
+	console.log(response);
+	return response.data;
+} 

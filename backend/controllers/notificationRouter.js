@@ -17,8 +17,6 @@ notificationRouter.post("/", async (request, response) => {
     notifString = "unliked your profile... You are now unconnected.";
   }
   try {
-    console.log("this is body: ", body);
-    console.log("this is notifString: ", notifString);
     const notifResponse = await axios.post(
       "https://api.engagespot.co/v3/notifications",
       {
