@@ -39,7 +39,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <Container className="mb-3 mt-5 shadow rounded p-sm-4 col-sm-6">
+    <Container className="mb-3 shadow rounded p-sm-4 col-sm-6">
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3 form-logo">
           <img className="form-logo-img" alt="" src={logo} />

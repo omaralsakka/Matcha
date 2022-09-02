@@ -68,7 +68,7 @@ const App = () => {
   if (!loggedUser) {
     return (
       <>
-        <Container className="min-vh-100" fluid>
+        <Container className="min-vh-100 blobs-background" fluid>
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route

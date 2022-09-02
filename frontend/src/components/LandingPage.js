@@ -23,7 +23,7 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <Container className="blobs-background bg-transparent" fluid>
+    <Container className="bg-transparent" fluid>
       <Container className="d-flex vh-100 align-items-center">
         <Container>
           <Card className="bg-transparent border-0">
@@ -40,7 +40,7 @@ const LandingPage = () => {
                   </Container>
                 </Row>
                 <Row sm={2}>
-                  <Container className="d-flex gap-4 justify-content-center">
+                  <Container className="d-flex gap-4 justify-content-center ">
                     <Link to="/signup">
                       <Button variant="outline-dark">Signup</Button>
                     </Link>
