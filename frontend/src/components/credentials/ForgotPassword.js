@@ -4,10 +4,11 @@ import {
   getCredentials,
   forgotPassWordService,
 } from "../../services/userServices";
-import { Form, Button, Container, Alert } from "react-bootstrap";
+import { Form, Button, Container } from "react-bootstrap";
 import logo from "../../media/logo-black.png";
 import { Link } from "react-router-dom";
 import { checkEmail } from "../../utils/InputChecks";
+import AlertInput from "../../utils/AlertInput";
 
 const ForgotPassword = () => {
   const email = UseField("email", "");
@@ -55,9 +56,7 @@ const ForgotPassword = () => {
         {emailVerify === false || email.value.length === 0 ? (
           <></>
         ) : (
-          <Alert variant="danger">
-            This <strong>email</strong> does not exist, please try again.
-          </Alert>
+          <AlertInput variant="danger" text="This email does not exist" />
         )}
         <Button
           disabled={checkEmail(email.value) ? false : true}

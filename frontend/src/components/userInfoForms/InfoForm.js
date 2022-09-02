@@ -1,11 +1,11 @@
-import { Form, Button, Container, Alert } from "react-bootstrap";
+import { Form, Button, Container } from "react-bootstrap";
 import UseField from "../UseField";
-// import { InputTags } from "react-bootstrap-tagsinput";
 import "react-bootstrap-tagsinput/dist/index.css";
 import { useState } from "react";
 import { infoFormService } from "../../services/userServices";
 import useLocation from "../../utils/locationTool";
 import TagsInput from "./TagsInput";
+import AlertInput from "../../utils/AlertInput";
 
 const InfoForm = ({ setVisibleForm }) => {
   const gender = UseField("text", "");
@@ -37,18 +37,16 @@ const InfoForm = ({ setVisibleForm }) => {
     <>
       <Container className="signup-container mb-3 mt-5">
         {location.location.length === 0 ? (
-          <Alert variant="warning" className="location-alert">
-            Please accept the use of <strong>location services</strong> for
-            optimal experience! Other users will be recomended based on your
-            location.
-          </Alert>
+          <AlertInput
+            variant="warning"
+            text="Please accept the use of location services for
+          //   optimal experience!"
+          />
         ) : (
-          <Alert
+          <AlertInput
             variant="success"
-            className="location-alert location-alert-success"
-          >
-            Thank you for sharing your location!
-          </Alert>
+            text="Thank you for sharing your location!"
+          />
         )}
         <Form onSubmit={handleSubmit}>
           <Form.Group className="text-center mb-3">
@@ -80,16 +78,6 @@ const InfoForm = ({ setVisibleForm }) => {
             <Form.Text muted>max length 300 characters</Form.Text>
           </Form.Group>
           <TagsInput tags={tags} setTags={setTags} />
-          {/* check that tags are working */}
-          {/* <Form.Group className="mb-3">
-            <Form.Label>Tags</Form.Label>
-            <InputTags
-              maxLength={50}
-              values={tags}
-              onTags={(value) => setTags(value.values)}
-            />
-            <Form.Text muted>max length 20 characters</Form.Text>
-          </Form.Group> */}
           <Button
             variant="dark"
             className="landing-signup-Button"

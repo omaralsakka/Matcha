@@ -1,6 +1,6 @@
 import UseField from "../UseField";
 import { useState, useEffect } from "react";
-import { Container, Form, Button, Alert } from "react-bootstrap";
+import { Container, Form, Button } from "react-bootstrap";
 import { useStoreUser } from "../../utils/getStoreStates";
 import LoadingScreen from "../LoadingScreen";
 import {
@@ -20,6 +20,7 @@ import { useDispatch } from "react-redux";
 import useLocation from "../../utils/locationTool";
 import getCapital from "../../utils/getCapital";
 import allCountries from "../../utils/allCountries";
+import AlertInput from "../../utils/AlertInput";
 
 const Settings = ({ setLoggedUser }) => {
   const { user } = useStoreUser();
@@ -189,10 +190,10 @@ const Settings = ({ setLoggedUser }) => {
             <Form.Label>Change username</Form.Label>
             <Form.Control {...username} placeholder={user.username} />
             {userVerify === 0 ? (
-              <Alert variant="danger" className="error-alert mt-4">
-                This <strong>username</strong> is already in use! Please choose
-                an other one.
-              </Alert>
+              <AlertInput
+                variant="danger"
+                text="This username is already in use!"
+              />
             ) : (
               <></>
             )}
@@ -206,10 +207,10 @@ const Settings = ({ setLoggedUser }) => {
             <Form.Label>Change email</Form.Label>
             <Form.Control {...email} placeholder={user.email} />
             {emailVerify === 0 ? (
-              <Alert variant="danger" className="error-alert mt-4">
-                This <strong>email</strong> is already in use! Please choose an
-                other one.
-              </Alert>
+              <AlertInput
+                variant="danger"
+                text="This email is already in use!"
+              />
             ) : (
               <></>
             )}
@@ -281,9 +282,7 @@ const Settings = ({ setLoggedUser }) => {
             {verifyOldPw === 1 || oldPassword.value.length === 0 ? (
               <></>
             ) : (
-              <Alert variant="danger" className="username-alert mt-4">
-                <strong>Password</strong> incorrect!
-              </Alert>
+              <AlertInput variant="danger" text="Incorrect password" />
             )}
           </Form.Group>
           <Button
