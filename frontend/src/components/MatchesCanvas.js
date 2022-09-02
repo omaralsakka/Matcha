@@ -14,7 +14,7 @@ const MatchesCanvas = ({ showCanvas, setShowCanvas }) => {
   const navigate = useNavigate();
 
   const handleChat = (id) => {
-	navigate("/chat");
+	navigate(`/chat/${id}`);
   }
 
   const [showModal, setShowModal] = useState(false);

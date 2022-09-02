@@ -38,7 +38,6 @@ const Home = () => {
 
   useEffect(() => {
     if (sort) {
-      console.log(sort, order);
       if (usersInStore.users) {
         if (usersInStore.users.length) {
           setUsers(sortUsers(usersInStore.users, sort, order));

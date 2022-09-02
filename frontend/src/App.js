@@ -26,8 +26,8 @@ const App = () => {
   const [token, setToken] = useState("");
   const { decodedToken, isExpired } = useJWT(token);
 
-  // This function to add random users, BECAREFUL this will add plenty of users
-  // getRandomUsers();
+// This function to add random users, BECAREFUL this will add plenty of users
+//  getRandomUsers();
 
   useEffect(() => {
     const loggedUserJson = window.localStorage.getItem("LoggedMatchaUser");
@@ -119,7 +119,7 @@ const App = () => {
                 path="/settings"
                 element={<Settings setLoggedUser={setLoggedUser} />}
               />
-              <Route path="/chat" element={<Chat />} />
+              <Route path="/chat/:id" element={<Chat />} /> 
             </Route>
             <Route path="/terms" element={<Terms />} />
             <Route path="/about" element={<About />} />
