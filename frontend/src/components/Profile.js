@@ -25,10 +25,10 @@ const Profile = () => {
     return <LoadingScreen />;
   } else {
     return (
-      <Container className="mt-5">
+      <Container className="p-sm-3 p-0">
         <h1>@{user.username}</h1>
         <hr />
-        <Card className="mb-3 mx-auto w-100">
+        <Card className="mb-3 mx-auto w-100 shadow">
           <Row className="no-gutters mb-3 ">
             <Col md={4}>
               <ProfileImagesCarousel userPictures={userPictures} />

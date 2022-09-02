@@ -87,7 +87,8 @@ const Signup = () => {
   };
 
   return (
-    <Container className="signup-container mb-3 mt-3">
+    // <Container className="signup-container mb-3 mt-5">
+    <Container className="mb-3 mt-5 shadow rounded p-sm-4 col-sm-6">
       {formSubmit ? (
         <CheckEmail setFormSubmit={setFormSubmit} />
       ) : (
@@ -209,9 +210,11 @@ const Signup = () => {
             </Button>
           </Form>
           <hr />
-          <p>
-            Have an account? <Link to="/login">Log In</Link>
-          </p>
+          <Container className="p-1">
+            <p>
+              Have an account? <Link to="/login">Log In</Link>
+            </p>
+          </Container>
         </>
       )}
     </Container>

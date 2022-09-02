@@ -182,7 +182,7 @@ const Settings = ({ setLoggedUser }) => {
     return <LoadingScreen />;
   } else {
     return (
-      <Container className="mt-5 mb-3 col-sm-6">
+      <Container className="mt-3 mb-3 col-sm-6">
         <h1>Settings</h1>
         <hr />
         <Form onSubmit={handleSubmit} className="mb-3">

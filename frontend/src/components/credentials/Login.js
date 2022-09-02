@@ -35,7 +35,7 @@ const Login = ({ setLoggedUser }) => {
     password.onChange(e);
   };
   return (
-    <Container className="signup-container mt-5">
+    <Container className="mb-3 mt-5 shadow rounded p-sm-4 col-sm-6 mt-5">
       <Form onSubmit={handleLogin}>
         <Form.Group className="mb-3 form-logo">
           <img className="form-logo-img" alt="" src={logo} />
@@ -76,9 +76,11 @@ const Login = ({ setLoggedUser }) => {
         <Link to="/forgot-password">Forgot password?</Link>
       </div>
       <hr />
-      <p>
-        Don't have an account? <Link to="/signup">Sign Up</Link>
-      </p>
+      <Container className="p-1">
+        <p>
+          Don't have an account? <Link to="/signup">Sign Up</Link>
+        </p>
+      </Container>
     </Container>
   );
 };
