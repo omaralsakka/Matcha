@@ -1,10 +1,11 @@
-import { Form, Button, Container, Alert } from "react-bootstrap";
+import { Form, Button, Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import UseField from "../UseField";
 import logo from "../../media/logo-black.png";
 import { useState, useEffect } from "react";
 import FormCheck from "../../utils/FormCheck";
 import checkInputs from "../../utils/InputChecks";
+import AlertInput from "../../utils/AlertInput";
 import {
   checkUserName,
   checkEmail,
@@ -64,18 +65,6 @@ const Signup = () => {
     });
   }, [username.value, email.value]);
 
-  /*  useEffect(() => {
-    getCredentials({ type: "email" }).then((res) => {
-      let obj = res.find((o) => o.email === email.value);
-      setEmailVerify(1);
-      if (obj) {
-        if (obj.email === email.value) {
-          setEmailVerify(0);
-        }
-      }
-    });
-  }, [email.value]); */
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -110,21 +99,20 @@ const Signup = () => {
             <Form.Group className="mb-3">
               <Form.Label>Email</Form.Label>
               <Form.Control {...email} />
-              {checkEmail(email.value) || email.value.length === 0 ? (
-                <></>
-              ) : (
-                <Alert variant="danger" className="error-alert mt-4">
-                  <strong>Email</strong> invalid!
-                </Alert>
-              )}
               <Form.Text className="text-muted">
                 We'll never share your email with anyone else.
               </Form.Text>
+              {checkEmail(email.value) || email.value.length === 0 ? (
+                <></>
+              ) : (
+                <AlertInput variant="danger" text="Invalid email!" />
+              )}
+
               {emailVerify === 0 ? (
-                <Alert variant="danger" className="error-alert mt-4">
-                  This <strong>email</strong> is already in use! Please choose
-                  an other one.
-                </Alert>
+                <AlertInput
+                  variant="danger"
+                  text="This email is already in use!"
+                />
               ) : (
                 <></>
               )}
@@ -132,22 +120,21 @@ const Signup = () => {
             <Form.Group className="mb-3">
               <Form.Label>Username</Form.Label>
               <Form.Control {...username} />
-              {checkUserName(username.value) || username.value.length === 0 ? (
-                <></>
-              ) : (
-                <Alert variant="danger" className="error-alert mt-4">
-                  <strong>Username</strong> invalid!
-                </Alert>
-              )}
               <Form.Text className="text-muted">
                 Username should contain letters and numbers only with minimum
                 length of 3
               </Form.Text>
+              {checkUserName(username.value) || username.value.length === 0 ? (
+                <></>
+              ) : (
+                <AlertInput variant="danger" text="Invalid username" />
+              )}
+
               {userVerify === 0 ? (
-                <Alert variant="danger" className="error-alert mt-4">
-                  This <strong>username</strong> is already in use! Please
-                  choose an other one.
-                </Alert>
+                <AlertInput
+                  variant="danger"
+                  text="This username is already in use!"
+                />
               ) : (
                 <></>
               )}
@@ -171,9 +158,7 @@ const Signup = () => {
               {checkPassword(password.value) || password.value.length === 0 ? (
                 <></>
               ) : (
-                <Alert variant="danger" className="username-alert mt-4">
-                  <strong>Password</strong> invalid!
-                </Alert>
+                <AlertInput variant="danger" text="Invalid password" />
               )}
               <Form.Text className="text-muted">
                 Password should contain at least 1 uppercase, 1 lowercase
