@@ -10,19 +10,16 @@ body {
   background-attachment: fixed;
 }
 
-.landing-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100vh;
+.blobs-background {
+  background-image: url("./media/blobs.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
-.landing-page-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 10vw;
+.landing-page-box-shadow {
+  box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px,
+    rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px,
+    rgba(240, 46, 170, 0.05) 25px 25px;
 }
 
 .image-container {

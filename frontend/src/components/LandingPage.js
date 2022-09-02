@@ -1,4 +1,4 @@
-import { Button, Container, Nav, Navbar } from "react-bootstrap";
+import { Button, Card, Col, Container, Image, Row } from "react-bootstrap";
 import img1 from "../media/cp1.jpg";
 import img2 from "../media/cp2.jpg";
 import img3 from "../media/cp3.jpg";
@@ -23,30 +23,37 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <Container className="landing-page d-flex flex-column" fluid>
-      <Container className="landing-page-content">
-        <div className="image-container mx-5">
-          <div className="image-div">
-            <img alt="" src={cardImg} className="mobile-Img"></img>
-          </div>
-        </div>
-        <div className="center-items">
-          <div className="logo-div">
-            <img alt="" src={logo} className="logo-Img"></img>
-          </div>
-          <Container className="d-flex gap-3 justify-content-center">
-            <Link to="/signup">
-              <Button variant="dark" className="landing-signup-Button">
-                Signup
-              </Button>
-            </Link>
-            <Link to="/login">
-              <Button variant="dark" className="landing-signup-Button">
-                Login
-              </Button>
-            </Link>
-          </Container>
-        </div>
+    <Container className="blobs-background bg-transparent" fluid>
+      <Container className="d-flex vh-100 align-items-center">
+        <Container>
+          <Card className="bg-transparent border-0">
+            <Row>
+              <Col md={5} className="p-3">
+                <Container className="p-0 w-75 landing-page-box-shadow rounded">
+                  <Card.Img src={cardImg} className="w-100" />
+                </Container>
+              </Col>
+              <Col md={5}>
+                <Row sm={2}>
+                  <Container className="w-75">
+                    <Image src={logo} fluid />
+                  </Container>
+                </Row>
+                <Row sm={2}>
+                  <Container className="d-flex gap-4 justify-content-center">
+                    <Link to="/signup">
+                      <Button variant="outline-dark">Signup</Button>
+                    </Link>
+
+                    <Link to="/login">
+                      <Button variant="outline-dark">Login</Button>
+                    </Link>
+                  </Container>
+                </Row>
+              </Col>
+            </Row>
+          </Card>
+        </Container>
       </Container>
     </Container>
   );

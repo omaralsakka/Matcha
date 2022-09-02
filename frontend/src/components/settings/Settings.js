@@ -1,6 +1,6 @@
 import UseField from "../UseField";
 import { useState, useEffect } from "react";
-import { Container, Form, Button } from "react-bootstrap";
+import { Container, Form, Button, Modal } from "react-bootstrap";
 import { useStoreUser } from "../../utils/getStoreStates";
 import LoadingScreen from "../LoadingScreen";
 import {
@@ -8,6 +8,7 @@ import {
   verifyOldPassword,
   getCredentials,
   changeEmailService,
+  deleteUserAccount,
 } from "../../services/userServices";
 import {
   checkUserName,
@@ -21,6 +22,7 @@ import useLocation from "../../utils/locationTool";
 import getCapital from "../../utils/getCapital";
 import allCountries from "../../utils/allCountries";
 import AlertInput from "../../utils/AlertInput";
+import { useNavigate } from "react-router-dom";
 
 const Settings = ({ setLoggedUser }) => {
   const { user } = useStoreUser();
@@ -40,6 +42,16 @@ const Settings = ({ setLoggedUser }) => {
   const countries = allCountries();
   let relocatedPosition = useLocation();
   /* let relocatedPosition = ""; */
+
+  const [showModal, setShowModal] = useState(false);
+  const deletePassword = UseField("password", "");
+  const [modalAlert, setModalAlert] = useState(false);
+  const handleClose = () => {
+    setShowModal(false);
+    setModalAlert(false);
+  };
+  const handleShow = () => setShowModal(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getCredentials({ type: "username" }).then((res) => {
@@ -178,137 +190,201 @@ const Settings = ({ setLoggedUser }) => {
     }
   };
 
+  const handleDeleteAccount = () => {
+    verifyOldPassword(deletePassword.value, user.user_id).then((res) => {
+      if (res) {
+        if (res === "incorrect") {
+          setModalAlert(true);
+        } else {
+          setModalAlert(false);
+          deleteUserAccount(user.user_id);
+        }
+      }
+    });
+  };
+
+  // WORKING ON THIS NOW ----------
+
   if (!user) {
     return <LoadingScreen />;
   } else {
     return (
-      <Container className="mt-3 mb-3 col-sm-6">
-        <h1>Settings</h1>
-        <hr />
-        <Form onSubmit={handleSubmit} className="mb-3">
-          <Form.Group className="mb-3">
-            <Form.Label>Change username</Form.Label>
-            <Form.Control {...username} placeholder={user.username} />
-            {userVerify === 0 ? (
-              <AlertInput
-                variant="danger"
-                text="This username is already in use!"
-              />
-            ) : (
-              <></>
-            )}
-            <Form.Text className="text-muted">
-              Username should contain letters and numbers only with minimum
-              length of 3
-            </Form.Text>
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Change email</Form.Label>
-            <Form.Control {...email} placeholder={user.email} />
-            {emailVerify === 0 ? (
-              <AlertInput
-                variant="danger"
-                text="This email is already in use!"
-              />
-            ) : (
-              <></>
-            )}
-            <Form.Text className="text-muted">
-              We'll never share your email with anyone else.
-            </Form.Text>
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Change full name</Form.Label>
-            <Form.Control {...fullname} placeholder={user.fullname} />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Relocate location</Form.Label>
-            <br />
-            <Button className="mb-1" onClick={useHandleRelocation}>
-              Relocate
-            </Button>
-            <br />
-            <Form.Text>
-              Click to relocate your position (access to location devices has to
-              be enabled)
-            </Form.Text>
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Change country</Form.Label>
-            <Form.Select {...country}>
-              <option value="">...</option>
-              {countries.map((country) => (
-                <option key={country} value={country}>
-                  {country}
-                </option>
-              ))}
-            </Form.Select>
-            <Form.Text>
-              If you choose to use this option you will be placed to the capital
-              city of the chosen country!
-            </Form.Text>
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Change password</Form.Label>
-            <Form.Control
-              {...newPassword}
-              type={passType}
-              placeholder="new password"
-            />
-            <Form.Text className="text-muted">
-              Password should contain at least 1 uppercase, 1 lowercase letter,
-              1 number and 1 special character. Minimum length 8.
-            </Form.Text>
-            <Form.Check
-              type="checkbox"
-              label="show password"
-              onClick={() =>
-                passType === "password"
-                  ? setPassType("text")
-                  : setPassType("password")
-              }
-            />
-          </Form.Group>
-          <Form.Group className="mb-3 mt-5">
-            <Form.Label>
-              Insert your current password to confirm changes.
+      <>
+        <Container className="mt-3 mb-5 col-sm-6">
+          <h1>Settings</h1>
+          <hr />
+          <Form onSubmit={handleSubmit} className="mb-3 p-1">
+            <Form.Label className="fs-5 mb-3">
+              <strong>Personal Info:</strong>
             </Form.Label>
-            <Form.Control {...oldPassword} />
-            {verifyOldPw === 1 || oldPassword.value.length === 0 ? (
-              <></>
-            ) : (
-              <AlertInput variant="danger" text="Incorrect password" />
+
+            <Form.Group className="mb-3">
+              <Form.Label>Change full name</Form.Label>
+              <Form.Control {...fullname} placeholder={user.fullname} />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Change email</Form.Label>
+              <Form.Control {...email} placeholder={user.email} />
+              {emailVerify === 0 ? (
+                <AlertInput
+                  variant="danger"
+                  text="This email is already in use!"
+                />
+              ) : (
+                <></>
+              )}
+              <Form.Text className="text-muted">
+                We'll never share your email with anyone else.
+              </Form.Text>
+            </Form.Group>
+
+            <hr />
+            <Form.Label className="fs-5 mb-3">
+              <strong>Account Info:</strong>
+            </Form.Label>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Change username</Form.Label>
+              <Form.Control {...username} placeholder={user.username} />
+              {userVerify === 0 ? (
+                <AlertInput
+                  variant="danger"
+                  text="This username is already in use!"
+                />
+              ) : (
+                <></>
+              )}
+              <Form.Text className="text-muted">
+                Username should contain letters and numbers only with minimum
+                length of 3
+              </Form.Text>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Change password</Form.Label>
+              <Form.Control
+                {...newPassword}
+                type={passType}
+                placeholder="new password"
+              />
+              <Form.Text className="text-muted">
+                Password should contain at least 1 uppercase, 1 lowercase
+                letter, 1 number and 1 special character. Minimum length 8.
+              </Form.Text>
+              <Form.Check
+                type="checkbox"
+                label="show password"
+                onClick={() =>
+                  passType === "password"
+                    ? setPassType("text")
+                    : setPassType("password")
+                }
+              />
+            </Form.Group>
+
+            <hr />
+            <Form.Label className="fs-5 mb-3">
+              <strong>Location settings:</strong>
+            </Form.Label>
+            <Form.Group className="mb-3">
+              <Form.Label>Relocate location</Form.Label>
+              <br />
+              <Button className="mb-1" onClick={useHandleRelocation}>
+                Relocate
+              </Button>
+              <br />
+              <Form.Text>
+                Click to relocate your position (access to location devices has
+                to be enabled)
+              </Form.Text>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Change country</Form.Label>
+              <Form.Select {...country}>
+                <option value="">...</option>
+                {countries.map((country) => (
+                  <option key={country} value={country}>
+                    {country}
+                  </option>
+                ))}
+              </Form.Select>
+              <Form.Text>
+                If you choose to use this option you will be placed to the
+                capital city of the chosen country!
+              </Form.Text>
+            </Form.Group>
+
+            <hr />
+            <Form.Group className="mb-3">
+              <Form.Label>
+                Insert your current password to confirm changes.
+              </Form.Label>
+              <Form.Control {...oldPassword} />
+              {verifyOldPw === 1 || oldPassword.value.length === 0 ? (
+                <></>
+              ) : (
+                <AlertInput variant="danger" text="Incorrect password" />
+              )}
+            </Form.Group>
+            <Button
+              disabled={
+                (checkUserName(username.value) ||
+                  checkFullName(fullname.value) ||
+                  checkEmail(email.value) ||
+                  country.value.length ||
+                  relocate === 1 ||
+                  checkPassword(newPassword.value)) &&
+                verifyOldPw === 1
+                  ? false
+                  : true
+              }
+              className="form-button"
+              variant="primary"
+              type="submit"
+            >
+              Save
+            </Button>
+          </Form>
+          <Container className="p-0 px-1">
+            <Button variant="danger" onClick={handleShow}>
+              Delete Account
+            </Button>
+            <p className="text-muted fs-6 mt-2">
+              This action is irreversible, all your data will be removed
+            </p>
+          </Container>
+        </Container>
+
+        <Modal show={showModal} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Delete Account</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Are you sure you want to delete your account? <br />
+            <Container className="mt-3 px-0">
+              <Form.Text>Please enter your password to confirm</Form.Text>
+              <Form.Control {...deletePassword} />
+            </Container>
+            {modalAlert && (
+              <AlertInput variant="danger" text="Invalid password!" />
             )}
-          </Form.Group>
-          <Button
-            disabled={
-              (checkUserName(username.value) ||
-                checkFullName(fullname.value) ||
-                checkEmail(email.value) ||
-                country.value.length ||
-                relocate === 1 ||
-                checkPassword(newPassword.value)) &&
-              verifyOldPw === 1
-                ? false
-                : true
-            }
-            className="form-button"
-            variant="primary"
-            type="submit"
-          >
-            Save
-          </Button>
-        </Form>
-        <Button variant="danger">Delete Account</Button>
-        <p className="text-muted">
-          This action is irreversible, all your data will be removed
-        </p>
-      </Container>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button
+              disabled={checkPassword(deletePassword.value) ? false : true}
+              variant="danger"
+              onClick={handleDeleteAccount}
+            >
+              Confirm
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
     );
   }
 };

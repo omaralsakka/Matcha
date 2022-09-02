@@ -116,6 +116,22 @@ export const fetchConnections = async () => {
   }
 };
 
+export const deleteUserAccount = async (userId) => {
+  try {
+    const response = await axios.delete(`${userUrl}/delete-user/${userId}`);
+    if (response.data === "user-deleted") {
+      console.log("here");
+      window.localStorage.removeItem("LoggedMatchaUser");
+      window.location.assign("/");
+    }
+
+    return true;
+  } catch (error) {
+    console.error(error.message);
+    return error.message;
+  }
+};
+
 /* export const getUserService = async (userData) => {
 	const response = await axios.post(`${userUrl}/user-info`, userData);
 	return response.data;

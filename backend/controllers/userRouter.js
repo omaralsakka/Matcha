@@ -445,4 +445,32 @@ userRouter.post("/user-status", async (request, response) => {
   }
 });
 
+userRouter.delete("/delete-user/:id", async (request, response) => {
+  const sentId = request.params.id;
+  try {
+    const deletePictures = await queryTools.deleteOneQualifier(
+      "pictures",
+      "user_id",
+      sentId
+    );
+    const deleteConnections = await queryTools.deleteOneQualifier(
+      "connected",
+      "user_id",
+      sentId
+    );
+
+    const deleteUser = await queryTools.deleteOneQualifier(
+      "users",
+      "user_id",
+      sentId
+    );
+
+    response.status(200).send("user-deleted");
+  } catch (error) {
+    response.status(401).json({
+      "delete-user-error": error.message,
+    });
+  }
+});
+
 module.exports = userRouter;

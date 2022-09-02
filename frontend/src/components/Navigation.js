@@ -57,10 +57,10 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
               <Link to="/profile" className="nav-link">
                 Profile
               </Link>
+              <Nav.Link onClick={handleShowCanvas}>Matches</Nav.Link>
               <Link to="/settings" className="nav-link">
                 Settings
               </Link>
-              <Nav.Link onClick={handleShowCanvas}>Matches</Nav.Link>
               {/*  <Notifications /> */}{" "}
               {/* turned off for now, makes the app slower */}
               <Nav.Item className="mx-3 ms-md-auto d-none d-md-block">
