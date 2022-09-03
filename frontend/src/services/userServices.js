@@ -120,7 +120,6 @@ export const deleteUserAccount = async (userId) => {
   try {
     const response = await axios.delete(`${userUrl}/delete-user/${userId}`);
     if (response.data === "user-deleted") {
-      console.log("here");
       window.localStorage.removeItem("LoggedMatchaUser");
       window.location.assign("/");
     }

@@ -77,7 +77,11 @@ const Home = () => {
               <Container className="w-25">
                 <Image src={searchIcon} fluid />
               </Container>
-              <strong className="fs-1">No users found</strong>
+              <strong className="fs-1">
+                No users found
+                <br />
+                Try to change the settings in advanced search
+              </strong>
             </Container>
           )}
         </Container>

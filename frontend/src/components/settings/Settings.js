@@ -1,6 +1,6 @@
 import UseField from "../UseField";
 import { useState, useEffect } from "react";
-import { Container, Form, Button, Modal } from "react-bootstrap";
+import { Container, Form, Button } from "react-bootstrap";
 import { useStoreUser } from "../../utils/getStoreStates";
 import LoadingScreen from "../LoadingScreen";
 import {
@@ -8,7 +8,6 @@ import {
   verifyOldPassword,
   getCredentials,
   changeEmailService,
-  deleteUserAccount,
 } from "../../services/userServices";
 import {
   checkUserName,
@@ -22,7 +21,7 @@ import useLocation from "../../utils/locationTool";
 import getCapital from "../../utils/getCapital";
 import allCountries from "../../utils/allCountries";
 import AlertInput from "../../utils/AlertInput";
-import { useNavigate } from "react-router-dom";
+import DeleteAccount from "./DeleteAccount";
 
 const Settings = ({ setLoggedUser }) => {
   const { user } = useStoreUser();
@@ -42,16 +41,6 @@ const Settings = ({ setLoggedUser }) => {
   const countries = allCountries();
   let relocatedPosition = useLocation();
   /* let relocatedPosition = ""; */
-
-  const [showModal, setShowModal] = useState(false);
-  const deletePassword = UseField("password", "");
-  const [modalAlert, setModalAlert] = useState(false);
-  const handleClose = () => {
-    setShowModal(false);
-    setModalAlert(false);
-  };
-  const handleShow = () => setShowModal(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     getCredentials({ type: "username" }).then((res) => {
@@ -188,19 +177,6 @@ const Settings = ({ setLoggedUser }) => {
           }, "1000");
         });
     }
-  };
-
-  const handleDeleteAccount = () => {
-    verifyOldPassword(deletePassword.value, user.user_id).then((res) => {
-      if (res) {
-        if (res === "incorrect") {
-          setModalAlert(true);
-        } else {
-          setModalAlert(false);
-          deleteUserAccount(user.user_id);
-        }
-      }
-    });
   };
 
   // WORKING ON THIS NOW ----------
@@ -347,43 +323,8 @@ const Settings = ({ setLoggedUser }) => {
               Save
             </Button>
           </Form>
-          <Container className="p-0 px-1">
-            <Button variant="danger" onClick={handleShow}>
-              Delete Account
-            </Button>
-            <p className="text-muted fs-6 mt-2">
-              This action is irreversible, all your data will be removed
-            </p>
-          </Container>
+          <DeleteAccount userId={user.user_id} />
         </Container>
-
-        <Modal show={showModal} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Delete Account</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            Are you sure you want to delete your account? <br />
-            <Container className="mt-3 px-0">
-              <Form.Text>Please enter your password to confirm</Form.Text>
-              <Form.Control {...deletePassword} />
-            </Container>
-            {modalAlert && (
-              <AlertInput variant="danger" text="Invalid password!" />
-            )}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Cancel
-            </Button>
-            <Button
-              disabled={checkPassword(deletePassword.value) ? false : true}
-              variant="danger"
-              onClick={handleDeleteAccount}
-            >
-              Confirm
-            </Button>
-          </Modal.Footer>
-        </Modal>
       </>
     );
   }
