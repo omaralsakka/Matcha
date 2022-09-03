@@ -31,6 +31,9 @@ const Settings = ({ setLoggedUser }) => {
   const email = UseField("email", "");
   const oldPassword = UseField("password", "");
   const newPassword = UseField("password", "");
+  const gender = UseField("text", "");
+  const sexualPreference = UseField("text", "");
+
   const [passType, setPassType] = useState("password");
   const [verifyOldPw, setVerifyOldPw] = useState(0);
   const [userVerify, setUsernameVerify] = useState(1);
@@ -122,6 +125,8 @@ const Settings = ({ setLoggedUser }) => {
       user_id: user.user_id,
       location: relocatedPosition.location,
       coords: relocatedPosition.coords,
+      gender: gender.value,
+      sexualPreference: sexualPreference.value,
     };
 
     let credentialsObj = {
@@ -146,6 +151,12 @@ const Settings = ({ setLoggedUser }) => {
       settingsInfo.coords = user.coordinates;
     }
     if (fullname.value.length === 0) settingsInfo.fullname = user.fullname;
+
+    if (gender.value.length === 0) settingsInfo.gender = user.gender;
+
+    if (sexualPreference.value.length === 0)
+      settingsInfo.sexualPreference = user.sexuality;
+
     if (email.value.length === 0) {
       settingsInfo.email = user.email;
     } else {
@@ -200,6 +211,31 @@ const Settings = ({ setLoggedUser }) => {
             </Form.Group>
 
             <Form.Group className="mb-3">
+              <Form.Label>Gender</Form.Label>
+              <Form.Select {...gender}>
+                <option value="">...</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="nonbinary">Non-binary</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Sexual preference</Form.Label>
+              <Form.Select {...sexualPreference}>
+                <option value="">...</option>
+                <option value="straight">straight</option>
+                <option value="gay">gay</option>
+                <option value="bi">bi</option>
+              </Form.Select>
+            </Form.Group>
+
+            <hr />
+            <Form.Label className="fs-5 mb-3">
+              <strong>Account Info:</strong>
+            </Form.Label>
+
+            <Form.Group className="mb-3">
               <Form.Label>Change email</Form.Label>
               <Form.Control {...email} placeholder={user.email} />
               {emailVerify === 0 ? (
@@ -214,11 +250,6 @@ const Settings = ({ setLoggedUser }) => {
                 We'll never share your email with anyone else.
               </Form.Text>
             </Form.Group>
-
-            <hr />
-            <Form.Label className="fs-5 mb-3">
-              <strong>Account Info:</strong>
-            </Form.Label>
 
             <Form.Group className="mb-3">
               <Form.Label>Change username</Form.Label>
@@ -310,6 +341,8 @@ const Settings = ({ setLoggedUser }) => {
                   checkFullName(fullname.value) ||
                   checkEmail(email.value) ||
                   country.value.length ||
+                  sexualPreference.value.length ||
+                  gender.value.length ||
                   relocate === 1 ||
                   checkPassword(newPassword.value)) &&
                 verifyOldPw === 1

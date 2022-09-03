@@ -167,6 +167,8 @@ const insertSettings = async ({
   user_id,
   location,
   coords,
+  gender,
+  sexualPreference,
 }) => {
   if (newPW.length === 0) {
     const queryResponse = await pool.query(
@@ -184,7 +186,7 @@ const insertSettings = async ({
 
   try {
     const queryResponse = await pool.query(
-      "UPDATE users SET username = $1, fullname = $2, password = $3, city = $4, country = $5, coordinates = $6 WHERE user_id = $7",
+      "UPDATE users SET username = $1, fullname = $2, password = $3, city = $4, country = $5, coordinates = $6, gender = $7, sexuality = $8 WHERE user_id = $9",
       [
         username,
         fullname,
@@ -192,6 +194,8 @@ const insertSettings = async ({
         locationArr[0],
         locationArr[1],
         coords,
+        gender,
+        sexualPreference,
         user_id,
       ]
     );
