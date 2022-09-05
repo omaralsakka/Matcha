@@ -351,6 +351,7 @@ usersRouter.post("/chatrooms", async (request, response) => {
 
 usersRouter.post("/insert-chat-messages", async (request, response) => {
 	const body = request.body;
+	console.log(body);
 	const queryResponse = await queryTools.saveChatMessage(body);
 	if(queryResponse.length) {
 		/* console.log(queryResponse[0]); */
