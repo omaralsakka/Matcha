@@ -17,6 +17,7 @@ const Home = () => {
   const [sort, setSort] = useState(false);
   const [order, setOrder] = useState("ascending");
   const [originalUsers, setOriginalUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (user) {
@@ -26,6 +27,12 @@ const Home = () => {
       });
     }
   }, [dispatch, user]);
+
+  useEffect(() => {
+    if (usersInStore.users) {
+      setTimeout(() => setLoading(false), 2000);
+    }
+  }, [user, usersInStore.users]);
 
   useEffect(() => {
     if (usersInStore.users) {
@@ -46,7 +53,7 @@ const Home = () => {
       }
     }
   }, [sort, order, usersInStore.users]);
-  if (!users || !user) {
+  if (!users || !user || loading) {
     return <LoadingScreen />;
   } else {
     return (
