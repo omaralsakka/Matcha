@@ -256,7 +256,6 @@ const insertChat = async (params) => {
 };
 
 const saveChatMessage = async (data) => {
-	console.log(data);
 	try {
 		const queryResponse = await pool.query(
 			"UPDATE chats SET messages = $1 WHERE room_name = $2 RETURNING *",

@@ -13,7 +13,8 @@ function ChatRoom({ socket, username, room, user_id, matchedUser }) {
 		  room: room
 	}
 	getChatMessagesService(roomData).then((resp) => {
-		setMessageList(resp.messages.data);
+		if(resp.messages !== null)
+			setMessageList(resp.messages.data);
 	})
   }, [])
 
