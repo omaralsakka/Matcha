@@ -14,8 +14,9 @@ const MatchesCanvas = ({ showCanvas, setShowCanvas }) => {
   const navigate = useNavigate();
 
   const handleChat = (id) => {
-	navigate(`/chat/${id}`);
-  }
+    navigate(`/chat/${id}`);
+    setShowCanvas(false);
+  };
 
   const [showModal, setShowModal] = useState(false);
   const [confirm, setConfirm] = useState(false);
@@ -58,7 +59,13 @@ const MatchesCanvas = ({ showCanvas, setShowCanvas }) => {
                     >
                       <Container>{user.fullname}</Container>
                       <Container className="d-flex gap-3">
-                        <Button onClick={() => handleChat(user.user_id, user.username)} variant="outline-dark" size="sm">
+                        <Button
+                          onClick={() =>
+                            handleChat(user.user_id, user.username)
+                          }
+                          variant="outline-dark"
+                          size="sm"
+                        >
                           chat
                         </Button>
                         <Button

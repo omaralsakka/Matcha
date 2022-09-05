@@ -11,8 +11,8 @@ const LandingPage = () => {
   const imgsArr = [img1, img2, img3, img4];
   const [cardImg, setCardImg] = useState(imgsArr[0]);
   let i = 0;
-
   useEffect(() => {
+
     setInterval(() => {
       i += 1;
       if (i > 3) {

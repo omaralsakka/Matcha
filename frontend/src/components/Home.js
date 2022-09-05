@@ -17,6 +17,7 @@ const Home = () => {
   const [sort, setSort] = useState(false);
   const [order, setOrder] = useState("ascending");
   const [originalUsers, setOriginalUsers] = useState([]);
+
   useEffect(() => {
     if (user) {
       dispatch(getUsersByCountry(user.country, user)).then((resp) => {

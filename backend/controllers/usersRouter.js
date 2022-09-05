@@ -351,10 +351,8 @@ usersRouter.post("/chatrooms", async (request, response) => {
 
 usersRouter.post("/insert-chat-messages", async (request, response) => {
 	const body = request.body;
-	console.log(body);
 	const queryResponse = await queryTools.saveChatMessage(body);
 	if(queryResponse.length) {
-		/* console.log(queryResponse[0]); */
 		response.status(200).send(queryResponse[0]);
 	} else {
 		response.status(404).json({
@@ -367,7 +365,6 @@ usersRouter.post("/get-chat-messages", async (request, response) => {
 	const body = request.body;
 	const queryResponse = await queryTools.getChatMessages(body);
 	if(queryResponse.length) {
-		/* console.log(queryResponse[0]); */
 		response.status(200).send(queryResponse[0]);
 	} else {
 		response.status(404).json({

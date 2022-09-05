@@ -28,7 +28,6 @@ const App = () => {
 
   // This function to add random users, BECAREFUL this will add plenty of users
   //  getRandomUsers();
-
   useEffect(() => {
     const loggedUserJson = window.localStorage.getItem("LoggedMatchaUser");
     if (loggedUserJson) {

@@ -16,25 +16,22 @@ notificationRouter.post("/", async (request, response) => {
   } else if (body.type === 5) {
     notifString = "unliked your profile... You are now unconnected.";
   }
-  try {
-    const data = {
-      notification: { title: `${body.from} ${notifString}` },
-      recipients: [body.to],
-    };
-    const config = {
-      headers: {
-        "X-ENGAGESPOT-API-KEY": process.env.ENGAGESPOT_API,
-        "X-ENGAGESPOT-API-SECRET": process.env.ENGAGESPOT_SECRET,
-      },
-    };
 
-    const notifResponse = await axios.post(
+  try {
+    await axios.post(
       "https://api.engagespot.co/v3/notifications",
-      data,
-      config
+      {
+        notification: { title: `${body.from} ${notifString}` },
+        recipients: [body.to],
+      },
+      {
+        headers: {
+          "X-ENGAGESPOT-API-KEY": process.env.ENGAGESPOT_API,
+          "X-ENGAGESPOT-API-SECRET": process.env.ENGAGESPOT_SECRET,
+        },
+      }
     );
-    response.status(200).send(notifResponse);
-    // return response.status(200);
+    response.status(200);
   } catch (error) {
     console.error("this is error from notification: ", error.message);
     response.status(401).json({

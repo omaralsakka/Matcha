@@ -2,6 +2,7 @@ import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import Notifications from "./Notifications";
 import { useDispatch } from "react-redux";
 import { useNavigate, Outlet, Link } from "react-router-dom";
+import { LinkContainer } from "react-router-bootstrap";
 import { logoutUser } from "../reducers/loginReducer";
 import { useEffect, useState } from "react";
 import MatchesCanvas from "./MatchesCanvas";
@@ -45,24 +46,25 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
 
   return (
     <>
-      <Navbar bg="transparent" variant="light" expand="sm">
+      <Navbar collapseOnSelect bg="transparent" variant="light" expand="sm">
         <Container fluid>
           <Navbar.Brand href="/home">Matcha</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto d-flex align-items-center w-100">
-              <Link to="/home" className="nav-link">
-                Home
-              </Link>
-              <Link to="/profile" className="nav-link">
-                Profile
-              </Link>
-              <Nav.Link onClick={handleShowCanvas}>Matches</Nav.Link>
-              <Link to="/settings" className="nav-link">
-                Settings
-              </Link>
-              {/*  <Notifications /> */}{" "}
-              {/* turned off for now, makes the app slower */}
+              <LinkContainer to="/home">
+                <Nav.Link>Home</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/profile">
+                <Nav.Link>Profile</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="#">
+                <Nav.Link onClick={handleShowCanvas}>Matches</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/settings">
+                <Nav.Link>Settings</Nav.Link>
+              </LinkContainer>
+              {/* <Notifications /> turned off for now, makes the app slower */}
               <Nav.Item className="mx-3 ms-md-auto d-none d-md-block">
                 <Navbar.Text className="fs-5">
                   {loggedUser.username}
