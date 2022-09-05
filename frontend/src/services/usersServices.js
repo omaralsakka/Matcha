@@ -74,6 +74,15 @@ export const getUserById = async (userId) => {
 
 export const chatService = async (matchedObj) => {
 	const response = await axios.post(`${usersUrl}/chatrooms`, matchedObj);
-	console.log(response);
 	return response.data;
 } 
+
+export const saveChatMessagesService = async (messages) => {
+	const response = await axios.post(`${usersUrl}/insert-chat-messages`, messages);
+	return response.data;
+}
+
+export const getChatMessagesService = async (rooMdata) => {
+	const response = await axios.post(`${usersUrl}/get-chat-messages`, rooMdata);
+	return response.data;
+}

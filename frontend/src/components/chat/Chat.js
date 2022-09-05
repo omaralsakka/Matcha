@@ -41,7 +41,7 @@ const Chat = () => {
 	} else {
 		return (
 			<div>
-				<ChatRoom socket={socket} username={user.username} room={roomName} matchedUser={matchedUser}v/>
+				<ChatRoom socket={socket} username={user.username} user_id={user.user_id} room={roomName} matchedUser={matchedUser}v/>
 			</div>
 		)
 	}
