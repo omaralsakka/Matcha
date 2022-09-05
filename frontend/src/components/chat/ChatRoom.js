@@ -1,41 +1,44 @@
 import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
+import UseField from "../UseField"
 // import sendNotificationService from "../../services/notificationServices";
 import "./Chat.css"
 import { saveChatMessagesService, getChatMessagesService } from "../../services/usersServices";
 
 function ChatRoom({ socket, username, room, user_id, matchedUser }) {
   const [currentMessage, setCurrentMessage] = useState("");
-  const [messageList, setMessageList] = useState([]); // getChatMessagesService(this need the roomname passed as a object or sumthin)
-
+  const [messageList, setMessageList] = useState([]);
+	const text = UseField('text', "")
   useEffect(() => {
 	const roomData = {
 		  room: room
 	}
 	getChatMessagesService(roomData).then((resp) => {
-		if(resp.messages !== null)
+		if(resp.messages !== null) {
+			console.log("here", resp)
 			setMessageList(resp.messages.data);
+		}
 	})
   }, [])
 
-  const sendMessage = async () => {
-    if (currentMessage !== "") {
+  const sendMessage = async (e) => {
+    if (text.value !== "") {
       const messageData = {
         room: room,
-        author: username,
 		user_id: user_id,
-        message: currentMessage,
+        message: text.value,
         time:
           new Date(Date.now()).getHours() +
           ":" +
           new Date(Date.now()).getMinutes(),
       };
-
       await socket.emit("send_message", messageData);
-      setMessageList((list) => [...list, messageData]);
-	  saveChatMessagesService(messageList)
-      setCurrentMessage("");
-	 //  sendNotificationService(matchedUser[0].email, username, 3);
+	  let newList = messageList;
+	  newList.push(messageData);
+	  saveChatMessagesService(newList);
+	  e.target.value = ""; 
+	  text.onChange(e);
+	  // sendNotificationService(matchedUser[0].email, username, 3);
     }
 };
 
@@ -56,7 +59,7 @@ function ChatRoom({ socket, username, room, user_id, matchedUser }) {
             return (
               <div
                 className="message"
-                key={Math.random()} id={username === messageContent.author ? "you" : "other"}
+                key={Math.random()} id={user_id === messageContent.user_id ? "you" : "other"}
               >
                 <div>
                   <div className="message-content">
@@ -64,7 +67,6 @@ function ChatRoom({ socket, username, room, user_id, matchedUser }) {
                   </div>
                   <div className="message-meta">
                     <p id="time">{messageContent.time}</p>
-                    <p id="author">{messageContent.author}</p>
                   </div>
                 </div>
               </div>
@@ -74,17 +76,18 @@ function ChatRoom({ socket, username, room, user_id, matchedUser }) {
       </div>
       <div className="chat-footer">
         <input
-          type="text"
-          value={currentMessage}
+         /*  type="text" */
+          /* value={currentMessage} */
           placeholder="Hey..."
-          onChange={(event) => {
+/*           onChange={(event) => {
             setCurrentMessage(event.target.value);
           }}
           onKeyPress={(event) => {
             event.key === "Enter" && sendMessage();
-          }}
+          }} */
+		  {...text}
         />
-        <button onClick={sendMessage}>&#9658;</button>
+        <button onClick={(e) => sendMessage(e)}>&#9658;</button>
       </div>
     </div>
   );
