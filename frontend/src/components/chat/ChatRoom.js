@@ -2,15 +2,28 @@ import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
 // import sendNotificationService from "../../services/notificationServices";
 import "./Chat.css"
+import { saveChatMessagesService, getChatMessagesService } from "../../services/usersServices";
 
-function ChatRoom({ socket, username, room, matchedUser }) {
+function ChatRoom({ socket, username, room, user_id, matchedUser }) {
   const [currentMessage, setCurrentMessage] = useState("");
-  const [messageList, setMessageList] = useState([]);
+  const [messageList, setMessageList] = useState([]); // getChatMessagesService(this need the roomname passed as a object or sumthin)
+
+  useEffect(() => {
+	const roomData = {
+		  room: room
+	}
+	getChatMessagesService(roomData).then((resp) => {
+		if(resp.messages !== null)
+			setMessageList(resp.messages.data);
+	})
+  }, [])
+
   const sendMessage = async () => {
     if (currentMessage !== "") {
       const messageData = {
         room: room,
         author: username,
+		user_id: user_id,
         message: currentMessage,
         time:
           new Date(Date.now()).getHours() +
@@ -20,6 +33,7 @@ function ChatRoom({ socket, username, room, matchedUser }) {
 
       await socket.emit("send_message", messageData);
       setMessageList((list) => [...list, messageData]);
+	  saveChatMessagesService(messageList)
       setCurrentMessage("");
 	 //  sendNotificationService(matchedUser[0].email, username, 3);
     }

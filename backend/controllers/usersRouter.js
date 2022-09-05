@@ -332,8 +332,8 @@ usersRouter.get("/user-id/:id", async (request, response) => {
 usersRouter.post("/chatrooms", async (request, response) => {
 	const body = request.body;
 	  // do what you were supposed to do so check if a room exists if not create one 
-	  const params1 = [body.username, body.match_username]
-	  const params2 = [body.match_username, body.username]
+	  const params1 = [body.user_id, body.match_user_id]
+	  const params2 = [body.match_user_id, body.user_id]
 	  const queryResponse = await queryTools.selectChats(params1, params2);
 	  if(queryResponse.length === 0) {
 		const insertResponse = await queryTools.insertChat(params1);
@@ -348,5 +348,32 @@ usersRouter.post("/chatrooms", async (request, response) => {
 		response.status(200).send(queryResponse[0]);
 	}
 });
+
+usersRouter.post("/insert-chat-messages", async (request, response) => {
+	const body = request.body;
+	const queryResponse = await queryTools.saveChatMessage(body);
+	if(queryResponse.length) {
+		/* console.log(queryResponse[0]); */
+		response.status(200).send(queryResponse[0]);
+	} else {
+		response.status(404).json({
+			error: "error occured when inserting new messages",
+		});
+	}
+});
+
+usersRouter.post("/get-chat-messages", async (request, response) => {
+	const body = request.body;
+	const queryResponse = await queryTools.getChatMessages(body);
+	if(queryResponse.length) {
+		/* console.log(queryResponse[0]); */
+		response.status(200).send(queryResponse[0]);
+	} else {
+		response.status(404).json({
+			error: "error occured when fetching old messages",
+		});
+	}
+});
+
 
 module.exports = usersRouter;
