@@ -195,6 +195,10 @@ const insertSettings = async ({
         user_id,
       ]
     );
+	const modUsernameConnected = await pool.query(
+		"UPDATE connected SET username = $1 WHERE user_id = $2",
+		[username, user_id]
+	);
     return queryResponse.rows;
   } catch (error) {
     console.error(error.message);
