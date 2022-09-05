@@ -47,7 +47,7 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
     <>
       <Navbar bg="transparent" variant="light" expand="sm">
         <Container fluid>
-          <Navbar.Brand href="#home">Matcha</Navbar.Brand>
+          <Navbar.Brand href="/home">Matcha</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto d-flex align-items-center w-100">
