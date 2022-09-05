@@ -1,6 +1,6 @@
 import UseField from "../UseField";
 import logo from "../../media/logo-black.png";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { checkPassword } from "../../utils/InputChecks";
 import { resetPassWordService } from "../../services/userServices";
 import { Form, Button, Container } from "react-bootstrap";
@@ -26,7 +26,9 @@ const ResetPassword = () => {
   return (
     <Container className="signup-container">
       <Form.Group className="mb-3 form-logo">
-        <img className="form-logo-img" alt="" src={logo} />
+        <Link to="/">
+          <img className="form-logo-img" alt="" src={logo} />
+        </Link>
       </Form.Group>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">

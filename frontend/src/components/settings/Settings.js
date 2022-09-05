@@ -115,7 +115,29 @@ const Settings = ({ setLoggedUser }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    let sexuality;
+    switch (gender) {
+      case "male":
+        if (sexualPreference.value === "women") {
+          sexuality = "straight";
+        } else if (sexualPreference.value === "men") {
+          sexuality = "gay";
+        } else if (sexualPreference.value === "both") {
+          sexuality = "bi";
+        }
+        break;
+      case "female":
+        if (sexualPreference.value === "women") {
+          sexuality = "gay";
+        } else if (sexualPreference.value === "men") {
+          sexuality = "straight";
+        } else if (sexualPreference.value === "both") {
+          sexuality = "bi";
+        }
+        break;
+      default:
+        sexuality = "straight";
+    }
     const settingsInfo = {
       username: username.value,
       fullname: fullname.value,
@@ -126,7 +148,7 @@ const Settings = ({ setLoggedUser }) => {
       location: relocatedPosition.location,
       coords: relocatedPosition.coords,
       gender: gender.value,
-      sexualPreference: sexualPreference.value,
+      sexualPreference: sexuality,
     };
 
     let credentialsObj = {
@@ -221,12 +243,12 @@ const Settings = ({ setLoggedUser }) => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Sexual preference</Form.Label>
+              <Form.Label>Interested in</Form.Label>
               <Form.Select {...sexualPreference}>
                 <option value="">...</option>
-                <option value="straight">straight</option>
-                <option value="gay">gay</option>
-                <option value="bi">bi</option>
+                <option value="men">men</option>
+                <option value="women">women</option>
+                <option value="both">both</option>
               </Form.Select>
             </Form.Group>
 

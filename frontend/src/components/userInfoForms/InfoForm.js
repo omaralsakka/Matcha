@@ -16,10 +16,32 @@ const InfoForm = ({ setVisibleForm }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    let sexuality;
+    switch (gender) {
+      case "male":
+        if (sexualPreference.value === "women") {
+          sexuality = "straight";
+        } else if (sexualPreference.value === "men") {
+          sexuality = "gay";
+        } else if (sexualPreference.value === "both") {
+          sexuality = "bi";
+        }
+        break;
+      case "female":
+        if (sexualPreference.value === "women") {
+          sexuality = "gay";
+        } else if (sexualPreference.value === "men") {
+          sexuality = "straight";
+        } else if (sexualPreference.value === "both") {
+          sexuality = "bi";
+        }
+        break;
+      default:
+        sexuality = "straight";
+    }
     const userInfo = {
       gender: gender.value,
-      sexualPreference: sexualPreference.value,
+      sexualPreference: sexuality,
       bio: bio.value,
       tags: tags,
       location: location.location,
@@ -58,17 +80,16 @@ const InfoForm = ({ setVisibleForm }) => {
               <option value="">...</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
-              <option value="nonbinary">Non-binary</option>
             </Form.Select>
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Sexual preference</Form.Label>
+            <Form.Label>Interested in</Form.Label>
             <Form.Select {...sexualPreference}>
               <option value="">...</option>
-              <option value="straight">straight</option>
-              <option value="gay">gay</option>
-              <option value="bi">bi</option>
+              <option value="men">men</option>
+              <option value="women">women</option>
+              <option value="both">both</option>
             </Form.Select>
           </Form.Group>
 

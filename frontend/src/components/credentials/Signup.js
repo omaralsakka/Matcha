@@ -95,7 +95,9 @@ const Signup = () => {
         <>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3 form-logo">
-              <img className="form-logo-img" alt="" src={logo} />
+              <Link to="/">
+                <img className="form-logo-img" alt="" src={logo} />
+              </Link>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Email</Form.Label>

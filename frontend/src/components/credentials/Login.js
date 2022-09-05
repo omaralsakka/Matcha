@@ -38,7 +38,9 @@ const Login = ({ setLoggedUser }) => {
     <Container className="mb-3 shadow rounded p-sm-4 col-sm-6">
       <Form onSubmit={handleLogin}>
         <Form.Group className="mb-3 form-logo">
-          <img className="form-logo-img" alt="" src={logo} />
+          <Link to="/">
+            <img className="form-logo-img" alt="" src={logo} />
+          </Link>
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Username</Form.Label>
