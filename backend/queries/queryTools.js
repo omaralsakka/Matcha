@@ -24,6 +24,18 @@ const selectOneQualifier = async (table, column, qualifier) => {
   }
 };
 
+const selectLimitOneQualifier = async (table, column, qualifier) => {
+  try {
+    const queryResponse = await pool.query(
+      `SELECT * FROM ${table} WHERE ${column} = ${qualifier} LIMIT 1`
+    );
+    return queryResponse.rows;
+  } catch (error) {
+    console.error(error.message);
+    return false;
+  }
+};
+
 const selectColOneQualifier = async (table, selectedCol, col, qualifier) => {
   try {
     const queryResponse = await pool.query(
@@ -256,35 +268,36 @@ const insertChat = async (params) => {
 };
 
 const saveChatMessage = async (data) => {
-	try {
-		const queryResponse = await pool.query(
-			"UPDATE chats SET messages = $1 WHERE room_name = $2 RETURNING *",
-			[{data}, data[0].room]
-		  );
-		  return(queryResponse.rows)
-	} catch (error) {
-		console.error(error.message);
-		return error.message;
-	}
+  try {
+    const queryResponse = await pool.query(
+      "UPDATE chats SET messages = $1 WHERE room_name = $2 RETURNING *",
+      [{ data }, data[0].room]
+    );
+    return queryResponse.rows;
+  } catch (error) {
+    console.error(error.message);
+    return error.message;
+  }
 };
 
 const getChatMessages = async (room) => {
-	try {
-		const queryResponse = await pool.query(
-			"SELECT messages FROM chats WHERE room_name = $1",
-			[room.room]
-		  );
-		return(queryResponse.rows)
-	} catch (error) {
-		console.error(error.message);
-		return error.message;
-	}
-}
+  try {
+    const queryResponse = await pool.query(
+      "SELECT messages FROM chats WHERE room_name = $1",
+      [room.room]
+    );
+    return queryResponse.rows;
+  } catch (error) {
+    console.error(error.message);
+    return error.message;
+  }
+};
 
 module.exports = {
   selectAllTable,
   selectOneQualifier,
   selectAllWithFilter,
+  selectLimitOneQualifier,
   unionOneQualifier,
   deleteOneQualifier,
   insertForgottenPassword,
@@ -297,5 +310,5 @@ module.exports = {
   selectChats,
   insertChat,
   saveChatMessage,
-  getChatMessages
+  getChatMessages,
 };

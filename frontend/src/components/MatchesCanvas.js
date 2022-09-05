@@ -5,6 +5,7 @@ import { unMatchUser } from "../reducers/connectionsReducer";
 import ModalPopUp from "./homeComponents/ModalPopUp";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ProfileImage from "../utils/ProfileImage";
 
 const MatchesCanvas = ({ showCanvas, setShowCanvas }) => {
   const users = useStoreConnections();
@@ -12,7 +13,6 @@ const MatchesCanvas = ({ showCanvas, setShowCanvas }) => {
   const dispatch = useDispatch();
   const { user } = useStoreUser();
   const navigate = useNavigate();
-
   const handleChat = (id) => {
     navigate(`/chat/${id}`);
     setShowCanvas(false);
@@ -57,6 +57,12 @@ const MatchesCanvas = ({ showCanvas, setShowCanvas }) => {
                       className="d-flex px-0 align-items-center mb-3"
                       fluid
                     >
+                      <Container className="w-50 overflow-hidden">
+                        <ProfileImage
+                          userGender={user.gender}
+                          userId={user.user_id}
+                        />
+                      </Container>
                       <Container>{user.fullname}</Container>
                       <Container className="d-flex gap-3">
                         <Button

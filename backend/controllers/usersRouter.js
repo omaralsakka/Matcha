@@ -330,48 +330,65 @@ usersRouter.get("/user-id/:id", async (request, response) => {
 });
 
 usersRouter.post("/chatrooms", async (request, response) => {
-	const body = request.body;
-	  // do what you were supposed to do so check if a room exists if not create one 
-	  const params1 = [body.user_id, body.match_user_id]
-	  const params2 = [body.match_user_id, body.user_id]
-	  const queryResponse = await queryTools.selectChats(params1, params2);
-	  if(queryResponse.length === 0) {
-		const insertResponse = await queryTools.insertChat(params1);
-		if(insertResponse.length) {
-		  response.status(200).send(insertResponse[0]);
-		} else {
-		  response.status(404).json({
-			  error: "was not able to insert new chatroom",
-		  });
-		}
-	  } else {
-		response.status(200).send(queryResponse[0]);
-	}
+  const body = request.body;
+  // do what you were supposed to do so check if a room exists if not create one
+  const params1 = [body.user_id, body.match_user_id];
+  const params2 = [body.match_user_id, body.user_id];
+  const queryResponse = await queryTools.selectChats(params1, params2);
+  if (queryResponse.length === 0) {
+    const insertResponse = await queryTools.insertChat(params1);
+    if (insertResponse.length) {
+      response.status(200).send(insertResponse[0]);
+    } else {
+      response.status(404).json({
+        error: "was not able to insert new chatroom",
+      });
+    }
+  } else {
+    response.status(200).send(queryResponse[0]);
+  }
 });
 
 usersRouter.post("/insert-chat-messages", async (request, response) => {
-	const body = request.body;
-	const queryResponse = await queryTools.saveChatMessage(body);
-	if(queryResponse.length) {
-		response.status(200).send(queryResponse[0]);
-	} else {
-		response.status(404).json({
-			error: "error occured when inserting new messages",
-		});
-	}
+  const body = request.body;
+  const queryResponse = await queryTools.saveChatMessage(body);
+  if (queryResponse.length) {
+    response.status(200).send(queryResponse[0]);
+  } else {
+    response.status(404).json({
+      error: "error occured when inserting new messages",
+    });
+  }
 });
 
 usersRouter.post("/get-chat-messages", async (request, response) => {
-	const body = request.body;
-	const queryResponse = await queryTools.getChatMessages(body);
-	if(queryResponse.length) {
-		response.status(200).send(queryResponse[0]);
-	} else {
-		response.status(404).json({
-			error: "error occured when fetching old messages",
-		});
-	}
+  const body = request.body;
+  const queryResponse = await queryTools.getChatMessages(body);
+  if (queryResponse.length) {
+    response.status(200).send(queryResponse[0]);
+  } else {
+    response.status(404).json({
+      error: "error occured when fetching old messages",
+    });
+  }
 });
 
+usersRouter.get("/user-profile-picture/:id", async (request, response) => {
+  const id = request.params.id;
+
+  try {
+    const queryResponse = await queryTools.selectLimitOneQualifier(
+      "pictures",
+      "user_id",
+      id
+    );
+    response.status(200).send(queryResponse[0]);
+  } catch (error) {
+    console.error("error in fetching profile picture: ", error.message);
+    response.status(404).json({
+      error: "user profile picture error",
+    });
+  }
+});
 
 module.exports = usersRouter;

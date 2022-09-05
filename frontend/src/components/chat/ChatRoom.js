@@ -50,12 +50,11 @@ const ChatRoom = ({ socket, username, room, user_id, matchedUser }) => {
       setMessageList((list) => [...list, data]);
     });
   }, [socket]);
-  console.log(messageList);
   return (
     <Container className="col-sm-7 p-0 p-sm-2" style={{ minHeight: "80vh" }}>
       <Card className="overflow-hidden">
         <Card.Header className="fs-5">
-          <strong>Chat with {matchedUser[0].username}</strong>
+          <strong>@ {matchedUser[0].username}</strong>
         </Card.Header>
         <Container className="chatbg">
           <Card.Body
@@ -77,6 +76,8 @@ const ChatRoom = ({ socket, username, room, user_id, matchedUser }) => {
                       />
                     ) : (
                       <ReceivedMessage
+                        userGender={matchedUser[0].gender}
+                        userId={messageContent.user_id}
                         message={messageContent.message}
                         time={messageContent.time}
                       />
