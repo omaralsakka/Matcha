@@ -65,8 +65,10 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
               <LinkContainer to="/settings">
                 <Nav.Link>Settings</Nav.Link>
               </LinkContainer>
-              <Notifications room={loggedUser.id} />
-              <Nav.Item className="mx-3 ms-md-auto d-none d-md-block">
+              <Nav.Item className="ms-md-auto">
+                <Notifications room={loggedUser.id} />
+              </Nav.Item>
+              <Nav.Item className="mx-3 d-none d-md-block">
                 <Navbar.Text className="fs-5">
                   {loggedUser.username}
                 </Navbar.Text>
