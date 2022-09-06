@@ -53,3 +53,14 @@ export const useStoreMatch = (id) => {
   });
   return user;
 };
+
+export const useStoreNotifications = () => {
+  const notifications = useSelector((state) => {
+    if (state.notifications.notifications) {
+      return state.notifications.notifications;
+    } else {
+      return false;
+    }
+  });
+  return notifications;
+};

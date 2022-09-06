@@ -9,6 +9,7 @@ import UpdateStatus from "../utils/updateUserStatus";
 import { getConnections } from "../reducers/connectionsReducer";
 import { useStoreUser } from "../utils/getStoreStates";
 import Notifications from "./Notifications";
+import { fetchNotifications } from "../reducers/notificationReducer";
 
 const Navigation = ({ loggedUser, setLoggedUser }) => {
   const dispatch = useDispatch();
@@ -19,10 +20,10 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
   const handleShowCanvas = () => setShowCanvas(true);
 
   UpdateStatus(loggedUser);
-
   useEffect(() => {
     if (user) {
       dispatch(getConnections());
+      dispatch(fetchNotifications(user.user_id));
     }
   }, [user]);
 
@@ -64,7 +65,7 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
               <LinkContainer to="/settings">
                 <Nav.Link>Settings</Nav.Link>
               </LinkContainer>
-              {/* <Notifications /> turned off for now, makes the app slower */}
+              <Notifications room={loggedUser.id} />
               <Nav.Item className="mx-3 ms-md-auto d-none d-md-block">
                 <Navbar.Text className="fs-5">
                   {loggedUser.username}

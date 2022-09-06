@@ -116,6 +116,23 @@ export const fetchConnections = async () => {
   }
 };
 
+export const getNotificationsService = async (userId) => {
+  const response = await axios.get(`${userUrl}/get-notifications/${userId}`);
+  return response.data;
+};
+
+export const insertNotificationService = async (notification) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await axios.post(
+    `${userUrl}/insert-notifications`,
+    notification,
+    config
+  );
+  return response.data;
+};
+
 export const deleteUserAccount = async (userId) => {
   try {
     const response = await axios.delete(`${userUrl}/delete-user/${userId}`);
@@ -130,8 +147,3 @@ export const deleteUserAccount = async (userId) => {
     return error.message;
   }
 };
-
-/* export const getUserService = async (userData) => {
-	const response = await axios.post(`${userUrl}/user-info`, userData);
-	return response.data;
-} */

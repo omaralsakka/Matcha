@@ -9,7 +9,7 @@ import { disLikeUser, likeUser } from "../../reducers/usersReducer";
 const socket = io.connect("http://localhost:5000");
 
 const LikeButton = ({
-	loggedUserId,
+  loggedUserId,
   user,
   fameRate,
   setFameRate,
@@ -26,16 +26,16 @@ const LikeButton = ({
       setFameRate(fameRate - 1);
       setLiked(false);
     } else {
-		const notificationData = {
-			room: user.user_id,
-			username: loggedUsername,
-			message: "your profile has been liked",
-			time:
-			  new Date(Date.now()).getHours() +
-			  ":" +
-			  new Date(Date.now()).getMinutes(),
-		};
-		await socket.emit("send_message", notificationData);
+      const notificationData = {
+        room: user.user_id,
+        username: loggedUsername,
+        message: "your profile has been liked",
+        time:
+          new Date(Date.now()).getHours() +
+          ":" +
+          new Date(Date.now()).getMinutes(),
+      };
+      await socket.emit("send_message", notificationData);
       dispatch(likeUser(user.user_id, loggedUserId));
       setHeart(heartInline);
       setFameRate(fameRate + 1);

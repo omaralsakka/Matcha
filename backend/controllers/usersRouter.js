@@ -330,22 +330,22 @@ usersRouter.get("/user-id/:id", async (request, response) => {
 });
 
 usersRouter.post("/chatrooms", async (request, response) => {
-	const body = request.body;
-	  const params1 = [body.user_id, body.match_user_id]
-	  const params2 = [body.match_user_id, body.user_id]
-	  const queryResponse = await queryTools.selectChats(params1, params2);
-	  if(queryResponse.length === 0) {
-		const insertResponse = await queryTools.insertChat(params1);
-		if(insertResponse.length) {
-		  response.status(200).send(insertResponse[0]);
-		} else {
-		  response.status(404).json({
-			  error: "was not able to insert new chatroom",
-		  });
-		}
-	  } else {
-		response.status(200).send(queryResponse[0]);
-	}
+  const body = request.body;
+  const params1 = [body.user_id, body.match_user_id];
+  const params2 = [body.match_user_id, body.user_id];
+  const queryResponse = await queryTools.selectChats(params1, params2);
+  if (queryResponse.length === 0) {
+    const insertResponse = await queryTools.insertChat(params1);
+    if (insertResponse.length) {
+      response.status(200).send(insertResponse[0]);
+    } else {
+      response.status(404).json({
+        error: "was not able to insert new chatroom",
+      });
+    }
+  } else {
+    response.status(200).send(queryResponse[0]);
+  }
 });
 
 usersRouter.post("/insert-chat-messages", async (request, response) => {
@@ -389,42 +389,5 @@ usersRouter.get("/user-profile-picture/:id", async (request, response) => {
     });
   }
 });
-
-usersRouter.post("/get-notifications", async (request, response) => {
-	const body = request.body;
-	console.log(body)
-	try {
-		const queryResponse = await queryTools.getNotifications(body);
-		if(queryResponse.length) {
-			response.status(200).send(queryResponse);
-		} else {
-			response.status(200).send([])
-		}
-	} catch (error) {
-		response.status(404).json({
-			'error from get notification': error.message,
-		});
-	}
-	// }
-	// console.log(queryResponse)
-	// if(queryResponse.length) {
-	// 	response.status(200).send(queryResponse);
-	// } else {
-		
-	// }
-});
-
-usersRouter.post("/insert-notifications", async (request, response) => {
-	const body = request.body;
-	const queryResponse = await queryTools.insertNotifications(body);
-	if(queryResponse.length) {
-		response.status(200).send(queryResponse);
-	} else {
-		response.status(404).json({
-			error: "error occured when inserting notification",
-		});
-	}
-});
-
 
 module.exports = usersRouter;

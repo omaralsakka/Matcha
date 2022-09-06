@@ -473,4 +473,42 @@ userRouter.delete("/delete-user/:id", async (request, response) => {
   }
 });
 
+userRouter.get("/get-notifications/:id", async (request, response) => {
+  const id = request.params.id;
+  try {
+    const queryResponse = await queryTools.selectOneQualifier(
+      "notifications",
+      "user_id",
+      id
+    );
+    if (queryResponse.rows.length) {
+      response.status(200).send(queryResponse.rows);
+    } else {
+      response.status(200).send([]);
+    }
+  } catch (error) {
+    response.status(404).json({
+      "error from get notification": error.message,
+    });
+  }
+});
+
+userRouter.post("/insert-notifications", async (request, response) => {
+  const decodedToken = tokenTools.verifyToken(request);
+  if (!decodedToken) {
+    response.status(401).json({
+      error: "token error",
+    });
+  }
+  const body = request.body;
+  try {
+    const queryResponse = await queryTools.insertNotifications(body);
+    response.status(200).send(queryResponse);
+  } catch (error) {
+    response.status(404).json({
+      "error from post notification": error.message,
+    });
+  }
+});
+
 module.exports = userRouter;
