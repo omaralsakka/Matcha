@@ -1,12 +1,14 @@
 import {
   NOTIFICATION_FETCH_SUCCESS,
   NOTIFICATION_NEW_SUCCESS,
+  NOTIFICATION_CLEAR_SUCCESS,
   NOTIFICATION_REDUCER_ERROR,
 } from "../actions/types";
 
 import {
   getNotificationsService,
   insertNotificationService,
+  clearNotificationsService,
 } from "../services/userServices";
 
 const initialState = {
@@ -29,6 +31,13 @@ const notificationsReducer = (state = initialState, actions) => {
       return {
         ...state,
         notifications: [...state.notifications, ...payload],
+        error: null,
+      };
+
+    case NOTIFICATION_CLEAR_SUCCESS:
+      return {
+        ...state,
+        notifications: payload,
         error: null,
       };
 
@@ -57,6 +66,13 @@ const notificationUpdateSuccess = (newNotification) => {
   };
 };
 
+const notificationClearSuccess = () => {
+  return {
+    type: NOTIFICATION_CLEAR_SUCCESS,
+    payload: [],
+  };
+};
+
 const notificationReducerError = (error) => {
   return {
     type: NOTIFICATION_REDUCER_ERROR,
@@ -81,6 +97,18 @@ export const addNotification = (notification) => {
     try {
       const newNotification = await insertNotificationService(notification);
       dispatch(notificationUpdateSuccess(newNotification));
+    } catch (error) {
+      console.error(error.message);
+      dispatch(notificationReducerError(error.message));
+    }
+  };
+};
+
+export const clearNotifications = () => {
+  return async (dispatch) => {
+    try {
+      await clearNotificationsService();
+      dispatch(notificationClearSuccess());
     } catch (error) {
       console.error(error.message);
       dispatch(notificationReducerError(error.message));

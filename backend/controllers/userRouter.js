@@ -505,8 +505,29 @@ userRouter.post("/insert-notifications", async (request, response) => {
     const queryResponse = await queryTools.insertNotifications(body);
     response.status(200).send(queryResponse);
   } catch (error) {
-    response.status(404).json({
+    response.status(401).json({
       "error from post notification": error.message,
+    });
+  }
+});
+
+userRouter.delete("/clear-notifications", async (request, response) => {
+  const decodedToken = tokenTools.verifyToken(request);
+  if (!decodedToken) {
+    response.status(401).json({
+      error: "token error",
+    });
+  }
+  try {
+    const queryResponse = await queryTools.deleteOneQualifier(
+      "notifications",
+      "user_id",
+      decodedToken.id
+    );
+    response.status(200).send(queryResponse);
+  } catch (error) {
+    response.status(401).json({
+      "error from delete notifications": error.message,
     });
   }
 });

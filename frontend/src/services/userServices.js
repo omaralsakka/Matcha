@@ -133,6 +133,14 @@ export const insertNotificationService = async (notification) => {
   return response.data;
 };
 
+export const clearNotifications = async () => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await axios.delete(`${userUrl}/clear-notifications`, config);
+  return response.data;
+};
+
 export const deleteUserAccount = async (userId) => {
   try {
     const response = await axios.delete(`${userUrl}/delete-user/${userId}`);
