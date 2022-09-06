@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
 import UseField from "../UseField"
-// import sendNotificationService from "../../services/notificationServices";
 import "./Chat.css"
 import { saveChatMessagesService, getChatMessagesService } from "../../services/usersServices";
 
 function ChatRoom({ socket, username, room, user_id, matchedUser }) {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
-	const text = UseField('text', "")
+  const text = UseField('text', "");
+
   useEffect(() => {
 	const roomData = {
 		  room: room
 	}
 	getChatMessagesService(roomData).then((resp) => {
 		if(resp.messages !== null) {
-			console.log("here", resp)
 			setMessageList(resp.messages.data);
 		}
 	})
@@ -38,7 +37,6 @@ function ChatRoom({ socket, username, room, user_id, matchedUser }) {
 	  saveChatMessagesService(newList);
 	  e.target.value = ""; 
 	  text.onChange(e);
-	  // sendNotificationService(matchedUser[0].email, username, 3);
     }
 };
 

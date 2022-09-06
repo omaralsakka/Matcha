@@ -281,6 +281,32 @@ const getChatMessages = async (room) => {
 	}
 }
 
+const getNotifications = async (room) => {
+	try {
+		const queryResponse = await pool.query(
+			"SELECT notifications FROM notifications WHERE user_id = $1",
+			[room.room]
+		  );
+		return(queryResponse.rows)
+	} catch (error) {
+		console.error(error.message);
+		return error.message;
+	}
+}
+
+const insertNotifications = async (notification) => {
+	try {
+		const queryResponse = await pool.query(
+			"INSERT INTO notifications(user_id, notifications) VALUES($1, $2) RETURNING *",
+			[notification.room, notification]
+		  );
+		return(queryResponse.rows)
+	} catch (error) {
+		console.error(error.message);
+		return error.message;
+	}
+}
+
 module.exports = {
   selectAllTable,
   selectOneQualifier,
@@ -297,5 +323,7 @@ module.exports = {
   selectChats,
   insertChat,
   saveChatMessage,
-  getChatMessages
+  getChatMessages,
+  getNotifications,
+  insertNotifications,
 };

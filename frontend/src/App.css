@@ -310,6 +310,11 @@ body {
   position: absolute;
 }
 
+.dropdown-container {
+	display: none;
+}
+
+
 @media only screen and (max-width: 450px) {
   .team-img-container {
     box-shadow: 20px 17px rgb(165, 165, 253);

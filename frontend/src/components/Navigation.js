@@ -1,5 +1,4 @@
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
-import Notifications from "./Notifications";
 import { useDispatch } from "react-redux";
 import { useNavigate, Outlet, Link } from "react-router-dom";
 import { logoutUser } from "../reducers/loginReducer";
@@ -8,6 +7,7 @@ import MatchesCanvas from "./MatchesCanvas";
 import UpdateStatus from "../utils/updateUserStatus";
 import { getConnections } from "../reducers/connectionsReducer";
 import { useStoreUser } from "../utils/getStoreStates";
+import Notifications from "./Notifications";
 
 const Navigation = ({ loggedUser, setLoggedUser }) => {
   const dispatch = useDispatch();
@@ -61,8 +61,7 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
               <Link to="/settings" className="nav-link">
                 Settings
               </Link>
-              {/*  <Notifications /> */}{" "}
-              {/* turned off for now, makes the app slower */}
+			  <Notifications room={loggedUser.id}/>
               <Nav.Item className="mx-3 ms-md-auto d-none d-md-block">
                 <Navbar.Text className="fs-5">
                   {loggedUser.username}

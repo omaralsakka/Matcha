@@ -82,7 +82,17 @@ export const saveChatMessagesService = async (messages) => {
 	return response.data;
 }
 
-export const getChatMessagesService = async (rooMdata) => {
-	const response = await axios.post(`${usersUrl}/get-chat-messages`, rooMdata);
+export const getChatMessagesService = async (roomData) => {
+	const response = await axios.post(`${usersUrl}/get-chat-messages`, roomData);
+	return response.data;
+}
+
+export const getNotificationsService = async (roomData) => {
+	const response = await axios.post(`${usersUrl}/get-notifications`, roomData);
+	return response.data;
+}
+
+export const insertNotificationService = async (notification) => {
+	const response = await axios.post(`${usersUrl}/insert-notifications`, notification);
 	return response.data;
 }

@@ -14,6 +14,10 @@ const insertUser = async ({ username, email, fullname, password, age }) => {
 		"INSERT INTO connected(user_id, username) VALUES($1, $2)",
 		[queryResponse.rows[0].user_id, username]
 	);
+	const insertIntoNotifications = await pool.query(
+		"INSERT INTO notifications(user_id) VALUES($1)",
+		[queryResponse.rows[0].user_id]
+	);
     return queryResponse;
   } catch (error) {
     console.error(error.message);
