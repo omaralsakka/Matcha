@@ -94,3 +94,10 @@ CREATE TABLE chats (
 	room_name VARCHAR (150),
 	messages JSONB
 );
+
+##
+CREATE TABLE notifications (
+	id SERIAL PRIMARY KEY UNIQUE,
+	user_id INT NOT NULL,
+	notifications JSONB
+);

@@ -1,5 +1,4 @@
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
-import Notifications from "./Notifications";
 import { useDispatch } from "react-redux";
 import { useNavigate, Outlet, Link } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
@@ -9,6 +8,7 @@ import MatchesCanvas from "./MatchesCanvas";
 import UpdateStatus from "../utils/updateUserStatus";
 import { getConnections } from "../reducers/connectionsReducer";
 import { useStoreUser } from "../utils/getStoreStates";
+import Notifications from "./Notifications";
 
 const Navigation = ({ loggedUser, setLoggedUser }) => {
   const dispatch = useDispatch();

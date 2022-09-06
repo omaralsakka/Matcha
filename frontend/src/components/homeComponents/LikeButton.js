@@ -1,3 +1,4 @@
+import io from "socket.io-client";
 import OverlayToolTip from "../../utils/OverlayToolTip";
 import { Button, Image } from "react-bootstrap";
 import heartOutline from "../../media/heart-outline.png";
@@ -5,10 +6,10 @@ import heartInline from "../../media/heart-inline.png";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { disLikeUser, likeUser } from "../../reducers/usersReducer";
-import { sendNotificationService } from "../../services/notificationServices";
+const socket = io.connect("http://localhost:5000");
 
 const LikeButton = ({
-  loggedUserId,
+	loggedUserId,
   user,
   fameRate,
   setFameRate,
@@ -18,15 +19,24 @@ const LikeButton = ({
   const [liked, setLiked] = useState(false);
   const dispatch = useDispatch();
 
-  const likePerson = () => {
+  const likePerson = async () => {
     if (liked) {
       dispatch(disLikeUser(user.user_id, loggedUserId));
       setHeart(heartOutline);
       setFameRate(fameRate - 1);
       setLiked(false);
     } else {
+		const notificationData = {
+			room: user.user_id,
+			username: loggedUsername,
+			message: "your profile has been liked",
+			time:
+			  new Date(Date.now()).getHours() +
+			  ":" +
+			  new Date(Date.now()).getMinutes(),
+		};
+		await socket.emit("send_message", notificationData);
       dispatch(likeUser(user.user_id, loggedUserId));
-      //sendNotificationService(user.email, loggedUsername, 1);
       setHeart(heartInline);
       setFameRate(fameRate + 1);
       setLiked(true);

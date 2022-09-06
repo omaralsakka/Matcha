@@ -1,25 +1,52 @@
-import { Engagespot } from "@engagespot/react-component";
-import { useStoreUser } from "../utils/getStoreStates";
+import io from "socket.io-client";
+import { useEffect, useState } from "react";
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import { getNotificationsService, insertNotificationService } from "../services/usersServices";
+const socket = io.connect("http://localhost:5000");
 
-const ENGAGESPOT_API = process.env.REACT_APP_ENGAGESPOT_API;
+const Notifications = ({room}) => {
+	const [notificationList, setNotificationList] = useState([]);
 
-const Notifications = () => {
-  const { user } = useStoreUser();
-  /* const theme = { // this is to used to customize the css of the notification component, pass this as a prop theme={theme} 
-		colors: { // more info can be found https://documentation.engagespot.co/docs/javascript-guide/using-react-component
-			brandingPrimary: "#FF0042",
-			colorPrimary: "#FF0042"
-		}
-	} */
-  if (user) {
-    return (
-      <div>
-        <Engagespot apiKey={ENGAGESPOT_API} userId={user.email} />
-      </div>
-    );
-  } else {
-    return <></>;
-  }
-};
+	useEffect(() => {
+			socket.emit("join_room", room);
+			const roomData = {
+				room: room
+			}
+			getNotificationsService(roomData).then((resp) => {
+				console.log('resp: ', resp)
+			if(resp.notifications !== null) {
+				console.log('setting')
+				setNotificationList(resp);
+			}
+		  })
+	}, []);
+
+	useEffect(() => {
+		socket.on("receive_message", (data) => {
+			let newList = [...notificationList];
+			newList.push(data);
+			setNotificationList(newList);
+			insertNotificationService(data);
+		});
+	  }, [socket]);
+
+	if(notificationList.length > 0) {
+		return (
+			<DropdownButton id="dropdown-basic-button" title="Notifications">
+			  {notificationList.map((notification) => {
+				  if (notification.notifications){
+					  return (<Dropdown.Item key={Math.random()} >{notification.notifications.message} by {notification.notifications.username}</Dropdown.Item>)
+				  } else {
+					  return
+				  }
+				})
+			}
+			</DropdownButton>
+		  );
+	} else {
+		<></>
+	};
+}
 
 export default Notifications;
