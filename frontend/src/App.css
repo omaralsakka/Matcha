@@ -26,7 +26,6 @@ body {
   background-repeat: repeat;
   background-color: rgba(255, 255, 255, 0.705);
   background-blend-mode: screen;
-  /* background-size: cover; */
 }
 
 .image-container {

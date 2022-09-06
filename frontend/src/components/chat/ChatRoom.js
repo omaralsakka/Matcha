@@ -9,6 +9,7 @@ import {
 } from "../../services/usersServices";
 import { Button, Card, Container, Form } from "react-bootstrap";
 import { ReceivedMessage, SentMessage } from "./MessageSender";
+
 const ChatRoom = ({ socket, username, room, user_id, matchedUser }) => {
   // const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
@@ -57,10 +58,7 @@ const ChatRoom = ({ socket, username, room, user_id, matchedUser }) => {
           <strong>@ {matchedUser[0].username}</strong>
         </Card.Header>
         <Container className="chatbg">
-          <Card.Body
-            className="w-100 p-0  chatbg"
-            style={{ minHeight: "60vh" }}
-          >
+          <Card.Body className="w-100 p-0 chatbg" style={{ minHeight: "60vh" }}>
             <ScrollToBottom>
               {messageList.map((messageContent) => {
                 return (

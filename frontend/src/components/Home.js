@@ -8,6 +8,7 @@ import LoadingScreen from "./LoadingScreen";
 import { useStoreUser, useStoreUsers } from "../utils/getStoreStates";
 import sortUsers from "../utils/sortUsers";
 import searchIcon from "../media/search-empty.png";
+import ScrollToTop from "react-scroll-to-top";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -92,6 +93,7 @@ const Home = () => {
               </strong>
             </Container>
           )}
+          <ScrollToTop smooth />
         </Container>
       </>
     );

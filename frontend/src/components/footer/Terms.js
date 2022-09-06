@@ -1,7 +1,10 @@
 import logo from "../../media/Matcha-logos_black.png";
 import { Container } from "react-bootstrap";
+import { useEffect } from "react";
+
 
 const Terms = () => {
+
   return (
     <div className="mb-5">
       <Container>

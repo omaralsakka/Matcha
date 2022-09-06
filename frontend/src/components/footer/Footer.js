@@ -1,5 +1,6 @@
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 const AppFooter = () => {
   return (
     <Container
