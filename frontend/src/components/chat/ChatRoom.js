@@ -42,7 +42,17 @@ const ChatRoom = ({ socket, username, room, user_id, matchedUser }) => {
       saveChatMessagesService(newList);
       e.target.value = "";
       text.onChange(e);
-      // sendNotificationService(matchedUser[0].email, username, 3);
+	  const notificationData = {
+        room: matchedUser[0].user_id,
+        username: username,
+        message: "a message was sent to you",
+        time:
+          new Date(Date.now()).getHours() +
+          ":" +
+          new Date(Date.now()).getMinutes(),
+      };
+      await socket.emit("send_message", notificationData);
+
     }
   };
 

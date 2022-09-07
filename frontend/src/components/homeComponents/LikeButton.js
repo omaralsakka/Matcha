@@ -21,7 +21,7 @@ const LikeButton = ({
 
   const likePerson = async () => {
     if (liked) {
-      dispatch(disLikeUser(user.user_id, loggedUserId));
+      dispatch(disLikeUser(user.user_id, loggedUserId, loggedUsername));
       setHeart(heartOutline);
       setFameRate(fameRate - 1);
       setLiked(false);
@@ -36,7 +36,7 @@ const LikeButton = ({
           new Date(Date.now()).getMinutes(),
       };
       await socket.emit("send_message", notificationData);
-      dispatch(likeUser(user.user_id, loggedUserId));
+      dispatch(likeUser(user.user_id, loggedUserId, loggedUsername));
       setHeart(heartInline);
       setFameRate(fameRate + 1);
       setLiked(true);

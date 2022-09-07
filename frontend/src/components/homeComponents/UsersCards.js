@@ -24,6 +24,9 @@ import ReportAccount from "./ReportAccount";
 import { getUsersImages } from "../../services/usersServices";
 import UserCardInfo from "./UserCardInfo";
 import onlineIcon from "../../media/online.png";
+import io from "socket.io-client";
+const socket = io.connect("http://localhost:5000");
+
 // ------ FIX HERE --------------
 
 const UsersCards = ({
@@ -65,6 +68,17 @@ const UsersCards = ({
         status: "d-flex align-items-center gap-2 mt-3",
       });
       setFadeBody({ transitionDuration: "2000" });
+
+	  const notificationData = {
+        room: user.user_id,
+        username: loggedUsername,
+        message: "your profile was viewed",
+        time:
+          new Date(Date.now()).getHours() +
+          ":" +
+          new Date(Date.now()).getMinutes(),
+      };
+      socket.emit("send_message", notificationData);
     } else {
       setFadeBody({ visible: "" });
       setTimeout(() => {
@@ -85,7 +99,7 @@ const UsersCards = ({
   useEffect(() => {
     getUsersImages(user.user_id).then((resp) => setUserImages(resp));
   }, []);
-
+  let clickCounter = 0;
   if (!userImages.length) {
     return <Spinner animation="grow" />;
   } else {
