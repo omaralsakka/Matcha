@@ -133,7 +133,7 @@ export const insertNotificationService = async (notification) => {
   return response.data;
 };
 
-export const clearNotifications = async () => {
+export const clearNotificationsService = async () => {
   const config = {
     headers: { Authorization: token },
   };
