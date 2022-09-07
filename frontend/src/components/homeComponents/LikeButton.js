@@ -33,7 +33,9 @@ const LikeButton = ({
         time:
           new Date(Date.now()).getHours() +
           ":" +
-          new Date(Date.now()).getMinutes(),
+          new Date(Date.now()).getMinutes()  +
+          ":" +
+          new Date(Date.now()).getSeconds(),
       };
       await socket.emit("send_message", notificationData);
       dispatch(likeUser(user.user_id, loggedUserId, loggedUsername));

@@ -17,7 +17,7 @@ const socket = io.connect("http://localhost:5000");
 
 const useOutsideAlerter = (ref, notifications) => {
   const dispatch = useDispatch();
-  console.log(notifications);
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (ref.current && !ref.current.contains(event.target)) {
@@ -54,28 +54,29 @@ const Notifications = ({ room }) => {
   const [seen, setSeen] = useState(false);
 
   useEffect(() => {
-    socket.emit("join_room", room);
-    const roomData = {
+	  socket.emit("join_room", room);
+	  const roomData = {
       room: room,
     };
   }, []);
-
+  
   useEffect(() => {
-    socket.on("receive_message", (data) => {
-      dispatch(addNotification(data));
-    });
-  }, [socket]);
+	  socket.on("receive_message", (data) => {
+		  dispatch(addNotification(data));
+		});
+	}, [socket]);
 
-  const handleClearNotification = () => {
+	const handleClearNotification = () => {
     if (!seen) {
-      setSeen(true);
+		setSeen(true);
     } else {
       setSeen(false);
       if (notifications.notifications.length) {
-        dispatch(clearNotifications());
-      }
+		  dispatch(clearNotifications());
+		}
     }
-  };
+};
+
   if (!notifications.notifications.length) {
     return (
       <Dropdown align={"end"} onToggle={handleClearNotification}>
@@ -96,9 +97,9 @@ const Notifications = ({ room }) => {
   } else {
     return (
       <Container className="d-flex p-0">
-        <Container className="p-0">
+        {/* <Container className="p-0">
           <span className="fs-6 text-danger">{notifications.amount}</span>
-        </Container>
+        </Container> */}
         <Dropdown align={"end"} onToggle={handleClearNotification}>
           <DropdownToggle
             as={CustomToggle}
@@ -109,8 +110,8 @@ const Notifications = ({ room }) => {
           </DropdownToggle>
           <DropdownMenu flip>
             {notifications.notifications.map((notification) => (
-              <>
-                <Dropdown.Item key={Math.random()}>
+              <Container key={Math.random()}>
+                <Dropdown.Item>
                   <span className="text-wrap d-md-none">
                     {notification.notifications.message} by{" "}
                     {notification.notifications.username}
@@ -121,7 +122,7 @@ const Notifications = ({ room }) => {
                   </span>
                 </Dropdown.Item>
                 <hr />
-              </>
+              </Container>
             ))}
           </DropdownMenu>
         </Dropdown>

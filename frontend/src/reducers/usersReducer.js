@@ -207,7 +207,6 @@ export const disLikeUser = (likedUserId, likedById, disLikerUsername) => {
     try {
       const usersIds = { likedUserId, likedById };
       const updatedUser = await dislikeUserService(usersIds);
-	  console.log(updatedUser[0])
 	  if(updatedUser[0].liked.includes(likedById) && !updatedUser[0].liked_by.includes(likedById)) {
 		const notificationData = {
 			room: likedUserId,

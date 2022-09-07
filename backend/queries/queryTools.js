@@ -307,6 +307,7 @@ const getNotifications = async (room) => {
 }
 
 const insertNotifications = async (notification) => {
+/* 	console.log(notification); */
 	try {
 		const queryResponse = await pool.query(
 			"INSERT INTO notifications(user_id, notifications) VALUES($1, $2) RETURNING *",
