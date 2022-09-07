@@ -109,8 +109,8 @@ const Notifications = ({ room }) => {
           </DropdownToggle>
           <DropdownMenu flip>
             {notifications.notifications.map((notification) => (
-              <>
-                <Dropdown.Item key={Math.random()}>
+              <Container key={Math.random()}>
+                <Dropdown.Item>
                   <span className="text-wrap d-md-none">
                     {notification.notifications.message} by{" "}
                     {notification.notifications.username}
@@ -121,7 +121,7 @@ const Notifications = ({ room }) => {
                   </span>
                 </Dropdown.Item>
                 <hr />
-              </>
+              </Container>
             ))}
           </DropdownMenu>
         </Dropdown>

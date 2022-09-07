@@ -10,13 +10,13 @@ import {
   insertNotificationService,
   clearNotificationsService,
 } from "../services/userServices";
-
+import { useState } from "react";
 const initialState = {
   notifications: [],
   amount: 0,
   error: null,
 };
-
+let limit = 0;
 const notificationsReducer = (state = initialState, actions) => {
   const { type, payload } = actions;
 
@@ -64,7 +64,7 @@ const notificationFetchSuccess = (notifications) => {
   };
 };
 
-const notificationUpdateSuccess = (newNotification) => {
+const NotificationUpdateSuccess = (newNotification) => {
   return {
     type: NOTIFICATION_NEW_SUCCESS,
     payload: newNotification,
@@ -100,8 +100,13 @@ export const fetchNotifications = (userId) => {
 export const addNotification = (notification) => {
   return async (dispatch) => {
     try {
-      const newNotification = await insertNotificationService(notification);
-      dispatch(notificationUpdateSuccess(newNotification));
+      if (limit === 0) {
+        limit = 1;
+        const newNotification = await insertNotificationService(notification);
+        dispatch(NotificationUpdateSuccess(newNotification));
+      } else {
+        setTimeout(() => (limit = 0), 1000);
+      }
     } catch (error) {
       console.error(error.message);
       dispatch(notificationReducerError(error.message));
