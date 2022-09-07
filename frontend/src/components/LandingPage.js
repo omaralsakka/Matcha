@@ -6,13 +6,16 @@ import img4 from "../media/cp4.jpg";
 import logo from "../media/Matcha-logos_black.png";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import ScrollTop from "../utils/scrollTop";
 
 const LandingPage = () => {
   const imgsArr = [img1, img2, img3, img4];
   const [cardImg, setCardImg] = useState(imgsArr[0]);
   let i = 0;
-  useEffect(() => {
 
+  ScrollTop("landing");
+
+  useEffect(() => {
     setInterval(() => {
       i += 1;
       if (i > 3) {
@@ -23,7 +26,7 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <Container className="bg-transparent" fluid>
+    <Container id="landing" className="bg-transparent" fluid>
       <Container className="d-flex vh-100 align-items-center">
         <Container>
           <Card className="bg-transparent border-0">

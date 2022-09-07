@@ -7,10 +7,16 @@ import {
   InfoFilledTokenService,
 } from "../../services/userServices";
 import { useState } from "react";
+import ScrollTop from "../../utils/scrollTop";
 
 const UserImageCard = ({ index, src, onImageUpdate, onImageRemove }) => {
+  ScrollTop("picturesForm");
   return (
-    <Card style={{ width: "18rem", minWidth: "12rem" }} className="m-3">
+    <Card
+      id="picturesForm"
+      style={{ width: "18rem", minWidth: "12rem" }}
+      className="m-3"
+    >
       <Card.Img className="card-img-top" variant="top" src={src} />
       <Card.Body className="w-100">
         <Container className="d-flex justify-content-between">

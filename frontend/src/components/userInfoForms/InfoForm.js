@@ -6,6 +6,7 @@ import { infoFormService } from "../../services/userServices";
 import useLocation from "../../utils/locationTool";
 import TagsInput from "./TagsInput";
 import AlertInput from "../../utils/AlertInput";
+import ScrollTop from "../../utils/scrollTop";
 
 const InfoForm = ({ setVisibleForm }) => {
   const gender = UseField("text", "");
@@ -13,7 +14,7 @@ const InfoForm = ({ setVisibleForm }) => {
   const bio = UseField("text", "");
   const [tags, setTags] = useState([]);
   let location = useLocation(); // dont use this unless forced and make sure there is no infinite render
-
+  ScrollTop("infoForm");
   const handleSubmit = (e) => {
     e.preventDefault();
     let sexuality;
@@ -57,7 +58,7 @@ const InfoForm = ({ setVisibleForm }) => {
 
   return (
     <>
-      <Container className="signup-container mb-3 mt-5">
+      <Container id="infoForm" className="signup-container mb-3 mt-5">
         {location.location.length === 0 ? (
           <AlertInput
             variant="warning"

@@ -13,6 +13,7 @@ import {
 } from "../../utils/InputChecks";
 import { signupService, getCredentials } from "../../services/userServices";
 import ageConvertion from "../../utils/ageConvertion";
+import ScrollTop from "../../utils/scrollTop";
 
 const CheckEmail = ({ setFormSubmit }) => {
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ const Signup = () => {
   const [userVerify, setUsernameVerify] = useState(1);
   const [emailVerify, setEmailVerify] = useState(1);
 
+  ScrollTop("signUp");
   useEffect(() => {
     getCredentials({ type: "username" }).then((res) => {
       let obj = res.find((o) => o.username === username.value);
@@ -88,7 +90,7 @@ const Signup = () => {
 
   return (
     // <Container className="signup-container mb-3 mt-5">
-    <Container className="mb-3 shadow rounded p-sm-4 col-sm-6">
+    <Container id="signUp" className="mb-3 shadow rounded p-sm-4 col-sm-6">
       {formSubmit ? (
         <CheckEmail setFormSubmit={setFormSubmit} />
       ) : (

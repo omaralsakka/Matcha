@@ -10,6 +10,7 @@ import { getConnections } from "../reducers/connectionsReducer";
 import { useStoreUser } from "../utils/getStoreStates";
 import Notifications from "./Notifications";
 import { fetchNotifications } from "../reducers/notificationReducer";
+import ScrollTop from "../utils/scrollTop";
 
 const Navigation = ({ loggedUser, setLoggedUser }) => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
   const handleShowCanvas = () => setShowCanvas(true);
 
   UpdateStatus(loggedUser);
+  ScrollTop("navigation");
   useEffect(() => {
     if (user) {
       dispatch(getConnections());
@@ -47,9 +49,18 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
 
   return (
     <>
-      <Navbar collapseOnSelect bg="transparent" variant="light" expand="sm">
+      <Navbar
+        id="navigation"
+        collapseOnSelect
+        bg="transparent"
+        variant="light"
+        expand="sm"
+      >
         <Container fluid>
           <Navbar.Brand href="/home">Matcha</Navbar.Brand>
+          <Nav.Item className="d-md-none ms-auto me-2">
+            <Notifications room={loggedUser.id} />
+          </Nav.Item>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto d-flex align-items-center w-100">
@@ -65,7 +76,7 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
               <LinkContainer to="/settings">
                 <Nav.Link>Settings</Nav.Link>
               </LinkContainer>
-              <Nav.Item className="ms-md-auto">
+              <Nav.Item className="ms-md-auto d-none d-md-block">
                 <Notifications room={loggedUser.id} />
               </Nav.Item>
               <Nav.Item className="mx-3 d-none d-md-block">

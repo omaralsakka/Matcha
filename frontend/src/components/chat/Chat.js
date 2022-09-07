@@ -14,7 +14,6 @@ const Chat = () => {
   const matchedUser = useStoreMatch(param);
   const [roomStatus, setRoomStatus] = useState(false);
   const [roomName, setRoomName] = useState("");
-
   useEffect(() => {
     if (user && matchedUser && roomStatus === false) {
       const matchedObj = {
@@ -42,7 +41,7 @@ const Chat = () => {
     );
   } else {
     return (
-      <Container className="min-vh-100 mt-5 p-0">
+      <Container id="chatPage" className="min-vh-100 mt-5 p-0">
         <ChatRoom
           socket={socket}
           username={user.username}

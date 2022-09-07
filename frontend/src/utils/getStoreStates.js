@@ -57,7 +57,7 @@ export const useStoreMatch = (id) => {
 export const useStoreNotifications = () => {
   const notifications = useSelector((state) => {
     if (state.notifications.notifications) {
-      return state.notifications.notifications;
+      return state.notifications;
     } else {
       return false;
     }

@@ -7,6 +7,7 @@ import { checkUserName, checkPassword } from "../../utils/InputChecks";
 import { useDispatch } from "react-redux";
 import { logUser } from "../../reducers/loginReducer";
 import AlertInput from "../../utils/AlertInput";
+import ScrollTop from "../../utils/scrollTop"
 
 const Login = ({ setLoggedUser }) => {
   const username = UseField("text", "");
@@ -15,6 +16,7 @@ const Login = ({ setLoggedUser }) => {
   const navigate = useNavigate();
   const [loginCheck, setLoginCheck] = useState(true);
 
+  ScrollTop('login')
   const handleLogin = (e) => {
     e.preventDefault();
     const userInfo = {
@@ -35,7 +37,7 @@ const Login = ({ setLoggedUser }) => {
     password.onChange(e);
   };
   return (
-    <Container className="mb-3 shadow rounded p-sm-4 col-sm-6">
+    <Container id='login' className="mb-3 shadow rounded p-sm-4 col-sm-6">
       <Form onSubmit={handleLogin}>
         <Form.Group className="mb-3 form-logo">
           <Link to="/">

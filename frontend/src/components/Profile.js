@@ -13,7 +13,6 @@ import ProfileImagesCarousel from "./profileComponents/ProfileImagesCarousel";
 const Profile = () => {
   const { user } = useStoreUser();
   const [userPictures, setUserPictures] = useState([]);
-
   useEffect(() => {
     if (user) {
       getUsersImages(user.user_id).then((resp) => {
@@ -22,7 +21,11 @@ const Profile = () => {
     }
   }, [user]);
   if (!user || !userPictures.length) {
-    return <LoadingScreen />;
+    return (
+      <Container>
+        <LoadingScreen />
+      </Container>
+    );
   } else {
     return (
       <Container className="p-sm-3 p-0">

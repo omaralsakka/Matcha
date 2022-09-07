@@ -13,6 +13,7 @@ import {
 
 const initialState = {
   notifications: [],
+  amount: 0,
   error: null,
 };
 
@@ -24,6 +25,7 @@ const notificationsReducer = (state = initialState, actions) => {
       return {
         ...state,
         notifications: payload,
+        amount: payload.length,
         error: null,
       };
 
@@ -31,6 +33,7 @@ const notificationsReducer = (state = initialState, actions) => {
       return {
         ...state,
         notifications: [...state.notifications, ...payload],
+        amount: state.notifications.length + payload.length,
         error: null,
       };
 
@@ -38,6 +41,7 @@ const notificationsReducer = (state = initialState, actions) => {
       return {
         ...state,
         notifications: payload,
+        amount: 0,
         error: null,
       };
 
@@ -45,6 +49,7 @@ const notificationsReducer = (state = initialState, actions) => {
       return {
         ...state,
         notifications: [],
+        amount: 0,
         error: payload,
       };
     default:

@@ -43,7 +43,6 @@ const Settings = ({ setLoggedUser }) => {
   const dispatch = useDispatch();
   const countries = allCountries();
   let relocatedPosition = useLocation();
-  /* let relocatedPosition = ""; */
 
   useEffect(() => {
     getCredentials({ type: "username" }).then((res) => {

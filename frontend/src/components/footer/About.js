@@ -1,14 +1,19 @@
 import logo from "../../media/Matcha-logos_black.png";
-import { Container } from "react-bootstrap";
+import { Container, Image } from "react-bootstrap";
 import luke from "../../media/luke.JPG";
 import omar from "../../media/omar.jpg";
+import ScrollTop from "../../utils/scrollTop";
+import { Link } from "react-router-dom";
 const About = () => {
+  ScrollTop("about");
   return (
-    <div className="mb-5">
+    <div id="about" className="mb-5">
       <Container>
-        <div className="terms-logo-container">
-          <img alt="" src={logo} />
-        </div>
+        <Container className="terms-logo-container ms-0 w-25">
+          <Link to="/">
+            <Image alt="" src={logo} className="w-50" />
+          </Link>
+        </Container>
       </Container>
       <hr />
       <Container>

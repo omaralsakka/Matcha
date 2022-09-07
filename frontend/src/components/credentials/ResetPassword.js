@@ -5,12 +5,14 @@ import { checkPassword } from "../../utils/InputChecks";
 import { resetPassWordService } from "../../services/userServices";
 import { Form, Button, Container } from "react-bootstrap";
 import AlertInput from "../../utils/AlertInput";
+import ScrollTop from "../../utils/scrollTop";
 
 const ResetPassword = () => {
   const password = UseField("text", "");
   const param = useParams().code;
   const code = { code: param.substring(param.indexOf("=") + 1, param.length) };
 
+  ScrollTop("forgotPass");
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -24,7 +26,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <Container className="signup-container">
+    <Container id="forgotPass" className="signup-container">
       <Form.Group className="mb-3 form-logo">
         <Link to="/">
           <img className="form-logo-img" alt="" src={logo} />
