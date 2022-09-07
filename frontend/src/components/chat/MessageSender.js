@@ -4,7 +4,10 @@ import ProfileImage from "../../utils/ProfileImage";
 export const ReceivedMessage = ({ userGender, userId, message, time }) => {
   return (
     <Container className="d-flex p-0">
-      <Container className="col-sm-1 col-2 m-0 me-1 d-flex align-items-center">
+      <Container
+        className="col-md-1 col-sm-2 col-2 m-0 me-1 d-flex align-items-center"
+        style={{ minWidth: "60px" }}
+      >
         <ProfileImage userGender={userGender} userId={userId} />
       </Container>
       <Container className="p-2 bg-light rounded w-75 ms-0 mb-3 mt-3">
