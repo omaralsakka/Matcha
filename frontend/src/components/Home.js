@@ -55,11 +55,7 @@ const Home = () => {
     }
   }, [sort, order, usersInStore.users]);
   if (!users || !user || loading) {
-    return (
-      <Container>
-        <LoadingScreen />
-      </Container>
-    );
+    return <LoadingScreen />;
   } else {
     return (
       <>
