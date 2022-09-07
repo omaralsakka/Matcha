@@ -105,6 +105,7 @@ const UsersCards = ({
   } else {
     return (
       <Col className="g-3 d-flex justify-content-center">
+        {/* className={displayEffect.cardClass} */}
         <Card className={displayEffect.cardClass} style={{ minWidth: "23rem" }}>
           <Row className="no-gutters w-auto">
             <Col md={displayEffect.picCol}>

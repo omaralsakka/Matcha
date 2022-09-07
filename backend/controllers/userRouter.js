@@ -118,14 +118,6 @@ userRouter.post("/login/tk", async (request, response) => {
   }
 });
 
-// const getToken = (request) => {
-//   const auth = request.get("authorization");
-//   if (auth && auth.toLowerCase().startsWith("bearer")) {
-//     return auth.substring(7);
-//   }
-//   return null;
-// };
-
 userRouter.post("/info", async (request, response) => {
   const ip = request.ip;
 
@@ -502,6 +494,7 @@ userRouter.post("/insert-notifications", async (request, response) => {
   }
   const body = request.body;
   try {
+    console.log("about to send query");
     const queryResponse = await queryTools.insertNotifications(body);
     response.status(200).send(queryResponse);
   } catch (error) {
