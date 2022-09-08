@@ -486,15 +486,14 @@ userRouter.get("/get-notifications/:id", async (request, response) => {
 });
 
 userRouter.post("/insert-notifications", async (request, response) => {
-  const decodedToken = tokenTools.verifyToken(request);
+ /*  const decodedToken = tokenTools.verifyToken(request); 
   if (!decodedToken) {
     response.status(401).json({
       error: "token error",
     });
-  }
+  } */
   const body = request.body;
   try {
-    console.log("about to send query");
     const queryResponse = await queryTools.insertNotifications(body);
     response.status(200).send(queryResponse);
   } catch (error) {

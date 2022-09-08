@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
 import UseField from "../UseField";
-// import sendNotificationService from "../../services/notificationServices";
+import sendNotification from "../../utils/sendNotification";
 import "./Chat.css";
 import {
   saveChatMessagesService,
@@ -11,7 +11,6 @@ import { Button, Card, Container, Form } from "react-bootstrap";
 import { ReceivedMessage, SentMessage } from "./MessageSender";
 
 const ChatRoom = ({ socket, username, room, user_id, matchedUser }) => {
-  // const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
   const text = UseField("text", "");
   useEffect(() => {
@@ -42,17 +41,7 @@ const ChatRoom = ({ socket, username, room, user_id, matchedUser }) => {
       saveChatMessagesService(newList);
       e.target.value = "";
       text.onChange(e);
-	  const notificationData = {
-        room: matchedUser[0].user_id,
-        username: username,
-        message: "a message was sent to you",
-        time:
-          new Date(Date.now()).getHours() +
-          ":" +
-          new Date(Date.now()).getMinutes(),
-      };
-      await socket.emit("send_message", notificationData);
-
+	  sendNotification(matchedUser[0].user_id, username, "A message was sent to you by");
     }
   };
 
@@ -61,6 +50,7 @@ const ChatRoom = ({ socket, username, room, user_id, matchedUser }) => {
       setMessageList((list) => [...list, data]);
     });
   }, [socket]);
+
   return (
     <Container className="col-sm-7 p-0 p-sm-2" style={{ minHeight: "80vh" }}>
       <Card className="overflow-hidden">
