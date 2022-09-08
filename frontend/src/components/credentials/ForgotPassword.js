@@ -9,11 +9,13 @@ import logo from "../../media/logo-black.png";
 import { Link } from "react-router-dom";
 import { checkEmail } from "../../utils/InputChecks";
 import AlertInput from "../../utils/AlertInput";
+import ScrollTop from "../../utils/scrollTop";
 
 const ForgotPassword = () => {
   const email = UseField("email", "");
   const [emailVerify, setEmailVerify] = useState(true);
 
+  ScrollTop("forgotPass");
   useEffect(() => {
     getCredentials({ type: "email" }).then((res) => {
       let obj = res.find((o) => o.email === email.value);
@@ -39,7 +41,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <Container className="mb-3 shadow rounded p-sm-4 col-sm-6">
+    <Container id="forgotPass" className="mb-3 shadow rounded p-sm-4 col-sm-6">
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3 form-logo">
           <Link to="/">

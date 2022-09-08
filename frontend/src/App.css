@@ -145,6 +145,7 @@ body {
 .team-img-container {
   width: 15vw;
   min-width: 120px;
+  min-height: 120px;
   max-height: 25vh;
   border: rgb(165, 165, 253) 1px solid;
   box-shadow: 50px 30px rgb(165, 165, 253);
@@ -318,9 +319,8 @@ body {
 }
 
 .dropdown-container {
-	display: none;
+  display: none;
 }
-
 
 @media only screen and (max-width: 450px) {
   .team-img-container {

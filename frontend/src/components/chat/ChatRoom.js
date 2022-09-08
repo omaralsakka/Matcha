@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
 import UseField from "../UseField";
-// import sendNotificationService from "../../services/notificationServices";
 import "./Chat.css";
 import {
   saveChatMessagesService,
@@ -11,7 +10,6 @@ import { Button, Card, Container, Form } from "react-bootstrap";
 import { ReceivedMessage, SentMessage } from "./MessageSender";
 
 const ChatRoom = ({ socket, username, room, user_id, matchedUser }) => {
-  // const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
   const text = UseField("text", "");
   useEffect(() => {
@@ -62,7 +60,10 @@ const ChatRoom = ({ socket, username, room, user_id, matchedUser }) => {
     });
   }, [socket]);
   return (
-    <Container className="col-sm-7 p-0 p-sm-2" style={{ minHeight: "80vh" }}>
+    <Container
+      className="col-lg-7 col-sm-12 p-0 p-sm-2"
+      style={{ minHeight: "80vh" }}
+    >
       <Card className="overflow-hidden">
         <Card.Header className="fs-5">
           <strong>@ {matchedUser[0].username}</strong>

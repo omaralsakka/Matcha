@@ -10,7 +10,7 @@ import {
   insertNotificationService,
   clearNotificationsService,
 } from "../services/userServices";
-import { useState } from "react";
+
 const initialState = {
   notifications: [],
 //   amount: 0,

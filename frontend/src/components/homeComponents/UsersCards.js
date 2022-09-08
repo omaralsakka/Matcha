@@ -41,6 +41,7 @@ const UsersCards = ({
   const [fameRate, setFameRate] = useState(0);
   const [distance, setDistance] = useState("");
   const [fadeBody, setFadeBody] = useState({ visible: "" });
+  const [loading, setLoading] = useState(true);
 
   const [displayEffect, setDisplayEffect] = useState({
     picCol: 12,
@@ -99,40 +100,56 @@ const UsersCards = ({
   useEffect(() => {
     getUsersImages(user.user_id).then((resp) => setUserImages(resp));
   }, []);
-  let clickCounter = 0;
+
+  useEffect(() => {
+    if (userImages.length) {
+      setTimeout(() => setLoading(false), 1000);
+    }
+  }, [userImages]);
+
   if (!userImages.length) {
-    return <Spinner animation="grow" />;
+    return (
+      <Col className="g-3 d-flex justify-content-center">
+        <Spinner animation="grow" />
+      </Col>
+    );
   } else {
     return (
       <Col className="g-3 d-flex justify-content-center">
-        {/* className={displayEffect.cardClass} */}
-        <Card className={displayEffect.cardClass} style={{ minWidth: "23rem" }}>
-          <Row className="no-gutters w-auto">
-            <Col md={displayEffect.picCol}>
-              <UsersImagesCarousel
-                userImages={userImages}
-                userGender={user.gender}
-              />
-              <Container className={displayEffect.status}>
-                {user.status === "online" ? (
-                  <>
-                    <Container className="px-0 mx-0 cards-icons">
-                      <Image src={onlineIcon} fluid />
-                    </Container>
-                    <span className="fs-6 text-muted">Online</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="fs-7 text-muted">
-                      Last login time: {last_logged_time[0]} {time[0]}
-                    </span>
-                  </>
-                )}
-              </Container>
-            </Col>
-            <Collapse in={open} dimension="height">
+        {loading ? (
+          <Spinner animation="grow" />
+        ) : (
+          <Card
+            className={displayEffect.cardClass}
+            style={{ minWidth: "23rem" }}
+          >
+            <Row className="no-gutters w-auto">
+              <Col md={displayEffect.picCol}>
+                <UsersImagesCarousel
+                  userImages={userImages}
+                  userGender={user.gender}
+                />
+                <Container className={displayEffect.status}>
+                  {user.status === "online" ? (
+                    <>
+                      <Container className="px-0 mx-0 cards-icons">
+                        <Image src={onlineIcon} fluid />
+                      </Container>
+                      <span className="fs-6 text-muted">Online</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="fs-7 text-muted">
+                        Last login time: {last_logged_time[0]} {time[0]}
+                      </span>
+                    </>
+                  )}
+                </Container>
+              </Col>
+
+              {/* <Collapse in={open} dimension="width"> */}
               <Col md={8} className={displayEffect.bodyDisplay}>
-                <Card.Body>
+                <Card.Body className="h-100">
                   <FadeIn {...fadeBody}>
                     <UserCardInfo user={user} distance={distance} />
                     <Container className="d-flex justify-content-center gap-5 mt-5">
@@ -149,42 +166,43 @@ const UsersCards = ({
                   </FadeIn>
                 </Card.Body>
               </Col>
-            </Collapse>
-          </Row>
+              {/* </Collapse> */}
+            </Row>
 
-          <Row>
-            <Col className="p-3 mx-3">
-              <Container className={displayEffect.bottomRow}>
-                <Fade in={hide}>
-                  <Card.Title className="fs-1">
-                    <strong>{user.fullname}</strong>
-                    <span className="mx-3 fs-3 text-muted">{user.age}</span>
-                  </Card.Title>
-                </Fade>
-                <Fade in={hide}>
-                  <Container className="d-flex align-items-center gap-2 px-0">
-                    <span className="opacity-75 cards-icons">
-                      <Image src={locationIcon} fluid />
-                    </span>
-                    <Card.Text className="text-muted fs-5">
-                      Lives in {user.city}
-                    </Card.Text>
-                  </Container>
-                </Fade>
-              </Container>
-              <Container>
-                <Button
-                  variant="outline-dark"
-                  onClick={displayUserInfo}
-                  // aria-controls="collapse-col"
-                  aria-expanded={open}
-                >
-                  Check me out
-                </Button>
-              </Container>
-            </Col>
-          </Row>
-        </Card>
+            <Row>
+              <Col className="p-3 mx-3">
+                <Container className={displayEffect.bottomRow}>
+                  <Fade in={hide}>
+                    <Card.Title className="fs-1">
+                      <strong>{user.fullname}</strong>
+                      <span className="mx-3 fs-3 text-muted">{user.age}</span>
+                    </Card.Title>
+                  </Fade>
+                  <Fade in={hide}>
+                    <Container className="d-flex align-items-center gap-2 px-0">
+                      <span className="opacity-75 cards-icons">
+                        <Image src={locationIcon} fluid />
+                      </span>
+                      <Card.Text className="text-muted fs-5">
+                        Lives in {user.city}
+                      </Card.Text>
+                    </Container>
+                  </Fade>
+                </Container>
+                <Container className={displayEffect.bottomButton}>
+                  <Button
+                    variant="outline-dark"
+                    onClick={displayUserInfo}
+                    // aria-controls="collapse-col"
+                    aria-expanded={open}
+                  >
+                    Check me out
+                  </Button>
+                </Container>
+              </Col>
+            </Row>
+          </Card>
+        )}
       </Col>
     );
   }

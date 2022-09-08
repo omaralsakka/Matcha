@@ -41,7 +41,7 @@ const Chat = () => {
     );
   } else {
     return (
-      <Container id="chatPage" className="min-vh-100 mt-5 p-0">
+      <Container className="min-vh-100 mt-5 p-0">
         <ChatRoom
           socket={socket}
           username={user.username}

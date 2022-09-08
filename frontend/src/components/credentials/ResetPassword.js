@@ -12,7 +12,7 @@ const ResetPassword = () => {
   const param = useParams().code;
   const code = { code: param.substring(param.indexOf("=") + 1, param.length) };
 
-  ScrollTop("forgotPass");
+  ScrollTop("resetPass");
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -26,7 +26,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <Container id="forgotPass" className="signup-container">
+    <Container id="resetPass" className="signup-container">
       <Form.Group className="mb-3 form-logo">
         <Link to="/">
           <img className="form-logo-img" alt="" src={logo} />
