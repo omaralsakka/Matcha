@@ -15,25 +15,6 @@ import bell from "../media/bell.png";
 
 const socket = io.connect("http://localhost:5000");
 
-const useOutsideAlerter = (ref, notifications) => {
-  const dispatch = useDispatch();
-  console.log(notifications);
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (ref.current && !ref.current.contains(event.target)) {
-        if (notifications.length) {
-          console.log("here");
-          dispatch(clearNotifications());
-        }
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [ref]);
-};
-
 const CustomToggle = forwardRef(({ children, onClick }, ref) => (
   <Button
     className=" border-0 shadow-none p-1 bg-transparent"

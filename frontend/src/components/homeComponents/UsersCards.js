@@ -133,8 +133,8 @@ const UsersCards = ({
                 </Container>
               </Col>
 
+              {/* <Collapse in={open} dimension="width"> */}
               <Col md={8} className={displayEffect.bodyDisplay}>
-                {/* <Collapse in={open} dimension="width"> */}
                 <Card.Body className="h-100">
                   <FadeIn {...fadeBody}>
                     <UserCardInfo user={user} distance={distance} />
@@ -151,8 +151,8 @@ const UsersCards = ({
                     <ReportAccount loggedUserId={loggedUserId} user={user} />
                   </FadeIn>
                 </Card.Body>
-                {/* </Collapse> */}
               </Col>
+              {/* </Collapse> */}
             </Row>
 
             <Row>

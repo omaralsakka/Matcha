@@ -8,11 +8,8 @@ import InputRange from "react-input-range";
 import { usersFetchSuccess } from "../../reducers/usersReducer";
 import { useDispatch } from "react-redux";
 
-const AdvanceSearch = ({ originalUsers }) => {
-  const [show, setShow] = useState(false);
-
+const AdvanceSearch = ({ originalUsers, show, setShow }) => {
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   const { user } = useStoreUser();
   const usersInStore = useStoreUsers();
   const dispatch = useDispatch();
@@ -79,7 +76,7 @@ const AdvanceSearch = ({ originalUsers }) => {
   }
   return (
     <>
-      <Button onClick={handleShow}>Advanced search</Button>
+      {/* <Button onClick={handleShow}>Advanced search</Button> */}
       <Offcanvas show={show} onHide={handleClose} placement="end">
         <Container className="mb-3 bg-light border-bottom px-0">
           <Offcanvas.Header closeButton={"light"}>
