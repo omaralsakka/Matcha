@@ -19,8 +19,7 @@ import {
   blockUserService,
 } from "../services/usersServices";
 
-import io from "socket.io-client";
-const socket = io.connect("http://localhost:5000");
+import sendNotification from "../utils/sendNotification";
 
 const initialState = {
   users: [],
@@ -180,17 +179,10 @@ export const likeUser = (likedUserId, likedById, likerUsername) => {
     try {
       const usersIds = { likedUserId, likedById };
       const updatedUser = await likeUserService(usersIds);
-	  if(updatedUser[0].liked.includes(likedById) === updatedUser[0].liked_by.includes(likedById)) {
-		const notificationData = {
-			room: likedUserId,
-			username: likerUsername,
-			message: "your profile is matched",
-			time:
-			  new Date(Date.now()).getHours() +
-			  ":" +
-			  new Date(Date.now()).getMinutes(),
-		  };
-		  await socket.emit("send_message", notificationData);
+	  if(updatedUser[0].liked === null || updatedUser[0].liked.includes(likedById) !== updatedUser[0].liked_by.includes(likedById)) {
+		  sendNotification(likedUserId, likerUsername, "Your profile was liked by")
+	  } else if(updatedUser[0].liked.includes(likedById) === updatedUser[0].liked_by.includes(likedById)) {
+		sendNotification(likedUserId, likerUsername, "Your profile is matched with")
 	  }
       dispatch(updateStoreUser(updatedUser, USER_LIKE_SUCCESS));
       return updatedUser;
@@ -207,17 +199,8 @@ export const disLikeUser = (likedUserId, likedById, disLikerUsername) => {
     try {
       const usersIds = { likedUserId, likedById };
       const updatedUser = await dislikeUserService(usersIds);
-	  if(updatedUser[0].liked.includes(likedById) && !updatedUser[0].liked_by.includes(likedById)) {
-		const notificationData = {
-			room: likedUserId,
-			username: disLikerUsername,
-			message: "your profile is un-matched",
-			time:
-			  new Date(Date.now()).getHours() +
-			  ":" +
-			  new Date(Date.now()).getMinutes(),
-		  };
-		  await socket.emit("send_message", notificationData);
+	  if(updatedUser[0].liked !== null && updatedUser[0].liked.includes(likedById) && !updatedUser[0].liked_by.includes(likedById)) {
+		sendNotification(likedUserId, disLikerUsername, "You are un-matched with");
 	  }
       dispatch(updateStoreUser(updatedUser, USER_DISLIKE_SUCCESS));
 

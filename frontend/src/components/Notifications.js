@@ -113,11 +113,11 @@ const Notifications = ({ room }) => {
               <Container key={Math.random()}>
                 <Dropdown.Item>
                   <span className="text-wrap d-md-none">
-                    {notification.notifications.message} by{" "}
+                    {notification.notifications.message} {" "}
                     {notification.notifications.username}
                   </span>
                   <span className="d-sm-block d-none">
-                    {notification.notifications.message} by{" "}
+                    {notification.notifications.message} {" "}
                     {notification.notifications.username}
                   </span>
                 </Dropdown.Item>

@@ -105,7 +105,7 @@ export const addNotification = (notification) => {
         const newNotification = await insertNotificationService(notification);
         dispatch(NotificationUpdateSuccess(newNotification));
       } else {
-        setTimeout(() => (limit = 0), 1000);
+        setTimeout(() => (limit = 0), 1);
       }
     } catch (error) {
       console.error(error.message);

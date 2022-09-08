@@ -1,0 +1,18 @@
+import io from "socket.io-client";
+const socket = io.connect("http://localhost:5000");
+let limit = 0;
+  const sendNotification = async (room, username, message) => {
+
+	const notificationData = {
+		room: room,
+		username: username,
+		message: message,
+		time:
+		  new Date(Date.now()).getHours() +
+		  ":" +
+		  new Date(Date.now()).getMinutes(),
+	  };
+	  await socket.emit("send_message", notificationData);
+  }
+
+  export default sendNotification;

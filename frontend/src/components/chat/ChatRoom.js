@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
 import UseField from "../UseField";
+import sendNotification from "../../utils/sendNotification";
 import "./Chat.css";
 import {
   saveChatMessagesService,
@@ -40,17 +41,7 @@ const ChatRoom = ({ socket, username, room, user_id, matchedUser }) => {
       saveChatMessagesService(newList);
       e.target.value = "";
       text.onChange(e);
-	  const notificationData = {
-        room: matchedUser[0].user_id,
-        username: username,
-        message: "a message was sent to you",
-        time:
-          new Date(Date.now()).getHours() +
-          ":" +
-          new Date(Date.now()).getMinutes(),
-      };
-      await socket.emit("send_message", notificationData);
-
+	  sendNotification(matchedUser[0].user_id, username, "A message was sent to you by");
     }
   };
 
@@ -59,6 +50,7 @@ const ChatRoom = ({ socket, username, room, user_id, matchedUser }) => {
       setMessageList((list) => [...list, data]);
     });
   }, [socket]);
+
   return (
     <Container
       className="col-lg-7 col-sm-12 p-0 p-sm-2"

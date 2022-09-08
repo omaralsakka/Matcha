@@ -88,9 +88,9 @@ const InfoForm = ({ setVisibleForm }) => {
             <Form.Label>Interested in</Form.Label>
             <Form.Select {...sexualPreference}>
               <option value="">...</option>
-              <option value="men">men</option>
-              <option value="women">women</option>
-              <option value="both">both</option>
+              <option value="men">Men</option>
+              <option value="women">Women</option>
+              <option value="both">Both</option>
             </Form.Select>
           </Form.Group>
 
