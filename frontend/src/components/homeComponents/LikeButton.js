@@ -36,6 +36,9 @@ const LikeButton = ({
       if (user.liked_by.includes(loggedUserId)) {
         setHeart(heartInline);
         setLiked(true);
+      } else {
+        setHeart(heartOutline);
+        setLiked(false);
       }
       setFameRate(user.liked_by.length);
     }
