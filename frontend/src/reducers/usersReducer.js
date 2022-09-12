@@ -20,6 +20,7 @@ import {
   blockUserService,
 } from "../services/usersServices";
 
+import { getConnections } from "./connectionsReducer";
 import sendNotification from "../utils/sendNotification";
 
 const initialState = {
@@ -197,6 +198,7 @@ export const likeUser = (likedUserId, likedById, likerUsername) => {
           likerUsername,
           "Your profile is matched with"
         );
+        dispatch(getConnections());
       }
       dispatch(updateStoreUser(updatedUser, USER_LIKE_SUCCESS));
       return updatedUser;
@@ -223,6 +225,7 @@ export const disLikeUser = (likedUserId, likedById, disLikerUsername) => {
           disLikerUsername,
           "You are un-matched with"
         );
+        dispatch(getConnections());
       }
       dispatch(updateStoreUser(updatedUser, USER_DISLIKE_SUCCESS));
 
