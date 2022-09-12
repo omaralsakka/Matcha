@@ -26,8 +26,15 @@ const ProfileImage = ({ userGender, userId }) => {
         setProfileImage(resp.picture);
       }
     });
-  }, [userId, userGender]);
-  return <Image src={profileImage} fluid rounded />;
+  }, []);
+  return (
+    <Image
+      src={profileImage}
+      rounded
+      className="w-100"
+      style={{ objectFit: "cover", minHeight: "30px", maxHeight: "42px" }}
+    />
+  );
 };
 
 export default ProfileImage;

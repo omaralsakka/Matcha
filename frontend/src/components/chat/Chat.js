@@ -35,9 +35,9 @@ const Chat = () => {
 
   if (roomStatus === false) {
     return (
-      <div>
+      <Container>
         <h2>lets get this chat thing going</h2>
-      </div>
+      </Container>
     );
   } else {
     return (

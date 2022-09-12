@@ -118,16 +118,6 @@ body {
   }
 }
 
-/* .main-footer {
-  position: sticky;
-  left: 0;
-  height: auto;
-  top: 100%;
-  bottom: 0;
-  background-color: #1b1c1e;
-  color: white;
-} */
-
 .terms-logo-container {
   width: 10vw;
   min-width: 100px;
@@ -215,6 +205,7 @@ body {
 .carousel-cards {
   max-width: 600px;
 }
+
 .card-img-users {
   width: 100%;
   min-height: 560px;
@@ -230,31 +221,7 @@ body {
   font-size: calc(5px + 1vw);
 }
 
-/* @-webkit-keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-} */
-
 .location-alert {
-  /* -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-  -webkit-animation-duration: 5s;
-  animation-duration: 5s; */
-  /* -webkit-animation-name: fadeOut; */
-  /* animation-name: fadeOut; */
   font-size: calc(5px + 0.7vw);
 }
 

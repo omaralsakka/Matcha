@@ -54,28 +54,28 @@ const Notifications = ({ room }) => {
   const [seen, setSeen] = useState(false);
 
   useEffect(() => {
-	  socket.emit("join_room", room);
-	  const roomData = {
+    socket.emit("join_room", room);
+    const roomData = {
       room: room,
     };
   }, []);
-  
-  useEffect(() => {
-	  socket.on("receive_message", (data) => {
-		  dispatch(addNotification(data));
-		});
-	}, [socket]);
 
-	const handleClearNotification = () => {
+  useEffect(() => {
+    socket.on("receive_message", (data) => {
+      dispatch(addNotification(data));
+    });
+  }, [socket]);
+
+  const handleClearNotification = () => {
     if (!seen) {
-		setSeen(true);
+      setSeen(true);
     } else {
       setSeen(false);
       if (notifications.notifications.length) {
-		  dispatch(clearNotifications());
-		}
+        dispatch(clearNotifications());
+      }
     }
-};
+  };
 
   if (!notifications.notifications.length) {
     return (
@@ -97,9 +97,9 @@ const Notifications = ({ room }) => {
   } else {
     return (
       <Container className="d-flex p-0">
-        {/* <Container className="p-0">
+        <Container className="p-0">
           <span className="fs-6 text-danger">{notifications.amount}</span>
-        </Container> */}
+        </Container>
         <Dropdown align={"end"} onToggle={handleClearNotification}>
           <DropdownToggle
             as={CustomToggle}
@@ -113,11 +113,11 @@ const Notifications = ({ room }) => {
               <Container key={Math.random()}>
                 <Dropdown.Item>
                   <span className="text-wrap d-md-none">
-                    {notification.notifications.message} {" "}
+                    {notification.notifications.message}{" "}
                     {notification.notifications.username}
                   </span>
                   <span className="d-sm-block d-none">
-                    {notification.notifications.message} {" "}
+                    {notification.notifications.message}{" "}
                     {notification.notifications.username}
                   </span>
                 </Dropdown.Item>

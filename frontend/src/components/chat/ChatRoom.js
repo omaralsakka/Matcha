@@ -9,6 +9,7 @@ import {
 } from "../../services/usersServices";
 import { Button, Card, Container, Form } from "react-bootstrap";
 import { ReceivedMessage, SentMessage } from "./MessageSender";
+import ProfileImage from "../../utils/ProfileImage";
 
 const ChatRoom = ({ socket, username, room, user_id, matchedUser }) => {
   const [messageList, setMessageList] = useState([]);
@@ -41,7 +42,11 @@ const ChatRoom = ({ socket, username, room, user_id, matchedUser }) => {
       saveChatMessagesService(newList);
       e.target.value = "";
       text.onChange(e);
-	  sendNotification(matchedUser[0].user_id, username, "A message was sent to you by");
+      sendNotification(
+        matchedUser[0].user_id,
+        username,
+        "A message was sent to you by"
+      );
     }
   };
 
@@ -50,14 +55,22 @@ const ChatRoom = ({ socket, username, room, user_id, matchedUser }) => {
       setMessageList((list) => [...list, data]);
     });
   }, [socket]);
-
   return (
     <Container
       className="col-lg-7 col-sm-12 p-0 p-sm-2"
       style={{ minHeight: "80vh" }}
     >
       <Card className="overflow-hidden">
-        <Card.Header className="fs-5">
+        <Card.Header className="fs-5 d-flex align-items-center">
+          <Container
+            className="col-md-1 col-sm-2 col-2 m-0 me-1 d-flex align-items-center rounded overflow-hidden"
+            style={{ minWidth: "60px" }}
+          >
+            <ProfileImage
+              userGender={matchedUser[0].gender}
+              userId={matchedUser[0].user_id}
+            />
+          </Container>
           <strong>@ {matchedUser[0].username}</strong>
         </Card.Header>
         <Container className="chatbg">
