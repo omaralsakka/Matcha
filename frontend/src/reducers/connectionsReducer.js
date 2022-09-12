@@ -5,6 +5,7 @@ import {
 } from "../actions/types";
 import { fetchConnections } from "../services/userServices";
 import { dislikeUserService } from "../services/usersServices";
+import { updateUnmatchedUsers } from "./usersReducer";
 
 const initialState = {
   users: [],
@@ -82,6 +83,7 @@ export const unMatchUser = (unMatchedUserId, loggedUserId) => {
       };
       const updatedUser = await dislikeUserService(usersIds);
       dispatch(unMatchSuccess(unMatchedUserId));
+      dispatch(updateUnmatchedUsers(loggedUserId, unMatchedUserId));
       return updatedUser;
     } catch (error) {
       console.error(error.message);

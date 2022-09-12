@@ -38,6 +38,7 @@ const loginReducer = (state = initialState, action) => {
         user: { loggedUser: payload },
         error: "",
       };
+
     case LOGIN_REDUCER_ERROR:
       return {
         ...state,

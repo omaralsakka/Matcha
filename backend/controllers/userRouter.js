@@ -167,19 +167,8 @@ userRouter.post("/pictures", async (request, response) => {
   }
 });
 
-// const verifyToken = (request) => {
-//   const userToken = getToken(request);
-//   const decodedToken = jwt.verify(userToken, process.env.SECRET);
-//   if (!decodedToken.id) {
-//     return false;
-//   }
-//   return decodedToken;
-// };
-
 userRouter.post("/infoFilledToken", async (request, response) => {
   const decodedToken = tokenTools.verifyToken(request);
-  // const oldToken = getToken(request);
-  // const decodedToken = jwt.verify(oldToken, process.env.SECRET);
   if (!decodedToken) {
     return response.status(401).json({ error: "new token generating error" });
   }
@@ -486,7 +475,7 @@ userRouter.get("/get-notifications/:id", async (request, response) => {
 });
 
 userRouter.post("/insert-notifications", async (request, response) => {
- /*  const decodedToken = tokenTools.verifyToken(request);  /// commented out because this crashed the program when user logs out an other user sends notification to this user
+  /*  const decodedToken = tokenTools.verifyToken(request);  /// commented out because this crashed the program when user logs out an other user sends notification to this user
   if (!decodedToken) {
     response.status(401).json({
       error: "token error",

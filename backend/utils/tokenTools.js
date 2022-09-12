@@ -10,6 +10,9 @@ const getToken = (request) => {
 
 const verifyToken = (request) => {
   const userToken = getToken(request);
+  if (!userToken) {
+    return false;
+  }
   const decodedToken = jwt.verify(userToken, process.env.SECRET);
   if (!decodedToken.id) {
     return false;

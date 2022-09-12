@@ -6,6 +6,7 @@ import {
   USERS_STATUS_UPDATED,
   DELETE_REPORTED_USER,
   USER_BLOCK_SUCCESS,
+  USER_UNMATCHED_SUCCESS,
   USERS_REDUCER_ERROR,
 } from "../actions/types";
 
@@ -96,6 +97,21 @@ const usersReducer = (state = initialState, action) => {
         error: null,
       };
 
+    case USER_UNMATCHED_SUCCESS:
+      return {
+        ...state,
+        users: state.users.map((user) => {
+          if (user.user_id === payload.unMatchedUserId) {
+            return {
+              ...user,
+              liked_by: user.liked_by.filter(
+                (ids) => ids !== payload.loggedUserId
+              ),
+            };
+          }
+          return user;
+        }),
+      };
     case USER_BLOCK_SUCCESS:
       return {
         ...state,
@@ -142,23 +158,6 @@ const usersReducerError = (error) => {
   };
 };
 
-// export const fetchUsers = (user, country) => {
-//   return async (dispatch) => {
-//     try {
-//       const response = await getUsersService(user, country);
-//       const filteredUsersArr = response.filter(
-//         (elem) => elem.user_id !== user.user_id
-//       );
-//       dispatch(usersFetchSuccess(filteredUsersArr));
-//       return filteredUsersArr;
-//     } catch (error) {
-//       dispatch(usersReducerError(error.message));
-//       console.error(error.message);
-//       return error.message;
-//     }
-//   };
-// };
-
 export const getUsersByCountry = (country, user) => {
   return async (dispatch) => {
     try {
@@ -179,11 +178,26 @@ export const likeUser = (likedUserId, likedById, likerUsername) => {
     try {
       const usersIds = { likedUserId, likedById };
       const updatedUser = await likeUserService(usersIds);
-	  if(updatedUser[0].liked === null || updatedUser[0].liked.includes(likedById) !== updatedUser[0].liked_by.includes(likedById)) {
-		  sendNotification(likedUserId, likerUsername, "Your profile was liked by")
-	  } else if(updatedUser[0].liked.includes(likedById) === updatedUser[0].liked_by.includes(likedById)) {
-		sendNotification(likedUserId, likerUsername, "Your profile is matched with")
-	  }
+      if (
+        updatedUser[0].liked === null ||
+        updatedUser[0].liked.includes(likedById) !==
+          updatedUser[0].liked_by.includes(likedById)
+      ) {
+        sendNotification(
+          likedUserId,
+          likerUsername,
+          "Your profile was liked by"
+        );
+      } else if (
+        updatedUser[0].liked.includes(likedById) ===
+        updatedUser[0].liked_by.includes(likedById)
+      ) {
+        sendNotification(
+          likedUserId,
+          likerUsername,
+          "Your profile is matched with"
+        );
+      }
       dispatch(updateStoreUser(updatedUser, USER_LIKE_SUCCESS));
       return updatedUser;
     } catch (error) {
@@ -199,9 +213,17 @@ export const disLikeUser = (likedUserId, likedById, disLikerUsername) => {
     try {
       const usersIds = { likedUserId, likedById };
       const updatedUser = await dislikeUserService(usersIds);
-	  if(updatedUser[0].liked !== null && updatedUser[0].liked.includes(likedById) && !updatedUser[0].liked_by.includes(likedById)) {
-		sendNotification(likedUserId, disLikerUsername, "You are un-matched with");
-	  }
+      if (
+        updatedUser[0].liked !== null &&
+        updatedUser[0].liked.includes(likedById) &&
+        !updatedUser[0].liked_by.includes(likedById)
+      ) {
+        sendNotification(
+          likedUserId,
+          disLikerUsername,
+          "You are un-matched with"
+        );
+      }
       dispatch(updateStoreUser(updatedUser, USER_DISLIKE_SUCCESS));
 
       return updatedUser;
@@ -262,6 +284,19 @@ export const blockUser = (loggedUser, blockedUser) => {
         dispatch(updateStoreUser(usersIds.blockedUser, USER_BLOCK_SUCCESS));
       }
       return true;
+    } catch (error) {
+      console.error(error.message);
+      dispatch(usersReducerError(error.message));
+      return false;
+    }
+  };
+};
+
+export const updateUnmatchedUsers = (loggedUserId, unMatchedUserId) => {
+  return async (dispatch) => {
+    try {
+      const updatedIds = { loggedUserId, unMatchedUserId };
+      dispatch(updateStoreUser(updatedIds, USER_UNMATCHED_SUCCESS));
     } catch (error) {
       console.error(error.message);
       dispatch(usersReducerError(error.message));
