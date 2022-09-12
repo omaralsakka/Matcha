@@ -1,5 +1,4 @@
 import axios from "axios";
-
 const userUrl = "http://localhost:5000/api/user";
 
 let token;

@@ -82,6 +82,12 @@ const App = () => {
       </>
     );
   } else {
+    setInterval(() => {
+      const validToken = window.localStorage.getItem("LoggedMatchaUser");
+      if (!validToken) {
+        window.location.assign("/");
+      }
+    }, 500);
     return (
       <>
         <Container className="min-vh-100" fluid>
