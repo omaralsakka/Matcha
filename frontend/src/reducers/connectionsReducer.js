@@ -60,10 +60,10 @@ const fetchConnectionError = (error) => {
   };
 };
 
-export const getConnections = () => {
+export const getConnections = (userId) => {
   return async (dispatch) => {
     try {
-      const response = await fetchConnections();
+      const response = await fetchConnections(userId);
       dispatch(fetchConnectionSuccess(response));
       return response;
     } catch (error) {

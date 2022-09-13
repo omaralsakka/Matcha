@@ -106,14 +106,9 @@ export const userNewDataService = async (newData) => {
   return response.data;
 };
 
-export const fetchConnections = async () => {
-  if (token) {
-    const config = {
-      headers: { Authorization: token },
-    };
-    const response = await axios.get(`${userUrl}/user-connections`, config);
-    return response.data;
-  }
+export const fetchConnections = async (userId) => {
+  const response = await axios.get(`${userUrl}/user-connections/${userId}`);
+  return response.data;
 };
 
 export const getNotificationsService = async (userId) => {

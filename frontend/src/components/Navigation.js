@@ -24,10 +24,9 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
   ScrollTop("navigation");
   useEffect(() => {
     if (user) {
-      dispatch(getConnections());
       dispatch(fetchNotifications(user.user_id));
       const interval = setInterval(() => {
-        dispatch(getConnections());
+        dispatch(getConnections(user.user_id));
       }, 2000);
       return () => clearInterval(interval);
     }

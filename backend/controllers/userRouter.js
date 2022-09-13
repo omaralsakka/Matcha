@@ -325,19 +325,14 @@ userRouter.post("/edit-user-data", async (request, response) => {
   }
 });
 
-userRouter.get("/user-connections", async (request, response) => {
-  const decodedToken = tokenTools.verifyToken(request);
-  if (!decodedToken) {
-    response.status(401).json({
-      error: "token error",
-    });
-  }
+userRouter.get("/user-connections/:id", async (request, response) => {
+  const id = request.params.id;
   try {
     const queryResponse = await queryTools.selectColOneQualifier(
       "connected",
       "connections",
       "user_id",
-      decodedToken.id
+      id
     );
     if (queryResponse.length) {
       if (queryResponse[0].connections) {
