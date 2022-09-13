@@ -174,7 +174,7 @@ export const getUsersByCountry = (country, user) => {
   };
 };
 
-export const likeUser = (likedUserId, likedById, likerUsername) => {
+export const likeUser = (likedUserId, likedById, likerUsername, likedUsername) => {
   return async (dispatch) => {
     try {
       const usersIds = { likedUserId, likedById };
@@ -196,8 +196,13 @@ export const likeUser = (likedUserId, likedById, likerUsername) => {
         sendNotification(
           likedUserId,
           likerUsername,
-          "Your profile is matched with"
+          "Your profile is matched and you are now able to chat with"
         );
+		sendNotification(
+			likedById,
+			likedUsername,
+			"Your profile is matched and you are now able to chat with"
+		  );
         dispatch(getConnections());
       }
       dispatch(updateStoreUser(updatedUser, USER_LIKE_SUCCESS));
@@ -220,10 +225,11 @@ export const disLikeUser = (likedUserId, likedById, disLikerUsername) => {
         updatedUser[0].liked.includes(likedById) &&
         !updatedUser[0].liked_by.includes(likedById)
       ) {
+
         sendNotification(
           likedUserId,
           disLikerUsername,
-          "You are un-matched with"
+          "You are unmatched with"
         );
         dispatch(getConnections());
       }

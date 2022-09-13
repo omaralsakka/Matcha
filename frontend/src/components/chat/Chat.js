@@ -36,7 +36,7 @@ const Chat = () => {
   if (roomStatus === false) {
     return (
       <Container>
-        <h2>lets get this chat thing going</h2>
+        <h2>The user you were chatting with has unmatched with you ... </h2>
       </Container>
     );
   } else {

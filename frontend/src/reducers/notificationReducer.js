@@ -8,6 +8,7 @@ import {
 import {
   getNotificationsService,
   insertNotificationService,
+  getMostRecentNotificationService,
   clearNotificationsService,
 } from "../services/userServices";
 
@@ -102,7 +103,7 @@ export const addNotification = (notification) => {
     try {
       if (limit === 0) {
         limit = 1;
-        const newNotification = await insertNotificationService(notification);
+        const newNotification = await getMostRecentNotificationService(notification);
         dispatch(NotificationUpdateSuccess(newNotification));
       } else {
         setTimeout(() => (limit = 0), 1);
