@@ -3,6 +3,7 @@ const http = require("http");
 const cors = require("cors");
 const config = require("./utils/config");
 const { Server } = require("socket.io");
+const queryTools = require("./queries/queryTools");
 
 const server = http.createServer(app);
 
@@ -22,6 +23,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send_message", (data) => {
+	queryTools.insertNotifications(data);
     socket.to(data.room).emit("receive_message", data);
   });
 

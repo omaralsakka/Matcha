@@ -116,6 +116,11 @@ export const getNotificationsService = async (userId) => {
   return response.data;
 };
 
+export const getMostRecentNotificationService = async (data) => {
+	const response = await axios.get(`${userUrl}/get-recent-notification/${data.room}/${data.time}`);
+  	return response.data;
+}
+
 export const insertNotificationService = async (notification) => {
   const config = {
     headers: { Authorization: token },
