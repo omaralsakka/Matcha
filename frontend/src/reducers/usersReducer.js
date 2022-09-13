@@ -18,6 +18,7 @@ import {
   getUsersByCountryService,
   getUserById,
   blockUserService,
+  clearChat,
 } from "../services/usersServices";
 
 import { getConnections } from "./connectionsReducer";
@@ -226,6 +227,8 @@ export const disLikeUser = (likedUserId, likedById, disLikerUsername) => {
           "You are un-matched with"
         );
         dispatch(getConnections());
+
+        await clearChat(likedUserId, likedById);
       }
       dispatch(updateStoreUser(updatedUser, USER_DISLIKE_SUCCESS));
 

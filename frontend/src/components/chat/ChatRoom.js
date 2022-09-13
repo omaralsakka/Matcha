@@ -14,6 +14,13 @@ import ProfileImage from "../../utils/ProfileImage";
 const ChatRoom = ({ socket, username, room, user_id, matchedUser }) => {
   const [messageList, setMessageList] = useState([]);
   const text = UseField("text", "");
+
+  useEffect(() => {
+    if (!matchedUser.length) {
+      window.location.assign("/home");
+    }
+  }, [matchedUser]);
+
   useEffect(() => {
     const roomData = {
       room: room,
@@ -55,69 +62,77 @@ const ChatRoom = ({ socket, username, room, user_id, matchedUser }) => {
       setMessageList((list) => [...list, data]);
     });
   }, [socket]);
-  return (
-    <Container
-      className="col-lg-7 col-sm-12 p-0 p-sm-2"
-      style={{ minHeight: "80vh" }}
-    >
-      <Card className="overflow-hidden">
-        <Card.Header className="fs-5 d-flex align-items-center">
-          <Container
-            className="col-md-1 col-sm-2 col-2 m-0 me-1 d-flex align-items-center rounded overflow-hidden"
-            style={{ minWidth: "60px" }}
-          >
-            <ProfileImage
-              userGender={matchedUser[0].gender}
-              userId={matchedUser[0].user_id}
-            />
-          </Container>
-          <strong>@ {matchedUser[0].username}</strong>
-        </Card.Header>
-        <Container className="chatbg">
-          <Card.Body className="w-100 p-0 chatbg" style={{ minHeight: "60vh" }}>
-            <ScrollToBottom>
-              {messageList.map((messageContent) => {
-                return (
-                  <Container
-                    className="d-flex"
-                    key={Math.random()}
-                    id={user_id === messageContent.user_id ? "you" : "other"}
-                  >
-                    {user_id === messageContent.user_id ? (
-                      <SentMessage
-                        message={messageContent.message}
-                        time={messageContent.time}
-                      />
-                    ) : (
-                      <ReceivedMessage
-                        userGender={matchedUser[0].gender}
-                        userId={messageContent.user_id}
-                        message={messageContent.message}
-                        time={messageContent.time}
-                      />
-                    )}
-                  </Container>
-                );
-              })}
-            </ScrollToBottom>
-          </Card.Body>
-          <Card.Footer className=" border-top-0 bg-transparent">
-            <Container className="d-flex gap-3 p-0 p-sm-3 mx-0 w-100 align-items-center flex-sm-nowrap flex-wrap">
-              <Form.Control
-                maxLength={300}
-                as="textarea"
-                {...text}
-                placeholder="Hey..."
-              ></Form.Control>
-              <Container className="w-auto me-0">
-                <Button onClick={sendMessage}>Send</Button>
-              </Container>
+
+  if (!matchedUser.length) {
+    return <></>;
+  } else {
+    return (
+      <Container
+        className="col-lg-7 col-sm-12 p-0 p-sm-2"
+        style={{ minHeight: "80vh" }}
+      >
+        <Card className="overflow-hidden">
+          <Card.Header className="fs-5 d-flex align-items-center">
+            <Container
+              className="col-md-1 col-sm-2 col-2 m-0 me-1 d-flex align-items-center rounded overflow-hidden"
+              style={{ minWidth: "60px" }}
+            >
+              <ProfileImage
+                userGender={matchedUser[0].gender}
+                userId={matchedUser[0].user_id}
+              />
             </Container>
-          </Card.Footer>
-        </Container>
-      </Card>
-    </Container>
-  );
+            <strong>@ {matchedUser[0].username}</strong>
+          </Card.Header>
+          <Container className="chatbg">
+            <Card.Body
+              className="w-100 p-0 chatbg"
+              style={{ minHeight: "60vh" }}
+            >
+              <ScrollToBottom>
+                {messageList.map((messageContent) => {
+                  return (
+                    <Container
+                      className="d-flex"
+                      key={Math.random()}
+                      id={user_id === messageContent.user_id ? "you" : "other"}
+                    >
+                      {user_id === messageContent.user_id ? (
+                        <SentMessage
+                          message={messageContent.message}
+                          time={messageContent.time}
+                        />
+                      ) : (
+                        <ReceivedMessage
+                          userGender={matchedUser[0].gender}
+                          userId={messageContent.user_id}
+                          message={messageContent.message}
+                          time={messageContent.time}
+                        />
+                      )}
+                    </Container>
+                  );
+                })}
+              </ScrollToBottom>
+            </Card.Body>
+            <Card.Footer className=" border-top-0 bg-transparent">
+              <Container className="d-flex gap-3 p-0 p-sm-3 mx-0 w-100 align-items-center flex-sm-nowrap flex-wrap">
+                <Form.Control
+                  maxLength={300}
+                  as="textarea"
+                  {...text}
+                  placeholder="Hey..."
+                ></Form.Control>
+                <Container className="w-auto me-0">
+                  <Button onClick={sendMessage}>Send</Button>
+                </Container>
+              </Container>
+            </Card.Footer>
+          </Container>
+        </Card>
+      </Container>
+    );
+  }
 };
 
 export default ChatRoom;

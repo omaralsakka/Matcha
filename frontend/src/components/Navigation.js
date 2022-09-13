@@ -26,9 +26,12 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
     if (user) {
       dispatch(getConnections());
       dispatch(fetchNotifications(user.user_id));
+      const interval = setInterval(() => {
+        dispatch(getConnections());
+      }, 2000);
+      return () => clearInterval(interval);
     }
   }, [user]);
-
   const handleLogOut = () => {
     try {
       const status = JSON.stringify({
@@ -41,7 +44,6 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
       );
       dispatch(logoutUser());
       setLoggedUser(false);
-      navigate("/login");
     } catch (error) {
       console.error("logout error: ", error.message);
     }

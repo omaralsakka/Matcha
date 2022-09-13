@@ -372,6 +372,19 @@ usersRouter.post("/get-chat-messages", async (request, response) => {
   }
 });
 
+usersRouter.post("/clear-chat", async (request, response) => {
+  const ids = request.body;
+  try {
+    const queryResponse = await usersQueries.clearChat(ids);
+    response.status(200).send(queryResponse);
+  } catch (error) {
+    console.error(error.message);
+    response.status(401).json({
+      error: error.message,
+    });
+  }
+});
+
 usersRouter.get("/user-profile-picture/:id", async (request, response) => {
   const id = request.params.id;
 

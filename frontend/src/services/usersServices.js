@@ -96,3 +96,9 @@ export const getChatMessagesService = async (roomData) => {
   const response = await axios.post(`${usersUrl}/get-chat-messages`, roomData);
   return response.data;
 };
+
+export const clearChat = async (userId1, userId2) => {
+  const ids = { userId1, userId2 };
+  const response = await axios.post(`${usersUrl}/clear-chat`, ids);
+  return response.data;
+};

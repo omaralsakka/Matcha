@@ -87,7 +87,7 @@ const App = () => {
       if (!validToken) {
         window.location.assign("/");
       }
-    }, 500);
+    }, 1000);
     return (
       <>
         <Container className="min-vh-100" fluid>

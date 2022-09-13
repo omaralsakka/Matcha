@@ -199,10 +199,10 @@ const insertSettings = async ({
         user_id,
       ]
     );
-	const modUsernameConnected = await pool.query(
-		"UPDATE connected SET username = $1 WHERE user_id = $2",
-		[username, user_id]
-	);
+    const modUsernameConnected = await pool.query(
+      "UPDATE connected SET username = $1 WHERE user_id = $2",
+      [username, user_id]
+    );
     return queryResponse.rows;
   } catch (error) {
     console.error(error.message);
@@ -306,6 +306,20 @@ const setUserOffline = async (userId) => {
   }
 };
 
+const clearChat = async (usersId) => {
+  let sequanceA = `${usersId.userId1}-${usersId.userId2}`;
+  let sequanceB = `${usersId.userId2}-${usersId.userId1}`;
+  try {
+    const queryResponse = await pool.query(
+      `DELETE FROM chats WHERE room_name = '${sequanceA}' OR room_name = '${sequanceB}' RETURNING *`
+    );
+    return queryResponse.rows;
+  } catch (error) {
+    console.error(error.message);
+    return error.message;
+  }
+};
+
 module.exports = {
   insertUserInfo,
   insertUserPictures,
@@ -320,4 +334,5 @@ module.exports = {
   updateUsersOneQualifier,
   updateConnectedQuery,
   setUserOffline,
+  clearChat,
 };
