@@ -283,8 +283,7 @@ const saveChatMessage = async (data) => {
 const getChatMessages = async (room) => {
   try {
     const queryResponse = await pool.query(
-      "SELECT messages FROM chats WHERE room_name = $1",
-      [room.room]
+      `SELECT messages FROM chats WHERE room_name = '${room.room}'`
     );
     return queryResponse.rows;
   } catch (error) {
@@ -307,7 +306,6 @@ const getNotifications = async (room) => {
 };
 
 const insertNotifications = async (notification) => {
-  /* 	console.log(notification); */
   try {
     const queryResponse = await pool.query(
       "INSERT INTO notifications(user_id, notifications) VALUES($1, $2) RETURNING *",
