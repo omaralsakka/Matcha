@@ -66,7 +66,6 @@ usersRouter.post("/likeuser", async (request, response) => {
     likedUserId,
     likedById
   );
-
   if (queryResponseLiked.length) {
     const queryResponseLikedBy = await usersQueries.updateArrayQuery(
       "users",
