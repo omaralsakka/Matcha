@@ -43,6 +43,11 @@ const LandingPage = () => {
                   </Container>
                 </Row>
                 <Row sm={2}>
+                  <Container className="w-100 text-center mb-5">
+                    <span className="fs-3">Find your love match</span>
+                  </Container>
+                </Row>
+                <Row sm={2}>
                   <Container className="d-flex gap-4 justify-content-center ">
                     <Link to="/signup">
                       <Button variant="outline-dark">Signup</Button>
