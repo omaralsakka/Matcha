@@ -24,7 +24,7 @@ const LikeButton = ({
       setFameRate(fameRate - 1);
       setLiked(false);
     } else {
-      dispatch(likeUser(user.user_id, loggedUserId, loggedUsername));
+      dispatch(likeUser(user.user_id, loggedUserId, loggedUsername, user.username));
       setHeart(heartInline);
       setFameRate(fameRate + 1);
       setLiked(true);

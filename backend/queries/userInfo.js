@@ -294,6 +294,31 @@ const updateConnectedQuery = async (likedById, likedUserId) => {
   }
 };
 
+const removeFromConnections = async (userToRemove) => { // this could be modified into a more universal function if we want to remove the likes and views aswell from users table
+	try {
+		const allConnections = await pool.query(
+			"SELECT * FROM connected"
+		);
+
+		const filteredConnections = allConnections.rows.filter((c) => {
+			if(c.connections.includes(Number(userToRemove)) === true) {
+				return c;
+			};
+		});
+
+		filteredConnections.map( async (fC) => {
+			let removeUser = await pool.query(
+				"UPDATE connected SET connections = array_remove(connections, $1) WHERE user_id = $2",
+				[userToRemove, fC.user_id]
+			);
+		})
+
+	} catch (error) {
+		console.error(error.message);
+    	return error.message;
+	}
+}
+
 const setUserOffline = async (userId) => {
   try {
     const queryResponse = await pool.query(
@@ -333,6 +358,7 @@ module.exports = {
   updateArrayQuery,
   updateUsersOneQualifier,
   updateConnectedQuery,
+  removeFromConnections,
   setUserOffline,
   clearChat,
 };
