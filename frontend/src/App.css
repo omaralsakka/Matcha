@@ -10,6 +10,8 @@ body {
   background-attachment: fixed;
 }
 
+
+
 .blobs-background {
   background-image: url("./media/blobs.svg");
   background-size: cover;

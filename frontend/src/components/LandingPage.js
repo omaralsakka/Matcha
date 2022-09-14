@@ -43,7 +43,7 @@ const LandingPage = () => {
                   </Container>
                 </Row>
                 <Row sm={2}>
-                  <Container className="w-100 text-center mb-5">
+                  <Container className=" w-100 text-center mb-5">
                     <span className="fs-3">Find your love match</span>
                   </Container>
                 </Row>

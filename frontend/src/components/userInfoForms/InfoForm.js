@@ -62,8 +62,7 @@ const InfoForm = ({ setVisibleForm }) => {
         {location.location.length === 0 ? (
           <AlertInput
             variant="warning"
-            text="Please accept the use of location services for
-          //   optimal experience!"
+            text="Please accept the use of location services for optimal experience!"
           />
         ) : (
           <AlertInput

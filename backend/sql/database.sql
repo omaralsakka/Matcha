@@ -16,15 +16,14 @@ CREATE TABLE users(
     fame_rating INT DEFAULT 0,
     city VARCHAR(150),
     country VARCHAR(150),
-    coordinates NUMERIC [],
-    blocked INT [],
-    blocked_by INT [],
-    liked INT [],
-    liked_by INT [],
-    views INT [],
+    coordinates NUMERIC [] DEFAULT array[]::NUMERIC[],
+    blocked INT [] DEFAULT array[]::NUMERIC[],
+    blocked_by INT [] DEFAULT array[]::NUMERIC[],
+    liked INT [] DEFAULT array[]::NUMERIC[],
+    liked_by INT [] DEFAULT array[]::NUMERIC[],
+    views INT [] DEFAULT array[]::NUMERIC[],
     pictures INT DEFAULT 0,
-    reports_by INT [],
-
+    reports_by INT [] DEFAULT array[]::NUMERIC[],
     status VARCHAR (150),
     last_logged_time TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()
 );
@@ -40,15 +39,15 @@ CREATE TABLE user_verify(
     verify_code VARCHAR (150) NOT NULL
 );
 
-CREATE TABLE user_search(
-    id SERIAL PRIMARY KEY,
-    user_id INT UNIQUE,
-    age_range json,
-    fame_range json,
-    city VARCHAR (150),
-    country VARCHAR (150),
-    tags VARCHAR [100]
-);
+-- CREATE TABLE user_search(
+--     id SERIAL PRIMARY KEY,
+--     user_id INT UNIQUE,
+--     age_range json,
+--     fame_range json,
+--     city VARCHAR (150),
+--     country VARCHAR (150),
+--     tags VARCHAR [100]
+-- );
 
 ##
 CREATE TABLE forgotten_password(
@@ -77,7 +76,7 @@ CREATE TABLE connected (
     id SERIAL PRIMARY KEY,
 	user_id INT NOT NULL,
     username VARCHAR (150),
-	connections INT []
+	connections INT [] DEFAULT array[]::NUMERIC[]
 );
 
 ##
@@ -90,7 +89,7 @@ CREATE TABLE pictures (
 ##
 CREATE TABLE chats (
 	id SERIAL PRIMARY KEY UNIQUE,
-	users VARCHAR [],
+	users VARCHAR [] DEFAULT array[]::varchar[],
 	room_name VARCHAR (150),
 	messages JSONB
 );
