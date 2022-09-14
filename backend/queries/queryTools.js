@@ -257,8 +257,8 @@ const insertChat = async (params) => {
   const roomName = `${params[0]}-${params[1]}`;
   try {
     const queryResponse = await pool.query(
-      "INSERT INTO chats(users, room_name) VALUES($1, $2) RETURNING *",
-      [params, roomName]
+      `INSERT INTO chats(users, room_name) VALUES($1, '${roomName}') RETURNING *`,
+      [params]
     );
     return queryResponse.rows;
   } catch (error) {
@@ -270,8 +270,8 @@ const insertChat = async (params) => {
 const saveChatMessage = async (data) => {
   try {
     const queryResponse = await pool.query(
-      "UPDATE chats SET messages = $1 WHERE room_name = $2 RETURNING *",
-      [{ data }, data[0].room]
+      `UPDATE chats SET messages = $1 WHERE room_name = '${data[0].room}' RETURNING *`,
+      [{ data }]
     );
     return queryResponse.rows;
   } catch (error) {
@@ -283,8 +283,7 @@ const saveChatMessage = async (data) => {
 const getChatMessages = async (room) => {
   try {
     const queryResponse = await pool.query(
-      "SELECT messages FROM chats WHERE room_name = $1",
-      [room.room]
+      `SELECT messages FROM chats WHERE room_name = '${room.room}'`
     );
     return queryResponse.rows;
   } catch (error) {
@@ -294,31 +293,30 @@ const getChatMessages = async (room) => {
 };
 
 const getNotifications = async (room) => {
-	try {
-		const queryResponse = await pool.query(
-			"SELECT notifications FROM notifications WHERE user_id = $1",
-			[room.room]
-		  );
-		return(queryResponse.rows)
-	} catch (error) {
-		console.error(error.message);
-		return error.message;
-	}
-}
+  try {
+    const queryResponse = await pool.query(
+      "SELECT notifications FROM notifications WHERE user_id = $1",
+      [room.room]
+    );
+    return queryResponse.rows;
+  } catch (error) {
+    console.error(error.message);
+    return error.message;
+  }
+};
 
 const insertNotifications = async (notification) => {
-/* 	console.log(notification); */
-	try {
-		const queryResponse = await pool.query(
-			"INSERT INTO notifications(user_id, notifications) VALUES($1, $2) RETURNING *",
-			[notification.room, notification]
-		  );
-		return(queryResponse.rows)
-	} catch (error) {
-		console.error(error.message);
-		return error.message;
-	}
-}
+  try {
+    const queryResponse = await pool.query(
+      "INSERT INTO notifications(user_id, notifications) VALUES($1, $2) RETURNING *",
+      [notification.room, notification]
+    );
+    return queryResponse.rows;
+  } catch (error) {
+    console.error(error.message);
+    return error.message;
+  }
+};
 
 module.exports = {
   selectAllTable,

@@ -54,6 +54,7 @@ const Home = () => {
       }
     }
   }, [sort, order, usersInStore.users]);
+
   if (!users || !user || loading) {
     return <LoadingScreen />;
   } else {

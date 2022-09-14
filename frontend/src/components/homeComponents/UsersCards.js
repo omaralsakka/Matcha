@@ -56,7 +56,6 @@ const UsersCards = ({
       const userIds = { viewedUser: user.user_id, loggedUser: loggedUserId };
       viewUserService(userIds);
 
-      // ----- muted the sendNotification as its causing error at the moment -----
       getDistanceService(loggedUserCoords, user.coordinates).then((resp) => {
         setDistance(resp);
       });
@@ -182,7 +181,6 @@ const UsersCards = ({
                   <Button
                     variant="outline-dark"
                     onClick={displayUserInfo}
-                    // aria-controls="collapse-col"
                     aria-expanded={open}
                   >
                     Check me out

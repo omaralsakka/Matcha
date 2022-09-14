@@ -114,7 +114,7 @@ const Notifications = ({ room }) => {
                 <Dropdown.Item>
                   <span className="text-wrap d-md-none">
                     {notification.notifications.message}{" "}
-                    {notification.notifications.username}
+                    <b>{notification.notifications.username}</b>
                   </span>
                   <span className="d-sm-block d-none">
                     {notification.notifications.message}{" "}

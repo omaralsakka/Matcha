@@ -24,11 +24,13 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
   ScrollTop("navigation");
   useEffect(() => {
     if (user) {
-      dispatch(fetchNotifications(user.user_id));
+      const notificationInterval = setInterval(() => {
+        dispatch(fetchNotifications(user.user_id));
+      }, 2000);
       const interval = setInterval(() => {
         dispatch(getConnections(user.user_id));
       }, 2000);
-      return () => clearInterval(interval);
+      return () => clearInterval(interval, notificationInterval);
     }
   }, [user]);
   const handleLogOut = () => {

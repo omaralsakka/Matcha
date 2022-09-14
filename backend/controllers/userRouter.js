@@ -246,7 +246,7 @@ userRouter.post("/change-email", async (request, response) => {
     const verificationCode = await queryTools.emailChangeRequest(body);
     if (verificationCode.length === 50) {
       const emailResp = Mailer(
-        body.oldEmail,
+        body.email,
         "Verification to change Matcha users E-mail",
         `Please click on the following link to verify email: http://localhost:3000/api/verify-email/code=${verificationCode}`
       );
@@ -441,6 +441,8 @@ userRouter.delete("/delete-user/:id", async (request, response) => {
       sentId
     );
 
+	const removeUserFromConnectionsColumns = await infoQueries.removeFromConnections(sentId);
+
     response.status(200).send("user-deleted");
   } catch (error) {
     response.status(401).json({
@@ -468,6 +470,34 @@ userRouter.get("/get-notifications/:id", async (request, response) => {
     });
   }
 });
+
+userRouter.get("/get-recent-notification/:id/:time", async (request, response) => {
+	 const id = request.params.id;
+	 const time = request.params.time
+	try {
+	  const queryResponse = await queryTools.selectOneQualifier(
+		"notifications",
+		"user_id",
+		id,
+	  );
+	  if (queryResponse.rows.length) {
+		  const recentNotification = queryResponse.rows.filter((n) => {
+			  return (
+				n.notifications.time === time
+			  )
+		  })
+		if(recentNotification) {
+			response.status(200).send(recentNotification);
+		}
+	  } else {
+		response.status(200).send([]);
+	  }
+	} catch (error) {
+	  response.status(404).json({
+		"error from get notification": error.message,
+	  });
+	}
+  });
 
 userRouter.post("/insert-notifications", async (request, response) => {
   /*  const decodedToken = tokenTools.verifyToken(request);  /// commented out because this crashed the program when user logs out an other user sends notification to this user

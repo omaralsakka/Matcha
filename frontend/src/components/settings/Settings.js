@@ -43,7 +43,6 @@ const Settings = ({ setLoggedUser }) => {
   const dispatch = useDispatch();
   const countries = allCountries();
   let relocatedPosition = useLocation();
-
   useEffect(() => {
     getCredentials({ type: "username" }).then((res) => {
       let obj = res.find((o) => o.username === username.value);
@@ -87,7 +86,7 @@ const Settings = ({ setLoggedUser }) => {
   const setCountry = async (country, settingsInfo, e, credentialsObj) => {
     const location = await getCapital(country.value);
     if (location === false) {
-      console.log("this is not a country");
+      // console.log("this is not a country");
       return false;
     }
     settingsInfo.location = location;
@@ -115,28 +114,31 @@ const Settings = ({ setLoggedUser }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     let sexuality;
-    switch (gender) {
-      case "male":
-        if (sexualPreference.value === "women") {
-          sexuality = "straight";
-        } else if (sexualPreference.value === "men") {
-          sexuality = "gay";
-        } else if (sexualPreference.value === "both") {
-          sexuality = "bi";
-        }
-        break;
-      case "female":
-        if (sexualPreference.value === "women") {
-          sexuality = "gay";
-        } else if (sexualPreference.value === "men") {
-          sexuality = "straight";
-        } else if (sexualPreference.value === "both") {
-          sexuality = "bi";
-        }
-        break;
-      default:
-        sexuality = "straight";
+    if (sexualPreference.value) {
+      switch (user.gender) {
+        case "male":
+          if (sexualPreference.value === "women") {
+            sexuality = "straight";
+          } else if (sexualPreference.value === "men") {
+            sexuality = "gay";
+          } else if (sexualPreference.value === "both") {
+            sexuality = "bi";
+          }
+          break;
+        case "female":
+          if (sexualPreference.value === "women") {
+            sexuality = "gay";
+          } else if (sexualPreference.value === "men") {
+            sexuality = "straight";
+          } else if (sexualPreference.value === "both") {
+            sexuality = "bi";
+          }
+          break;
+        default:
+          sexuality = user.sexuality;
+      }
     }
+
     const settingsInfo = {
       username: username.value,
       fullname: fullname.value,
@@ -167,7 +169,7 @@ const Settings = ({ setLoggedUser }) => {
       credentialsObj.username = user.username;
     }
 
-    if (relocate === 0) {
+    if (relocate === 0 || (relocate === 1 && relocatedPosition.location === '')) {
       settingsInfo.location = user.city + ", " + user.country;
       settingsInfo.coords = user.coordinates;
     }
@@ -237,7 +239,6 @@ const Settings = ({ setLoggedUser }) => {
                 <option value="">...</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
-                <option value="nonbinary">Non-binary</option>
               </Form.Select>
             </Form.Group>
 
