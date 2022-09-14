@@ -86,7 +86,6 @@ const Settings = ({ setLoggedUser }) => {
   const setCountry = async (country, settingsInfo, e, credentialsObj) => {
     const location = await getCapital(country.value);
     if (location === false) {
-      // console.log("this is not a country");
       return false;
     }
     settingsInfo.location = location;
@@ -212,8 +211,6 @@ const Settings = ({ setLoggedUser }) => {
         });
     }
   };
-
-  // WORKING ON THIS NOW ----------
 
   if (!user) {
     return <LoadingScreen />;

@@ -294,7 +294,7 @@ const updateConnectedQuery = async (likedById, likedUserId) => {
   }
 };
 
-const removeFromConnections = async (userToRemove) => { // this could be modified into a more universal function if we want to remove the likes and views aswell from users table
+const removeFromConnections = async (userToRemove) => { 
 	try {
 		const allConnections = await pool.query(
 			"SELECT * FROM connected"

@@ -219,7 +219,7 @@ const changeEmail = async (verificationCode) => {
       );
       return updateEmail;
     } else {
-      return false; // this might give an error in console if the verification code does not exist ..
+      return false; 
     }
   } catch (error) {
     console.error(error.message);

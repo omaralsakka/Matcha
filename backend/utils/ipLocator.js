@@ -2,7 +2,7 @@ const geoip = require("geoip-lite");
 const axios = require("axios");
 
 const ipLocator = async (ip) => {
-  let geo = geoip.lookup("194.136.126.35"); // change this to ip parameter before submitting project // or keep it for example cause localhost ip = 0;
+  let geo = geoip.lookup("194.136.126.35");
   let city = geo.city;
   let capital = geo.timezone.split("/");
   try {

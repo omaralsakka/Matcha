@@ -7,7 +7,7 @@ import ChatRoom from "./ChatRoom";
 import { Container } from "react-bootstrap";
 import LoadingScreen from "../LoadingScreen";
 
-const socket = io.connect("http://localhost:5000"); // connecting to backend
+const socket = io.connect("http://localhost:5000"); 
 
 const Chat = () => {
   const param = parseInt(useParams().id, 10);

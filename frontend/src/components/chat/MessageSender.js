@@ -28,5 +28,3 @@ export const SentMessage = ({ message, time }) => {
     </>
   );
 };
-
-// export default ReceivedMessage;

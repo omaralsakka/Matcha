@@ -43,7 +43,6 @@ const insertUserVerify = async ({
   }
 };
 
-// function that will take the verified user info and move it to users table.
 const verifyUser = async (verificationCode) => {
   try {
     const queryResponse = await pool.query(
@@ -59,14 +58,13 @@ const verifyUser = async (verificationCode) => {
       );
       return insertResponse.rows;
     } else {
-      return false; // this might give an error in console if the verification code does not exist ..
+      return false; 
     }
   } catch (error) {
     console.error(error.message);
   }
 };
 
-// function that will remove user from forgotten pass word and change the pass word in the users table.
 const resetUserPassword = async (code, password) => {
 	
 	try {
@@ -92,7 +90,6 @@ const resetUserPassword = async (code, password) => {
 	}
 };
 
-// function that logges in the user if all given info are correct
 const loginUser = async ({ username, password }) => {
   try {
     const queryResponse = await pool.query(

@@ -26,7 +26,6 @@ userRouter.post("/", async (request, response) => {
   }
 });
 
-// when user submits as request for a password reset, they are added to a "forgotten" table and sent an email
 userRouter.post("/forgotpassword", async (request, response) => {
   const body = request.body;
   const verificationCode = await queryTools.insertForgottenPassword(body.email);
@@ -48,7 +47,6 @@ userRouter.post("/forgotpassword", async (request, response) => {
   }
 });
 
-// to insert the new password to the database and remove person from "forgotten" table
 userRouter.post("/resetpassword", async (request, response) => {
   const { code, password } = request.body;
 
@@ -198,7 +196,6 @@ userRouter.get("/pictures/:id", async (request, response) => {
   }
 });
 
-// used to get usernames and email from both tables users and user_verify
 userRouter.post("/verify-username-email", async (request, response) => {
   const body = request.body;
   let info;
@@ -308,14 +305,6 @@ userRouter.post("/edit-user-data", async (request, response) => {
       break;
   }
 
-  // const queryResponse = await queryTools.updateOneQualifier(
-  //   "users",
-  //   "bio",
-  //   body.newBio,
-  //   "user_id",
-  //   decodedToken.id
-  // );
-
   if (queryResponse.length) {
     response.status(200).send(queryResponse);
   } else {
@@ -366,19 +355,6 @@ userRouter.get("/user-connections/:id", async (request, response) => {
     });
   }
 });
-
-/* userRouter.post("/user-info", async (request, response) => {
-	const body = request.body;
-	const user_id = body.user_id;
-	try {
-		const userInfo = await queryTools.selectOneQualifier("users", "user_id", user_id);
-		return response.status(200).send(userInfo);
-	} catch (error) {
-		return response.status(404).json({
-			error: "user was not found or bad request"
-		});
-	}
-}); */
 
 userRouter.post("/user-status", async (request, response) => {
   const body = request.body;
@@ -500,12 +476,6 @@ userRouter.get("/get-recent-notification/:id/:time", async (request, response) =
   });
 
 userRouter.post("/insert-notifications", async (request, response) => {
-  /*  const decodedToken = tokenTools.verifyToken(request);  /// commented out because this crashed the program when user logs out an other user sends notification to this user
-  if (!decodedToken) {
-    response.status(401).json({
-      error: "token error",
-    });
-  } */
   const body = request.body;
   try {
     const queryResponse = await queryTools.insertNotifications(body);

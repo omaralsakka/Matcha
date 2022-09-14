@@ -4,7 +4,6 @@ const app = express();
 const cors = require("cors");
 const userRouter = require("./controllers/userRouter");
 const usersRouter = require("./controllers/usersRouter");
-const insertFakeUsers = require("./utils/insertFakeUsers");
 
 app.use(
   cors({
@@ -20,6 +19,5 @@ app.use(express.text());
 app.use("/api/user", userRouter);
 app.use("/api/users", usersRouter);
 
-// this is function to insert fake users for testing purposes
-// insertFakeUsers();
+
 module.exports = app;

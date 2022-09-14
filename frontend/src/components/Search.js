@@ -14,7 +14,6 @@ import { searchDefaultService } from "../services/userServices";
 const Search = () => {
   const dispatch = useDispatch();
   const { search } = useSelector((state) => state.search);
-  /* const { user } = useSelector((state) => state.login); */
   const { user } = useStoreUser();
   const country = UseField("text", "");
   const [tags, setTags] = useState([]);

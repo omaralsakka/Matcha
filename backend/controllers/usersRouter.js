@@ -11,7 +11,7 @@ const distanceTool = require("../utils/distanceTool");
 usersRouter.post("/all", async (request, response) => {
   const body = request.body;
   const queryResponse = await queryTools.selectAllWithFilter(body);
-  response.status(200).send(queryResponse); // have to this because if nothing is found in db it throws a bunch of errors
+  response.status(200).send(queryResponse);
 });
 
 usersRouter.post("/country", async (request, response) => {
@@ -41,7 +41,6 @@ usersRouter.get("/profileimage", async (request, response) => {
   }
 });
 
-// working on this
 usersRouter.get("/user-pictures/:id", async (request, response) => {
   const userId = request.params.id;
   const queryResponse = await queryTools.selectOneQualifier(
@@ -136,7 +135,6 @@ usersRouter.post("/viewedUser", async (request, response) => {
   }
 });
 
-// working on this now
 usersRouter.post("/blockuser", async (request, response) => {
   const { loggedUser, blockedUser } = request.body;
 
@@ -183,8 +181,6 @@ usersRouter.post("/report-user", async (request, response) => {
     reportedUser
   );
 
-  // There should be rule if reports are 3 for example,
-  // the account should be deleted and an email sent to the user.
   if (insertReportQuery.length) {
     if (insertReportQuery[0].reports_by.length >= 3) {
       const htmlMail = mailsFormat.reportMail(insertReportQuery[0].fullname);

@@ -13,7 +13,7 @@ const InfoForm = ({ setVisibleForm }) => {
   const sexualPreference = UseField("text", "");
   const bio = UseField("text", "");
   const [tags, setTags] = useState([]);
-  let location = useLocation(); // dont use this unless forced and make sure there is no infinite render
+  let location = useLocation(); 
   ScrollTop("infoForm");
   const handleSubmit = (e) => {
     e.preventDefault();

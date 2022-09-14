@@ -5,14 +5,12 @@ import {
   USER_REPORT_SUCCESS,
   USERS_STATUS_UPDATED,
   DELETE_REPORTED_USER,
-  DELETE_REMOVED_USER_SUCCESS,
   USER_BLOCK_SUCCESS,
   USER_UNMATCHED_SUCCESS,
   USERS_REDUCER_ERROR,
 } from "../actions/types";
 
 import {
-  getUsersService,
   likeUserService,
   dislikeUserService,
   reportUserService,
@@ -269,7 +267,6 @@ export const reportUser = (loggedUserId, reportedUser) => {
   };
 };
 
-// workin on this
 export const updateUsersStatus = (users) => {
   return async (dispatch) => {
     try {

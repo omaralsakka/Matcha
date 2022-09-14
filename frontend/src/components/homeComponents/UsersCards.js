@@ -3,7 +3,6 @@ import {
   Col,
   Row,
   Button,
-  Collapse,
   Container,
   Fade,
   Image,
@@ -25,8 +24,6 @@ import { getUsersImages } from "../../services/usersServices";
 import UserCardInfo from "./UserCardInfo";
 import onlineIcon from "../../media/online.png";
 import sendNotification from "../../utils/sendNotification";
-
-// ------ FIX HERE --------------
 
 const UsersCards = ({
   user,
@@ -135,7 +132,7 @@ const UsersCards = ({
                 </Container>
               </Col>
 
-              {/* <Collapse in={open} dimension="width"> */}
+             
               <Col md={8} className={displayEffect.bodyDisplay}>
                 <Card.Body className="h-100">
                   <FadeIn {...fadeBody}>
@@ -154,7 +151,7 @@ const UsersCards = ({
                   </FadeIn>
                 </Card.Body>
               </Col>
-              {/* </Collapse> */}
+             
             </Row>
 
             <Row>

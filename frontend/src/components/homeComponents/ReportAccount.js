@@ -21,7 +21,6 @@ const ReportAccount = ({ loggedUserId, user }) => {
         if (response) {
           setTimeout(() => {
             setConfirm(false);
-            // window.location.assign("/home");
           }, 3000);
         }
       });

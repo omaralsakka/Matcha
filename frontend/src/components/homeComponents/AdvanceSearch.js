@@ -76,7 +76,7 @@ const AdvanceSearch = ({ originalUsers, show, setShow }) => {
   }
   return (
     <>
-      {/* <Button onClick={handleShow}>Advanced search</Button> */}
+      
       <Offcanvas show={show} onHide={handleClose} placement="end">
         <Container className="mb-3 bg-light border-bottom px-0">
           <Offcanvas.Header closeButton={"light"}>

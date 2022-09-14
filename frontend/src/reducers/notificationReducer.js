@@ -7,14 +7,12 @@ import {
 
 import {
   getNotificationsService,
-  insertNotificationService,
   getMostRecentNotificationService,
   clearNotificationsService,
 } from "../services/userServices";
 
 const initialState = {
   notifications: [],
-  //   amount: 0,
   error: null,
 };
 let limit = 0;

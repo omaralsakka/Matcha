@@ -1,38 +1,18 @@
 import io from "socket.io-client";
-import { useEffect, useState, useRef, forwardRef } from "react";
+import { useEffect, useState, forwardRef } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import { useStoreNotifications } from "../utils/getStoreStates";
 import { useDispatch } from "react-redux";
 import {
   addNotification,
   clearNotifications,
 } from "../reducers/notificationReducer";
-import { Container, Image, Button, Row, Col } from "react-bootstrap";
+import { Container, Image, Button } from "react-bootstrap";
 import DropdownToggle from "react-bootstrap/esm/DropdownToggle";
 import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
 import bell from "../media/bell.png";
 
 const socket = io.connect("http://localhost:5000");
-
-const useOutsideAlerter = (ref, notifications) => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (ref.current && !ref.current.contains(event.target)) {
-        if (notifications.length) {
-          console.log("here");
-          dispatch(clearNotifications());
-        }
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [ref]);
-};
 
 const CustomToggle = forwardRef(({ children, onClick }, ref) => (
   <Button
@@ -48,7 +28,6 @@ const CustomToggle = forwardRef(({ children, onClick }, ref) => (
 ));
 
 const Notifications = ({ room }) => {
-  const wrapperRef = useRef(null);
   const notifications = useStoreNotifications();
   const dispatch = useDispatch();
   const [seen, setSeen] = useState(false);
