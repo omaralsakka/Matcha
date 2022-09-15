@@ -6,7 +6,6 @@ import { getUsersByCountry } from "../../../reducers/usersReducer";
 
 const LocationSearch = ({ user }) => {
   const [country, setCountry] = useState(false);
-  // const [selected, setSelected] = useState(false);
   const countries = allCountries();
   const dispatch = useDispatch();
 
@@ -14,10 +13,9 @@ const LocationSearch = ({ user }) => {
     if (country) {
       if (user) {
         dispatch(getUsersByCountry(country, user));
-        // setSelected(country);
       }
     }
-  }, [country]);
+  }, [country]); // eslint-disable-line
 
   const handleCountry = (e) => {
     setCountry(e.target.value);

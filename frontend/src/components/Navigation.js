@@ -1,6 +1,6 @@
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { useNavigate, Outlet, Link } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import { logoutUser } from "../reducers/loginReducer";
 import { useEffect, useState } from "react";
@@ -14,7 +14,6 @@ import ScrollTop from "../utils/scrollTop";
 
 const Navigation = ({ loggedUser, setLoggedUser }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { user } = useStoreUser();
 
   const [showCanvas, setShowCanvas] = useState(false);
@@ -27,12 +26,14 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
       const notificationInterval = setInterval(() => {
         dispatch(fetchNotifications(user.user_id));
       }, 2000);
+      
       const interval = setInterval(() => {
+        
         dispatch(getConnections(user.user_id));
       }, 2000);
       return () => clearInterval(interval, notificationInterval);
     }
-  }, [user]);
+  }, [user]); // eslint-disable-line
   const handleLogOut = () => {
     try {
       const status = JSON.stringify({

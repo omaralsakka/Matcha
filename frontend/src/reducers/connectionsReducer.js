@@ -63,9 +63,13 @@ const fetchConnectionError = (error) => {
 export const getConnections = (userId) => {
   return async (dispatch) => {
     try {
-      const response = await fetchConnections(userId);
-      dispatch(fetchConnectionSuccess(response));
-      return response;
+      if (userId) {
+        const response = await fetchConnections(userId);
+        dispatch(fetchConnectionSuccess(response));
+        return response;
+      } else {
+        return false;
+      }
     } catch (error) {
       console.error(error.message);
       dispatch(fetchConnectionError(error.messaage));

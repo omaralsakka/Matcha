@@ -54,7 +54,11 @@ const UsersCards = ({
       viewUserService(userIds);
 
       getDistanceService(loggedUserCoords, user.coordinates).then((resp) => {
-        setDistance(resp);
+        if (resp < 1 && resp > 0) {
+          setDistance(parseInt(resp * 1000) + " m");
+        } else {
+          setDistance(resp + " km");
+        }
       });
       setDisplayEffect({
         picCol: 4,
@@ -64,7 +68,11 @@ const UsersCards = ({
         status: "d-flex align-items-center gap-2 mt-3",
       });
       setFadeBody({ transitionDuration: "2000" });
-	  sendNotification(user.user_id, loggedUsername, "Your profile was viewed by")
+      sendNotification(
+        user.user_id,
+        loggedUsername,
+        "Your profile was viewed by"
+      );
     } else {
       setFadeBody({ visible: "" });
       setTimeout(() => {
@@ -132,7 +140,6 @@ const UsersCards = ({
                 </Container>
               </Col>
 
-             
               <Col md={8} className={displayEffect.bodyDisplay}>
                 <Card.Body className="h-100">
                   <FadeIn {...fadeBody}>
@@ -151,7 +158,6 @@ const UsersCards = ({
                   </FadeIn>
                 </Card.Body>
               </Col>
-             
             </Row>
 
             <Row>

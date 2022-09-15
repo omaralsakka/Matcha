@@ -24,7 +24,7 @@ const App = () => {
   const dispatch = useDispatch();
   const [loggedUser, setLoggedUser] = useState("");
   const [token, setToken] = useState("");
-  const { decodedToken, isExpired } = useJWT(token);
+  const { decodedToken, isExpired } = useJWT(token); // eslint-disable-line
 
   // This function to add random users, BECAREFUL this will add plenty of users
   //  getRandomUsers();
@@ -62,7 +62,7 @@ const App = () => {
         dispatch(tokenLoginCall(decodedToken, token));
       }
     }
-  }, [loggedUser, decodedToken, token]);
+  }, [loggedUser, decodedToken, token]); // eslint-disable-line
 
   if (!loggedUser) {
     return (
