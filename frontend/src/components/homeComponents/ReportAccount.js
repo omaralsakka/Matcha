@@ -31,7 +31,7 @@ const ReportAccount = ({ loggedUserId, user }) => {
     if (confirm) {
       report();
     }
-  }, [confirm]);
+  }, [confirm]); // eslint-disable-line
 
   return (
     <Container className="d-flex justify-center mt-3 w-100">

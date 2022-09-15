@@ -84,7 +84,7 @@ const UsersCards = ({
 
   useEffect(() => {
     getUsersImages(user.user_id).then((resp) => setUserImages(resp));
-  }, []);
+  }, []); // eslint-disable-line
 
   useEffect(() => {
     if (userImages.length) {

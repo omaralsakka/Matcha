@@ -36,7 +36,7 @@ const Chat = () => {
         });
       }
     }
-  }, [user, matchedUser]);
+  }, [user, matchedUser]); // eslint-disable-line
 
   if (roomStatus === false) {
     return <LoadingScreen />;

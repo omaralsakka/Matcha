@@ -34,16 +34,13 @@ const Notifications = ({ room }) => {
 
   useEffect(() => {
     socket.emit("join_room", room);
-    const roomData = {
-      room: room,
-    };
-  }, []);
+  }, []); // eslint-disable-line
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
       dispatch(addNotification(data));
     });
-  }, [socket]);
+  }, [socket]); // eslint-disable-line
 
   const handleClearNotification = () => {
     if (!seen) {
