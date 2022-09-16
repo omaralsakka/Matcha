@@ -267,17 +267,13 @@ export const reportUser = (loggedUserId, reportedUser) => {
   };
 };
 
-export const updateUsersStatus = (users) => {
+export const updateUsersStatus = (userId) => {
   return async (dispatch) => {
     try {
-      for (let index = 0; index < users.length; index++) {
-        const updatedUser = await getUserById(users[index].user_id);
+        const updatedUser = await getUserById(userId);
         if (updatedUser.length) {
           dispatch(updateStoreUser(updatedUser, USERS_STATUS_UPDATED));
-        } else {
-          dispatch(deleteReportedUser(users[index].user_id))
         }
-      }
       return true;
     } catch (error) {
       console.error(error.message);

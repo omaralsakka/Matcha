@@ -8,7 +8,7 @@ import {
   Image,
 } from "react-bootstrap";
 import locationIcon from "../../media/location-icon.png";
-
+import { updateUsersStatus } from "../../reducers/usersReducer";
 import { Spinner } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import UsersImagesCarousel from "./UsersImagesCarousel";
@@ -24,6 +24,8 @@ import { getUsersImages } from "../../services/usersServices";
 import UserCardInfo from "./UserCardInfo";
 import onlineIcon from "../../media/online.png";
 import sendNotification from "../../utils/sendNotification";
+import { useDispatch } from "react-redux";
+
 
 const UsersCards = ({
   user,
@@ -38,6 +40,13 @@ const UsersCards = ({
   const [distance, setDistance] = useState("");
   const [fadeBody, setFadeBody] = useState({ visible: "" });
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (open){
+      dispatch(updateUsersStatus(user.user_id))
+    }
+  }, [open]) // eslint-disable-line
 
   const [displayEffect, setDisplayEffect] = useState({
     picCol: 12,
