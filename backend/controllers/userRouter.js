@@ -74,30 +74,35 @@ userRouter.post("/verify", async (request, response) => {
 
 userRouter.post("/login", async (request, response) => {
   const body = request.body;
-  const loggedUser = await queries.loginUser(body);
-  if (loggedUser) {
-    let infoFilled;
-    const userPictures = await queryTools.selectOneQualifier(
-      "pictures",
-      "user_id",
-      loggedUser.user_id
-    );
-    userPictures.rows.length ? (infoFilled = true) : (infoFilled = false);
+  try {
+    const loggedUser = await queries.loginUser(body);
+    if (loggedUser) {
+      let infoFilled;
+      const userPictures = await queryTools.selectOneQualifier(
+        "pictures",
+        "user_id",
+        loggedUser.user_id
+      );
+      userPictures.rows.length ? (infoFilled = true) : (infoFilled = false);
 
-    const userForToken = {
-      username: loggedUser.username,
-      id: loggedUser.user_id,
-      infoFilled: infoFilled,
-      name: loggedUser.fullname,
-    };
+      const userForToken = {
+        username: loggedUser.username,
+        id: loggedUser.user_id,
+        infoFilled: infoFilled,
+        name: loggedUser.fullname,
+      };
 
-    const token = jwt.sign(userForToken, process.env.SECRET);
-    return response.status(200).send({
-      token,
-    });
-  } else {
+      const token = jwt.sign(userForToken, process.env.SECRET);
+      return response.status(200).send({
+        token,
+      });
+    } else {
+      return response.status(200).send(false);
+    }
+  } catch (error) {
+    console.error(error.message);
     return response.status(401).json({
-      error: "invalid username or password",
+      error: "error login",
     });
   }
 });
@@ -417,7 +422,8 @@ userRouter.delete("/delete-user/:id", async (request, response) => {
       sentId
     );
 
-	const removeUserFromConnectionsColumns = await infoQueries.removeFromConnections(sentId);
+    const removeUserFromConnectionsColumns =
+      await infoQueries.removeFromConnections(sentId);
 
     response.status(200).send("user-deleted");
   } catch (error) {
@@ -447,33 +453,34 @@ userRouter.get("/get-notifications/:id", async (request, response) => {
   }
 });
 
-userRouter.get("/get-recent-notification/:id/:time", async (request, response) => {
-	 const id = request.params.id;
-	 const time = request.params.time
-	try {
-	  const queryResponse = await queryTools.selectOneQualifier(
-		"notifications",
-		"user_id",
-		id,
-	  );
-	  if (queryResponse.rows.length) {
-		  const recentNotification = queryResponse.rows.filter((n) => {
-			  return (
-				n.notifications.time === time
-			  )
-		  })
-		if(recentNotification) {
-			response.status(200).send(recentNotification);
-		}
-	  } else {
-		response.status(200).send([]);
-	  }
-	} catch (error) {
-	  response.status(404).json({
-		"error from get notification": error.message,
-	  });
-	}
-  });
+userRouter.get(
+  "/get-recent-notification/:id/:time",
+  async (request, response) => {
+    const id = request.params.id;
+    const time = request.params.time;
+    try {
+      const queryResponse = await queryTools.selectOneQualifier(
+        "notifications",
+        "user_id",
+        id
+      );
+      if (queryResponse.rows.length) {
+        const recentNotification = queryResponse.rows.filter((n) => {
+          return n.notifications.time === time;
+        });
+        if (recentNotification) {
+          response.status(200).send(recentNotification);
+        }
+      } else {
+        response.status(200).send([]);
+      }
+    } catch (error) {
+      response.status(404).json({
+        "error from get notification": error.message,
+      });
+    }
+  }
+);
 
 userRouter.post("/insert-notifications", async (request, response) => {
   const body = request.body;
