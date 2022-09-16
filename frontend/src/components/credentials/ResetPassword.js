@@ -23,6 +23,7 @@ const ResetPassword = () => {
     resetPassWordService(info);
     e.target.value = "";
     password.onChange(e);
+    window.location.assign("/login");
   };
 
   return (

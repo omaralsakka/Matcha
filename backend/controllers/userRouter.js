@@ -28,19 +28,27 @@ userRouter.post("/", async (request, response) => {
 
 userRouter.post("/forgotpassword", async (request, response) => {
   const body = request.body;
-  const verificationCode = await queryTools.insertForgottenPassword(body.email);
-  if (verificationCode.length === 50) {
-    const htmlMail = mailsFormat.verificationMail(
-      body.fullname,
-      verificationCode
+
+  const fullNameQuery = await infoQueries.selectByEmail(body.email);
+  try {
+    const verificationCode = await queryTools.insertForgottenPassword(
+      body.email
     );
-    const emailResp = Mailer(
-      body.email,
-      "Change forgotten password for Matcha",
-      htmlMail
-    );
-    return response.status(200);
-  } else {
+    if (verificationCode.length === 50) {
+      const htmlMail = mailsFormat.forgotPasswordMail(
+        fullNameQuery[0].fullname,
+        verificationCode
+      );
+      const emailResp = Mailer(
+        body.email,
+        "Change forgotten password for Matcha",
+        htmlMail
+      );
+      return response.status(200).send(true);
+    } else {
+      return response.status(200).send(false);
+    }
+  } catch (error) {
     return response.status(401).json({
       error: "email sending error",
     });

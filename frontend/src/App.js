@@ -45,7 +45,8 @@ const App = () => {
       ];
       if (
         !paths.includes(url) &&
-        !window.location.href.includes("/api/verify/code=")
+        !window.location.href.includes("/api/verify/code=") &&
+        !window.location.href.includes("/api/forgotpassword/code=")
       ) {
         window.location.assign("/");
       }

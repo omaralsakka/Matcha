@@ -345,6 +345,19 @@ const clearChat = async (usersId) => {
   }
 };
 
+const selectByEmail = async (email) => {
+  try {
+    const queryResponse = await pool.query(
+      "SELECT fullname FROM users WHERE email = $1",
+      [email]
+    );
+    return queryResponse.rows;
+  } catch (error) {
+    console.error(error.message);
+    return error.message;
+  }
+};
+
 module.exports = {
   insertUserInfo,
   insertUserPictures,
@@ -361,4 +374,5 @@ module.exports = {
   removeFromConnections,
   setUserOffline,
   clearChat,
+  selectByEmail
 };
