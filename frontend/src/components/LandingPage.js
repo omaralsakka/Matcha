@@ -30,7 +30,7 @@ const LandingPage = () => {
       <Container className="d-flex vh-100 align-items-center">
         <Container>
           <Card className="bg-transparent border-0">
-            <Row>
+            <Row className="d-flex align-items-center">
               <Col md={5} className="p-3">
                 <Container className="p-0 w-75 landing-page-box-shadow rounded">
                   <Card.Img src={cardImg} className="w-100" />
@@ -44,7 +44,9 @@ const LandingPage = () => {
                 </Row>
                 <Row sm={2}>
                   <Container className=" w-100 text-center mb-5">
-                    <span className="fs-3">Find your love match</span>
+                    <span className="fs-2">
+                      Find your <span className="text-danger">love</span> match
+                    </span>
                   </Container>
                 </Row>
                 <Row sm={2}>
