@@ -81,5 +81,7 @@ CREATE TABLE chats (
 CREATE TABLE notifications (
 	id SERIAL PRIMARY KEY UNIQUE,
 	user_id INT NOT NULL,
-	notifications JSONB
+	notifications JSONB,
+    date date DEFAULT NOW()::date,
+    status VARCHAR (150) DEFAULT  'unseen'
 );

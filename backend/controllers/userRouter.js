@@ -449,6 +449,7 @@ userRouter.get("/get-notifications/:id", async (request, response) => {
       "user_id",
       id
     );
+    console.log(queryResponse.rows);
     if (queryResponse.rows.length) {
       response.status(200).send(queryResponse.rows);
     } else {
@@ -519,6 +520,30 @@ userRouter.delete("/clear-notifications", async (request, response) => {
   } catch (error) {
     response.status(401).json({
       "error from delete notifications": error.message,
+    });
+  }
+});
+
+userRouter.delete("/seen-notifications", async (request, response) => {
+  const decodedToken = tokenTools.verifyToken(request);
+  if (!decodedToken) {
+    response.status(401).json({
+      error: "token error",
+    });
+  }
+
+  try {
+    const queryResponse = await queryTools.updateOneQualifier(
+      "notifications",
+      "status",
+      "seen",
+      "user_id",
+      decodedToken.id
+    );
+    response.status(200).send(queryResponse);
+  } catch (error) {
+    response.status(401).json({
+      "error from seen notifications": error.message,
     });
   }
 });

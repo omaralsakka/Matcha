@@ -25,7 +25,7 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
     if (user) {
       const notificationInterval = setInterval(() => {
         dispatch(fetchNotifications(user.user_id));
-      }, 2000);
+      }, 4000);
 
       const interval = setInterval(() => {
         dispatch(getConnections(user.user_id));

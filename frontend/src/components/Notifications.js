@@ -5,7 +5,7 @@ import { useStoreNotifications } from "../utils/getStoreStates";
 import { useDispatch } from "react-redux";
 import {
   addNotification,
-  clearNotifications,
+  seenNotifications,
 } from "../reducers/notificationReducer";
 import { Container, Image, Button } from "react-bootstrap";
 import DropdownToggle from "react-bootstrap/esm/DropdownToggle";
@@ -31,6 +31,7 @@ const Notifications = ({ room }) => {
   const notifications = useStoreNotifications();
   const dispatch = useDispatch();
   const [seen, setSeen] = useState(false);
+  const [newNotifications, setNewNotifications] = useState([]);
 
   useEffect(() => {
     socket.emit("join_room", room);
@@ -42,18 +43,26 @@ const Notifications = ({ room }) => {
     });
   }, [socket]); // eslint-disable-line
 
+  useEffect(() => {
+    if (notifications.notifications.length) {
+      const items = notifications.notifications.filter(
+        (notification) => notification.status === "unseen"
+      );
+      setNewNotifications(items);
+    }
+  }, [notifications]);
   const handleClearNotification = () => {
     if (!seen) {
       setSeen(true);
     } else {
       setSeen(false);
-      if (notifications.notifications.length) {
-        dispatch(clearNotifications());
+      if (newNotifications.length) {
+        dispatch(seenNotifications());
       }
     }
   };
 
-  if (!notifications.notifications.length) {
+  if (!newNotifications.length) {
     return (
       <Dropdown align={"end"} onToggle={handleClearNotification}>
         <DropdownToggle
@@ -74,7 +83,7 @@ const Notifications = ({ room }) => {
     return (
       <Container className="d-flex p-0">
         <Container className="p-0">
-          <span className="fs-6 text-danger">{notifications.amount}</span>
+          <span className="fs-6 text-danger">{newNotifications.length}</span>
         </Container>
         <Dropdown align={"end"} onToggle={handleClearNotification}>
           <DropdownToggle
@@ -85,21 +94,23 @@ const Notifications = ({ room }) => {
             <Image src={bell} style={{ maxWidth: "25px" }} />
           </DropdownToggle>
           <DropdownMenu flip>
-            {notifications.notifications.map((notification) => (
-              <Container key={Math.random()}>
-                <Dropdown.Item>
-                  <span className="text-wrap d-md-none">
-                    {notification.notifications.message}{" "}
-                    <b>{notification.notifications.username}</b>
-                  </span>
-                  <span className="d-sm-block d-none">
-                    {notification.notifications.message}{" "}
-                    {notification.notifications.username}
-                  </span>
-                </Dropdown.Item>
-                <hr />
-              </Container>
-            ))}
+            {newNotifications.map((notification) => {
+              return (
+                <Container key={Math.random()}>
+                  <Dropdown.Item>
+                    <span className="text-wrap d-md-none">
+                      {notification.notifications.message}{" "}
+                      <b>{notification.notifications.username}</b>
+                    </span>
+                    <span className="d-sm-block d-none">
+                      {notification.notifications.message}{" "}
+                      {notification.notifications.username}
+                    </span>
+                  </Dropdown.Item>
+                  <hr />
+                </Container>
+              );
+            })}
           </DropdownMenu>
         </Dropdown>
       </Container>

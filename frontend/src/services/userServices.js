@@ -118,9 +118,11 @@ export const getNotificationsService = async (userId) => {
 };
 
 export const getMostRecentNotificationService = async (data) => {
-	const response = await axios.get(`${userUrl}/get-recent-notification/${data.room}/${data.time}`);
-  	return response.data;
-}
+  const response = await axios.get(
+    `${userUrl}/get-recent-notification/${data.room}/${data.time}`
+  );
+  return response.data;
+};
 
 export const insertNotificationService = async (notification) => {
   const config = {
@@ -139,6 +141,14 @@ export const clearNotificationsService = async () => {
     headers: { Authorization: token },
   };
   const response = await axios.delete(`${userUrl}/clear-notifications`, config);
+  return response.data;
+};
+
+export const seenNotificationsService = async () => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await axios.delete(`${userUrl}/seen-notifications`, config);
   return response.data;
 };
 

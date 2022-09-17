@@ -2,6 +2,7 @@ import {
   NOTIFICATION_FETCH_SUCCESS,
   NOTIFICATION_NEW_SUCCESS,
   NOTIFICATION_CLEAR_SUCCESS,
+  NOTIFICATION_SEEN_SUCCESS,
   NOTIFICATION_REDUCER_ERROR,
 } from "../actions/types";
 
@@ -9,6 +10,7 @@ import {
   getNotificationsService,
   getMostRecentNotificationService,
   clearNotificationsService,
+  seenNotificationsService,
 } from "../services/userServices";
 
 const initialState = {
@@ -23,8 +25,13 @@ const notificationsReducer = (state = initialState, actions) => {
     case NOTIFICATION_FETCH_SUCCESS:
       return {
         ...state,
-        notifications: payload,
-        amount: payload.length,
+        notifications: payload.map((item) => {
+          if (item) {
+            return { ...item, date: item.date.split("T") };
+          } else {
+            return [];
+          }
+        }),
         error: null,
       };
 
@@ -32,7 +39,6 @@ const notificationsReducer = (state = initialState, actions) => {
       return {
         ...state,
         notifications: [...state.notifications, ...payload],
-        amount: state.notifications.length + payload.length,
         error: null,
       };
 
@@ -40,7 +46,15 @@ const notificationsReducer = (state = initialState, actions) => {
       return {
         ...state,
         notifications: payload,
-        amount: 0,
+        error: null,
+      };
+
+    case NOTIFICATION_SEEN_SUCCESS:
+      return {
+        ...state,
+        notifications: state.notifications.map((notification) => {
+          return { ...notification, status: "seen" };
+        }),
         error: null,
       };
 
@@ -48,7 +62,6 @@ const notificationsReducer = (state = initialState, actions) => {
       return {
         ...state,
         notifications: [],
-        amount: 0,
         error: payload,
       };
     default:
@@ -77,6 +90,13 @@ const notificationClearSuccess = () => {
   };
 };
 
+const notificationSeenSuccess = () => {
+  return {
+    type: NOTIFICATION_SEEN_SUCCESS,
+    payload: [],
+  };
+};
+
 const notificationReducerError = (error) => {
   return {
     type: NOTIFICATION_REDUCER_ERROR,
@@ -101,7 +121,9 @@ export const addNotification = (notification) => {
     try {
       if (limit === 0) {
         limit = 1;
-        const newNotification = await getMostRecentNotificationService(notification);
+        const newNotification = await getMostRecentNotificationService(
+          notification
+        );
         dispatch(NotificationUpdateSuccess(newNotification));
       } else {
         setTimeout(() => (limit = 0), 1);
@@ -118,6 +140,18 @@ export const clearNotifications = () => {
     try {
       await clearNotificationsService();
       dispatch(notificationClearSuccess());
+    } catch (error) {
+      console.error(error.message);
+      dispatch(notificationReducerError(error.message));
+    }
+  };
+};
+
+export const seenNotifications = () => {
+  return async (dispatch) => {
+    try {
+      await seenNotificationsService();
+      dispatch(notificationSeenSuccess());
     } catch (error) {
       console.error(error.message);
       dispatch(notificationReducerError(error.message));

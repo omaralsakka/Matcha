@@ -21,7 +21,7 @@ const BlockButton = ({ loggedUserId, user }) => {
     if (confirm) {
       dispatch(blockUser(loggedUserId, user.user_id));
     }
-  }, [confirm]);
+  }, [confirm]); // eslint-disable-line
 
   return (
     <>
