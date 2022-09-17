@@ -12,6 +12,7 @@ import UserInfoForms from "./components/userInfoForms/UserInfoForms";
 import Terms from "./components/footer/Terms";
 import About from "./components/footer/About";
 import useJWT from "./utils/decryptToken";
+import History from "./components/History";
 import Settings from "./components/settings/Settings";
 import Profile from "./components/Profile";
 
@@ -126,6 +127,7 @@ const App = () => {
                 element={loggedUser.infoFilled ? <Home /> : <UserInfoForms />}
               />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/history" element={<History />} />
               <Route
                 path="/settings"
                 element={<Settings setLoggedUser={setLoggedUser} />}

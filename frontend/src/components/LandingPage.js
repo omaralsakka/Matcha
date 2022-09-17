@@ -17,7 +17,7 @@ const LandingPage = () => {
 
   useEffect(() => {
     setInterval(() => {
-      i += 1;
+      i += 1; // eslint-disable-line
       if (i > 3) {
         i = 0;
       }

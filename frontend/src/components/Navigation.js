@@ -26,9 +26,8 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
       const notificationInterval = setInterval(() => {
         dispatch(fetchNotifications(user.user_id));
       }, 2000);
-      
+
       const interval = setInterval(() => {
-        
         dispatch(getConnections(user.user_id));
       }, 2000);
       return () => clearInterval(interval, notificationInterval);
@@ -76,6 +75,9 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
               </LinkContainer>
               <LinkContainer to="#">
                 <Nav.Link onClick={handleShowCanvas}>Matches</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/history">
+                <Nav.Link>History</Nav.Link>
               </LinkContainer>
               <LinkContainer to="/settings">
                 <Nav.Link>Settings</Nav.Link>
