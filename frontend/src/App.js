@@ -11,10 +11,10 @@ import Navigation from "./components/Navigation";
 import UserInfoForms from "./components/userInfoForms/UserInfoForms";
 import Terms from "./components/footer/Terms";
 import About from "./components/footer/About";
-import useJWT from "./utils/decryptToken";
 import History from "./components/History";
 import Settings from "./components/settings/Settings";
 import Profile from "./components/Profile";
+import {isJsonString, useJWT} from "./utils/tokenTools";
 
 // This is needed for generating random users, DONT UNCOMMENT
 // import { getRandomUsers } from "./services/usersServices";
@@ -31,7 +31,7 @@ const App = () => {
   //  getRandomUsers();
   useEffect(() => {
     const loggedUserJson = window.localStorage.getItem("LoggedMatchaUser");
-    if (loggedUserJson) {
+    if (isJsonString(loggedUserJson) && loggedUserJson !== null) {
       const userToken = JSON.parse(loggedUserJson);
       setToken(userToken.token);
     } else {
