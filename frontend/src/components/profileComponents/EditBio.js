@@ -11,7 +11,7 @@ const EditBio = ({ tags }) => {
   const [saveButton, setSaveButton] = useState(true);
 
   const handleSave = () => {
-    const bioInput = newBio.value.replace(/[\']/g, "\"");
+    const bioInput = newBio.value.replace(/[']/g, "\"");
     const newInfo = { infoType: "bio", newBio: bioInput };
     dispatch(editUserData(newInfo));
   };

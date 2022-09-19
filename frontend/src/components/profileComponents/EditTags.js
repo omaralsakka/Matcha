@@ -30,7 +30,7 @@ const EditTags = ({ userTags }) => {
   };
 
   const handleSave = () => {
-    const tagInput = tags.map((tag) => { return tag.replace(/[\'\"]/g, "")});
+    const tagInput = tags.map((tag) => { return tag.replace(/['"]/g, "")});
     const newInfo = { infoType: "tags", tags: tagInput };
     dispatch(editUserData(newInfo));
   };
@@ -45,6 +45,7 @@ const EditTags = ({ userTags }) => {
 
   useEffect(() => {
     if (tags) {
+      setMaxLength(handleMaxLength(tags))
       if (tags.length) {
         setSaveButton(false);
       } else {
