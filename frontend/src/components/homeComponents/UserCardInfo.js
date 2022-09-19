@@ -14,7 +14,7 @@ const UserCardInfo = ({ user, distance }) => {
           <Image src={locationIcon} fluid />
         </Container>
         <Card.Text className="text-muted fs-6">
-          Lives in {user.city}, {distance} km away from you.
+          Lives in {user.city}, {distance} away from you.
         </Card.Text>
       </Container>
 
