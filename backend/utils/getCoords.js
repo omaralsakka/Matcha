@@ -12,7 +12,7 @@ const getCoords = async (city) => {
 	.then(response => {
 		return [response.data.data[0].latitude, response.data.data[0].longitude]
 	}).catch(error => {
-		console.log(error);
+		console.error(error);
 	});
 	return coords;
 }

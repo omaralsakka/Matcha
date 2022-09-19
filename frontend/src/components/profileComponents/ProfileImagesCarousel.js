@@ -1,4 +1,4 @@
-import { Carousel, Card, Image } from "react-bootstrap";
+import { Carousel, Card} from "react-bootstrap";
 
 const ProfileImagesCarousel = ({ userPictures }) => {
   return (

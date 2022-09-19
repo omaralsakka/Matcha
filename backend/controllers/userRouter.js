@@ -449,7 +449,6 @@ userRouter.get("/get-notifications/:id", async (request, response) => {
       "user_id",
       id
     );
-    console.log(queryResponse.rows);
     if (queryResponse.rows.length) {
       response.status(200).send(queryResponse.rows);
     } else {

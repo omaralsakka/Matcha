@@ -71,7 +71,6 @@ export const getCredentials = async (type) => {
 };
 
 export const settingsService = async (settingsObj) => {
-  console.log(settingsObj);
   const response = await axios.post(`${userUrl}/settings`, settingsObj);
   return response.data;
 };

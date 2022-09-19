@@ -30,7 +30,7 @@ const ChatRoom = ({ socket, username, room, user_id, matchedUser }) => {
         setMessageList(resp.messages.data);
       }
     });
-  }, []);
+  }, []); // eslint-disable-line
 
   const sendMessage = async (e) => {
     if (text.value !== "") {

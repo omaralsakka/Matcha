@@ -42,7 +42,7 @@ const LikeButton = ({
       }
       setFameRate(user.liked_by.length);
     }
-  }, [user, loggedUserId, user.liked_by]);
+  }, [user, loggedUserId, user.liked_by, setFameRate]);
 
   return (
     <>

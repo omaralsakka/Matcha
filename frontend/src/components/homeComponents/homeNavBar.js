@@ -30,7 +30,7 @@ const HomeNavBar = ({ setSort, setOrder, setUsers, originalUsers }) => {
         setUsers(usersInStore.users);
       }
     }
-  }, [searchName.value]);
+  }, [searchName.value]); // eslint-disable-line
 
   return (
     <>

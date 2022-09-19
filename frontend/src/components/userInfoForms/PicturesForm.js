@@ -48,7 +48,7 @@ const PicturesForm = ({ defaultValue }) => {
 
   const saveImages = async () => {
     setSpinner(true);
-    const picFormResponse = await pictureFormService(images.value);
+    await pictureFormService(images.value);
     const infoFilledResponse = await InfoFilledTokenService();
     if (infoFilledResponse) {
       window.localStorage.removeItem("LoggedMatchaUser");

@@ -21,7 +21,7 @@ const EditTags = ({ userTags }) => {
   };
   useEffect(() => {
     setTags(userTags);
-  }, []);
+  }, []); // eslint-disable-line
 
   useEffect(() => {
     if (tags) {

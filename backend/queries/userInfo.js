@@ -294,35 +294,32 @@ const updateConnectedQuery = async (likedById, likedUserId) => {
   }
 };
 
-const removeFromConnections = async (userToRemove) => { 
-	try {
-		const allConnections = await pool.query(
-			"SELECT * FROM connected"
-		);
+const removeFromConnections = async (userToRemove) => {
+  try {
+    const allConnections = await pool.query("SELECT * FROM connected");
 
-		const filteredConnections = allConnections.rows.filter((c) => {
-			if(c.connections.includes(Number(userToRemove)) === true) {
-				return c;
-			};
-		});
+    const filteredConnections = allConnections.rows.filter((c) => {
+      if (c.connections.includes(Number(userToRemove)) === true) {
+        return c;
+      }
+    });
 
-		filteredConnections.map( async (fC) => {
-			let removeUser = await pool.query(
-				"UPDATE connected SET connections = array_remove(connections, $1) WHERE user_id = $2",
-				[userToRemove, fC.user_id]
-			);
-		})
-
-	} catch (error) {
-		console.error(error.message);
-    	return error.message;
-	}
-}
+    filteredConnections.map(async (fC) => {
+      let removeUser = await pool.query(
+        "UPDATE connected SET connections = array_remove(connections, $1) WHERE user_id = $2",
+        [userToRemove, fC.user_id]
+      );
+    });
+  } catch (error) {
+    console.error(error.message);
+    return error.message;
+  }
+};
 
 const setUserOffline = async (userId) => {
   try {
     const queryResponse = await pool.query(
-      `UPDATE users SET last_logged_time = now(), status = 'offline' WHERE user_id = ${userId} RETURNING *`
+      `UPDATE users SET last_logged_time = NOW(), status = 'offline' WHERE user_id = ${userId} RETURNING *`
     );
     return queryResponse.rows;
   } catch (error) {
@@ -374,5 +371,5 @@ module.exports = {
   removeFromConnections,
   setUserOffline,
   clearChat,
-  selectByEmail
+  selectByEmail,
 };

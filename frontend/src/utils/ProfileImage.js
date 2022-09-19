@@ -26,7 +26,7 @@ const ProfileImage = ({ userGender, userId }) => {
         setProfileImage(resp.picture);
       }
     });
-  }, []);
+  }, []); // eslint-disable-line
   return (
     <Image
       src={profileImage}

@@ -36,7 +36,7 @@ const MatchesCanvas = ({ showCanvas, setShowCanvas }) => {
     if (confirm) {
       dispatch(unMatchUser(unMatchedId, user.user_id));
     }
-  }, [confirm]);
+  }, [confirm, dispatch]); // eslint-disable-line
   if (!users) {
     return <Spinner />;
   } else {

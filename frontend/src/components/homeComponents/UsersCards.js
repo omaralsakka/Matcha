@@ -25,6 +25,7 @@ import UserCardInfo from "./UserCardInfo";
 import onlineIcon from "../../media/online.png";
 import sendNotification from "../../utils/sendNotification";
 import { useDispatch } from "react-redux";
+import convertTZ from "../../utils/ConvertTZ";
 
 
 const UsersCards = ({
@@ -57,6 +58,8 @@ const UsersCards = ({
   });
   const last_logged_time = user.last_logged_time.split("T");
   const time = last_logged_time[1].split(".");
+  const convertedDate = convertTZ(`${last_logged_time[0]} ${time[0]} +${time[1]}`, "Europe/Helsinki") 
+  const fullTime = `${convertedDate.getHours()}:${convertedDate.getMinutes()}`
   const displayUserInfo = () => {
     if (!open) {
       const userIds = { viewedUser: user.user_id, loggedUser: loggedUserId };
@@ -142,7 +145,7 @@ const UsersCards = ({
                   ) : (
                     <>
                       <span className="fs-7 text-muted">
-                        Last login time: {last_logged_time[0]} {time[0]}
+                        Last login time: {last_logged_time[0]} {fullTime}
                       </span>
                     </>
                   )}
