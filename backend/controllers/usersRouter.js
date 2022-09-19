@@ -398,4 +398,23 @@ usersRouter.get("/user-profile-picture/:id", async (request, response) => {
   }
 });
 
+usersRouter.get("/check-users/:id", async (request, response) => {
+  const userId = request.params.id
+  try {
+    if (userId){
+      const queryResponse = await queryTools.selectOneQualifier('users', 'user_id', userId)
+      if (queryResponse.rows.length){
+        response.status(200).send(true)
+      } else {
+        response.status(200).send(false)
+      }
+    }
+  } catch (error) {
+    console.error("error in checking store users")
+    response.status(404).json({
+      error: error.message,
+    });
+  }
+})
+
 module.exports = usersRouter;

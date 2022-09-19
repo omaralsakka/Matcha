@@ -102,3 +102,8 @@ export const clearChat = async (userId1, userId2) => {
   const response = await axios.post(`${usersUrl}/clear-chat`, ids);
   return response.data;
 };
+
+export const checkUsersService = async (userId) => {
+  const response = await axios.get(`${usersUrl}/check-users/${userId}`);
+  return response.data;
+}

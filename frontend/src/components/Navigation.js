@@ -7,14 +7,16 @@ import { useEffect, useState } from "react";
 import MatchesCanvas from "./MatchesCanvas";
 import UpdateStatus from "../utils/updateUserStatus";
 import { getConnections } from "../reducers/connectionsReducer";
-import { useStoreUser } from "../utils/getStoreStates";
+import { useStoreUser, useStoreUsers } from "../utils/getStoreStates";
 import Notifications from "./Notifications";
 import { fetchNotifications } from "../reducers/notificationReducer";
 import ScrollTop from "../utils/scrollTop";
+import {checkUsers} from "../reducers/usersReducer"
 
 const Navigation = ({ loggedUser, setLoggedUser }) => {
   const dispatch = useDispatch();
   const { user } = useStoreUser();
+  const {users} = useStoreUsers();
 
   const [showCanvas, setShowCanvas] = useState(false);
   const handleShowCanvas = () => setShowCanvas(true);
@@ -33,6 +35,16 @@ const Navigation = ({ loggedUser, setLoggedUser }) => {
       return () => clearInterval(interval, notificationInterval);
     }
   }, [user]); // eslint-disable-line
+
+  useEffect(() => {
+    if (users.length){
+      // dispatch(checkUsers(users))
+      const checkUsersInterval = setInterval(() => {
+        dispatch(checkUsers(users));
+      }, 2000)
+      return () => clearInterval(checkUsersInterval);
+    }
+  }, [users, dispatch])
   const handleLogOut = () => {
     try {
       const status = JSON.stringify({

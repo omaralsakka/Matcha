@@ -18,6 +18,7 @@ import {
   getUserById,
   blockUserService,
   clearChat,
+  checkUsersService,
 } from "../services/usersServices";
 
 import { getConnections } from "./connectionsReducer";
@@ -174,7 +175,12 @@ export const getUsersByCountry = (country, user) => {
   };
 };
 
-export const likeUser = (likedUserId, likedById, likerUsername, likedUsername) => {
+export const likeUser = (
+  likedUserId,
+  likedById,
+  likerUsername,
+  likedUsername
+) => {
   return async (dispatch) => {
     try {
       const usersIds = { likedUserId, likedById };
@@ -198,11 +204,11 @@ export const likeUser = (likedUserId, likedById, likerUsername, likedUsername) =
           likerUsername,
           "Your profile is matched and you are now able to chat with"
         );
-		sendNotification(
-			likedById,
-			likedUsername,
-			"Your profile is matched and you are now able to chat with"
-		  );
+        sendNotification(
+          likedById,
+          likedUsername,
+          "Your profile is matched and you are now able to chat with"
+        );
         dispatch(getConnections());
       }
       dispatch(updateStoreUser(updatedUser, USER_LIKE_SUCCESS));
@@ -225,7 +231,6 @@ export const disLikeUser = (likedUserId, likedById, disLikerUsername) => {
         updatedUser[0].liked.includes(likedById) &&
         !updatedUser[0].liked_by.includes(likedById)
       ) {
-
         sendNotification(
           likedUserId,
           disLikerUsername,
@@ -270,10 +275,10 @@ export const reportUser = (loggedUserId, reportedUser) => {
 export const updateUsersStatus = (userId) => {
   return async (dispatch) => {
     try {
-        const updatedUser = await getUserById(userId);
-        if (updatedUser.length) {
-          dispatch(updateStoreUser(updatedUser, USERS_STATUS_UPDATED));
-        }
+      const updatedUser = await getUserById(userId);
+      if (updatedUser.length) {
+        dispatch(updateStoreUser(updatedUser, USERS_STATUS_UPDATED));
+      }
       return true;
     } catch (error) {
       console.error(error.message);
@@ -292,6 +297,24 @@ export const blockUser = (loggedUser, blockedUser) => {
         dispatch(updateStoreUser(usersIds.blockedUser, USER_BLOCK_SUCCESS));
       }
       return true;
+    } catch (error) {
+      console.error(error.message);
+      dispatch(usersReducerError(error.message));
+      return false;
+    }
+  };
+};
+
+export const checkUsers = (users) => {
+  return async (dispatch) => {
+    try {
+      const ids = users.map((user) => user.user_id);
+      for (let index = 0; index < ids.length; index++) {
+        const response = await checkUsersService(ids[index]);
+        if (!response){
+          dispatch(deleteReportedUser(ids[index]))
+        }
+      }
     } catch (error) {
       console.error(error.message);
       dispatch(usersReducerError(error.message));
