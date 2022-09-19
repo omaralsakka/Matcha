@@ -13,6 +13,7 @@ import ProfileImagesCarousel from "./profileComponents/ProfileImagesCarousel";
 const Profile = () => {
   const { user } = useStoreUser();
   const [userPictures, setUserPictures] = useState([]);
+  let i = 0;
   useEffect(() => {
     if (user) {
       getUsersImages(user.user_id).then((resp) => {
@@ -65,11 +66,14 @@ const Profile = () => {
                 </Card.Title>
                 <Card.Text className="mb-4">
                   <span className="d-flex">
-                    {user.tags.map((tag) => (
-                      <span key={tag} className="cards-tags text-muted">
-                        {tag}
-                      </span>
-                    ))}
+                    {user.tags.map((tag) => {
+                      i++;
+                      return (
+                        <span key={tag + i} className="cards-tags text-muted">
+                          {tag}
+                        </span>
+                      );
+                    })}
                   </span>
                 </Card.Text>
                 <EditTags userTags={user.tags} />

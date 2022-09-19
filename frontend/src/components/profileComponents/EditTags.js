@@ -8,16 +8,36 @@ import { InputTags } from "react-bootstrap-tagsinput";
 const EditTags = ({ userTags }) => {
   const [tags, setTags] = useState();
   const [saveButton, setSaveButton] = useState(true);
+  const [maxLength, setMaxLength] = useState(20);
   const dispatch = useDispatch();
 
+  const handleTags = (value) => {
+    setTags(value.values);
+    setMaxLength(handleMaxLength(tags));
+  };
+
+  const handleMaxLength = (tags) => {
+    let currentLen = 20;
+
+    if (tags) {
+      const currentTags = tags.join("");
+      currentLen = 20 - currentTags.length;
+      if (currentLen <= 0) {
+        return 0;
+      }
+    }
+    return currentLen;
+  };
+
   const handleSave = () => {
-    const newInfo = { infoType: "tags", tags: tags };
+    const tagInput = tags.map((tag) => { return tag.replace(/[\'\"]/g, "")});
+    const newInfo = { infoType: "tags", tags: tagInput };
     dispatch(editUserData(newInfo));
   };
 
   const handleDelete = (e) => {
     e.preventDefault();
-    e.target.value = "";
+    setTags([])
   };
   useEffect(() => {
     setTags(userTags);
@@ -37,9 +57,9 @@ const EditTags = ({ userTags }) => {
       <EditTogglable buttonText="Edit interests">
         <Form>
           <InputTags
-            maxLength={50}
+            maxLength={maxLength}
             values={tags}
-            onTags={(value) => setTags(value.values)}
+            onTags={handleTags}
           />
           <Container className="d-flex gap-3 mt-3">
             <Button disabled={saveButton} onClick={handleSave}>

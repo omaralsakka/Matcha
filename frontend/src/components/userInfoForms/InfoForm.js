@@ -40,11 +40,15 @@ const InfoForm = ({ setVisibleForm }) => {
       default:
         sexuality = "straight";
     }
+
+    const userTags = tags.map((tag) => { return tag.replace(/[\'\"]/g, "")});
+    const userBio = bio.value.replace(/[\']/g, "\"");
+    
     const userInfo = {
       gender: gender.value,
       sexualPreference: sexuality,
-      bio: bio.value,
-      tags: tags,
+      bio: userBio,
+      tags: userTags,
       location: location.location,
       coords: location.coords,
     };
