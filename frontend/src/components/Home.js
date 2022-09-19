@@ -9,6 +9,7 @@ import { useStoreUser, useStoreUsers } from "../utils/getStoreStates";
 import sortUsers from "../utils/sortUsers";
 import searchIcon from "../media/search-empty.png";
 import ScrollToTop from "react-scroll-to-top";
+import UseField from "./UseField";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const Home = () => {
   const [order, setOrder] = useState("ascending");
   const [originalUsers, setOriginalUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const searchName = UseField("text", "");
 
   useEffect(() => {
     if (user) {
@@ -55,6 +57,21 @@ const Home = () => {
     }
   }, [sort, order, usersInStore.users]);
 
+  useEffect(() => {
+    if (searchName.value.length) {
+      if (usersInStore.users.length) {
+        const searchedUsers = usersInStore.users.filter((user) =>
+          user.username.includes(searchName.value.toLowerCase())
+        );
+        setUsers(searchedUsers);
+      }
+    } else {
+      if (usersInStore.users.length) {
+        setUsers(usersInStore.users);
+      }
+    }
+  }, [searchName.value, usersInStore]);
+
   if (!users || !user || loading) {
     return <LoadingScreen />;
   } else {
@@ -66,6 +83,7 @@ const Home = () => {
             setOrder={setOrder}
             setUsers={setUsers}
             originalUsers={originalUsers}
+            searchName={searchName}
           />
         </Container>
         <Container>

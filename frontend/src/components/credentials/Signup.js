@@ -71,7 +71,7 @@ const Signup = () => {
     e.preventDefault();
 
     const user = {
-      username: username.value,
+      username: username.value.toLowerCase(),
       email: email.value,
       fullname: fullname.value,
       password: password.value,

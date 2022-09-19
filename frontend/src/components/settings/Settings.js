@@ -45,10 +45,10 @@ const Settings = ({ setLoggedUser }) => {
   let relocatedPosition = useLocation();
   useEffect(() => {
     getCredentials({ type: "username" }).then((res) => {
-      let obj = res.find((o) => o.username === username.value);
+      let obj = res.find((o) => o.username === username.value.toLowerCase());
       setUsernameVerify(1);
       if (obj) {
-        if (obj.username === username.value) {
+        if (obj.username === username.value.toLowerCase()) {
           setUsernameVerify(0);
         }
       }
@@ -139,7 +139,7 @@ const Settings = ({ setLoggedUser }) => {
     }
 
     const settingsInfo = {
-      username: username.value,
+      username: username.value.toLowerCase(),
       fullname: fullname.value,
       oldEmail: user.email,
       email: email.value,
@@ -152,13 +152,13 @@ const Settings = ({ setLoggedUser }) => {
     };
 
     let credentialsObj = {
-      username: username.value,
+      username: username.value.toLowerCase(),
       password: newPassword.value,
     };
 
     if (newPassword.value.length === 0) {
       credentialsObj = {
-        username: username.value,
+        username: username.value.toLowerCase(),
         password: oldPassword.value,
       };
     }

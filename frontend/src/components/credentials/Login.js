@@ -20,7 +20,7 @@ const Login = ({ setLoggedUser }) => {
   const handleLogin = (e) => {
     e.preventDefault();
     const userInfo = {
-      username: username.value,
+      username: username.value.toLowerCase(),
       password: password.value,
     };
     dispatch(logUser(userInfo)).then((resp) => {

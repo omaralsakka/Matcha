@@ -7,30 +7,11 @@ import {
   Button,
 } from "react-bootstrap";
 import AdvanceSearch from "./AdvanceSearch";
-import UseField from "../UseField";
-import { useEffect, useState } from "react";
-import { useStoreUsers } from "../../utils/getStoreStates";
+import { useState } from "react";
 
-const HomeNavBar = ({ setSort, setOrder, setUsers, originalUsers }) => {
-  const usersInStore = useStoreUsers();
+const HomeNavBar = ({ setSort, setOrder, setUsers, originalUsers, searchName }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
-
-  const searchName = UseField("text", "");
-  useEffect(() => {
-    if (searchName.value.length) {
-      if (usersInStore.users.length) {
-        const searchedUsers = usersInStore.users.filter((user) =>
-          user.username.includes(searchName.value)
-        );
-        setUsers(searchedUsers);
-      }
-    } else {
-      if (usersInStore.users.length) {
-        setUsers(usersInStore.users);
-      }
-    }
-  }, [searchName.value]); // eslint-disable-line
 
   return (
     <>
@@ -73,7 +54,7 @@ const HomeNavBar = ({ setSort, setOrder, setUsers, originalUsers }) => {
               <Form>
                 <Form.Control
                   {...searchName}
-                  placeholder="Search with username"
+                  placeholder="Filter with username"
                   className="me-2"
                   aria-label="Search"
                 />
