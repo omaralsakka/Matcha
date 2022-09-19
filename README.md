@@ -3,7 +3,7 @@
 Matcha/Hive Helsinki -> **ON-GOING-PROJECT**
 
 ### URL 'Static Version' :
-https://worldsinfo.herokuapp.com/
+http://matcha-hive.herokuapp.com
 
 ## :diamond_shape_with_a_dot_inside: **Project's goal:**
 Matcha is a Hive's School project. The idea here is to build a dating app. <br />
