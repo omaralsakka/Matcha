@@ -35,7 +35,7 @@ const Profile = () => {
         <Card className="mb-3 mx-auto w-100 shadow">
           <Row className="no-gutters mb-3 ">
             <Col md={4}>
-              <ProfileImagesCarousel userPictures={userPictures} />
+              <ProfileImagesCarousel userGender={user.gender} userPictures={userPictures} />
             </Col>
             <Col md={8}>
               <Card.Body>
