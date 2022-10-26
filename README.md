@@ -1,6 +1,6 @@
 # Matcha
 <img src="frontend/src/media/Matcha-logos_black.png" width="10%"/>
-Matcha/Hive Helsinki -> **ON-GOING-PROJECT**
+Matcha/Hive Helsinki
 
 ### URL 'Static Version' :
 http://matcha-hive.herokuapp.com
